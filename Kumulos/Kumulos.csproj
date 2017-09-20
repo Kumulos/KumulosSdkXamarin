@@ -12,10 +12,10 @@
     <AssemblyName>Kumulos</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
-    <PackageId>KumulosShared</PackageId>
+    <PackageId>KumulosXamarinShared</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
     <Authors>Kumulos Ltd</Authors>
-    <Description>PCL shared code for iOS/Android Xamarin apps.</Description>
+    <Description>PCL shared code for iOS/Android Xamarin apps abstracting network requests to Kumulos services.</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,6 +43,7 @@
     <Compile Include="IRegisterDeviceToken.cs" />
     <Compile Include="ISendDeviceInformation.cs" />
     <Compile Include="PushChannels.cs" />
+    <Compile Include="ISendLocationInformation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
