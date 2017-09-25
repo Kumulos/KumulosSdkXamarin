@@ -16,6 +16,8 @@
     <PackageVersion>1.0.0</PackageVersion>
     <Authors>Kumulos Ltd</Authors>
     <Description>PCL shared code for iOS/Android Xamarin apps abstracting network requests to Kumulos services.</Description>
+    <ReleaseVersion>1.1.0</ReleaseVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
