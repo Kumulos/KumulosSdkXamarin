@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NuGet.Build.Packaging.0.1.248\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.1.248\build\NuGet.Build.Packaging.props')" />
+  <Import Project="..\packages\NuGet.Build.Packaging.0.1.324\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.1.324\build\NuGet.Build.Packaging.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,10 +10,12 @@
     <RootNamespace>Kumulos.iOS</RootNamespace>
     <AssemblyName>Kumulos.iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <PackageId>Kumulos.iOS</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageId>KumulosXamariniOS</PackageId>
+    <PackageVersion>1.1.0</PackageVersion>
     <Authors>Kumulos Ltd</Authors>
-    <Description>iOS SDK</Description>
+    <Description>iOS Xamarin project abstracting platform specific features for the Kumulos shared SDK</Description>
+    <ReleaseVersion>1.1.0</ReleaseVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +57,15 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Plugin.Settings.Abstractions">
+      <HintPath>..\packages\Xam.Plugins.Settings.3.0.1\lib\Xamarin.iOS10\Plugin.Settings.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Settings">
+      <HintPath>..\packages\Xam.Plugins.Settings.3.0.1\lib\Xamarin.iOS10\Plugin.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="Kumulos">
+      <HintPath>..\packages\KumulosXamarinShared.1.1.0\lib\portable45-net45+win8+wpa81\Kumulos.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -64,16 +75,13 @@
     <Compile Include="Push.cs" />
     <Compile Include="UserNotificationCenterDelegate.cs" />
     <Compile Include="DeviceInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Kumulos\Kumulos.csproj">
-      <Project>{E3A09F59-D753-4AE1-A3AF-0AD0B0DE38D4}</Project>
-      <Name>Kumulos</Name>
-    </ProjectReference>
+    <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="LocationInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <Import Project="..\packages\NuGet.Build.Packaging.0.1.248\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.1.248\build\NuGet.Build.Packaging.targets')" />
+  <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
+  <Import Project="..\packages\NuGet.Build.Packaging.0.1.324\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.1.324\build\NuGet.Build.Packaging.targets')" />
 </Project>

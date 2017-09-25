@@ -44,6 +44,13 @@ namespace Kumulos
             }
         }
 
+        public static KumulosStats Stats
+        {
+            get {
+                return instance.statsService;
+            }
+        }
+
         internal static KumulosSDK Instance
         {
             get

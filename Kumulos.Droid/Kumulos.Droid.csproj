@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NuGet.Build.Packaging.0.1.276\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.1.276\build\NuGet.Build.Packaging.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -14,6 +15,12 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <PackageId>KumulosXamarinDroid</PackageId>
+    <PackageVersion>1.1.0</PackageVersion>
+    <Authors>Kumulos Ltd</Authors>
+    <Description>Android Xamarin project abstracting platform specific features for the Kumulos shared SDK</Description>
+    <ReleaseVersion>1.1.0</ReleaseVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,17 +53,26 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\packages\Xamarin.Android.Support.v4.23.1.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Basement">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Basement.29.0.0.2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Basement.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Base">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.29.0.0.2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Measurement">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Measurement.29.0.0.2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Measurement.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Settings.Abstractions">
+      <HintPath>..\packages\Xam.Plugins.Settings.3.0.1\lib\MonoAndroid10\Plugin.Settings.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Settings">
+      <HintPath>..\packages\Xam.Plugins.Settings.3.0.1\lib\MonoAndroid10\Plugin.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="Kumulos">
+      <HintPath>..\packages\KumulosXamarinShared.1.1.0\lib\portable45-net45+win8+wpa81\Kumulos.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\packages\Xamarin.Android.Support.v4.23.1.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Base">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.29.0.0.2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Gcm">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Gcm.29.0.0.2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Gcm.dll</HintPath>
@@ -71,6 +87,8 @@
     <Compile Include="GcmListenerIntentService.cs" />
     <Compile Include="PushMessage.cs" />
     <Compile Include="PushBroadcastReceiver.cs" />
+    <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="LocationInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -79,12 +97,7 @@
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Kumulos\Kumulos.csproj">
-      <Project>{E3A09F59-D753-4AE1-A3AF-0AD0B0DE38D4}</Project>
-      <Name>Kumulos</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Basement.29.0.0.2\build\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Basement.29.0.0.2\build\Xamarin.GooglePlayServices.Basement.targets')" />
+  <Import Project="..\packages\NuGet.Build.Packaging.0.1.276\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.1.276\build\NuGet.Build.Packaging.targets')" />
 </Project>

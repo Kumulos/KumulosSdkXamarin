@@ -6,16 +6,17 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E3A09F59-D753-4AE1-A3AF-0AD0B0DE38D4}</ProjectGuid>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <UseMSBuildEngine>true</UseMSBuildEngine>
     <OutputType>Library</OutputType>
     <RootNamespace>Kumulos</RootNamespace>
     <AssemblyName>Kumulos</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
-    <PackageId>KumulosShared</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageId>KumulosXamarinShared</PackageId>
+    <PackageVersion>1.1.0</PackageVersion>
     <Authors>Kumulos Ltd</Authors>
-    <Description>PCL shared code for iOS/Android Xamarin apps.</Description>
+    <Description>PCL shared code for iOS/Android Xamarin apps abstracting network requests to Kumulos services.</Description>
+    <ReleaseVersion>1.1.0</ReleaseVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,6 +44,7 @@
     <Compile Include="IRegisterDeviceToken.cs" />
     <Compile Include="ISendDeviceInformation.cs" />
     <Compile Include="PushChannels.cs" />
+    <Compile Include="ISendLocationInformation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
