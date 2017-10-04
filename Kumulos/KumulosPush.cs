@@ -17,13 +17,6 @@ namespace Kumulos
 
         public PushChannels Channels { get { return channels; } }
 
-        public enum ApnsMode : int
-        {
-            Development,
-            Production,
-            Wildcard
-        };
-
         public void RegisterDeviceToken(IRegisterDeviceToken request)
         {
             var uri = string.Format("https://push.kumulos.com/v1/app-installs/{0}/push-token", KumulosSDK.InstallId);

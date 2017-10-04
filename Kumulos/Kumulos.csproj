@@ -12,10 +12,10 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
     <PackageId>KumulosXamarinShared</PackageId>
-    <PackageVersion>1.1.0</PackageVersion>
+    <PackageVersion>1.1.1</PackageVersion>
     <Authors>Kumulos Ltd</Authors>
     <Description>PCL shared code for iOS/Android Xamarin apps abstracting network requests to Kumulos services.</Description>
-    <ReleaseVersion>1.1.0</ReleaseVersion>
+    <ReleaseVersion>1.1.1</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

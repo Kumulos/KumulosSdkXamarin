@@ -30,7 +30,10 @@ namespace Kumulos.iOS
             KumulosSDK.Push.RegisterDeviceToken(request);
         }
 
-        private static KumulosPush.ApnsMode GetAPNSMode()
+        const int Production = 1;
+        const int Development = 2;
+
+        private static int GetAPNSMode()
         {
             string mobileProvision = NSBundle.MainBundle.PathForResource("embedded", "mobileprovision");
             string content = System.IO.File.ReadAllText(mobileProvision);
@@ -41,19 +44,22 @@ namespace Kumulos.iOS
 
             int end = endContent.IndexOf("</dict>");
 
-
             string parsed = endContent.Substring(0, end);
 
-            return KumulosPush.ApnsMode.Production;
+            if (parsed.Contains("development")) {
+                return Development;
+            }
+
+            return Production;
         }
     }
 
     internal class RegisterDeviceToken : IRegisterDeviceToken
     {
         string deviceToken;
-        KumulosPush.ApnsMode mode;
+        int mode;
 
-        public RegisterDeviceToken(string deviceToken, KumulosPush.ApnsMode mode)
+        public RegisterDeviceToken(string deviceToken, int mode)
         {
             this.deviceToken = deviceToken;
             this.mode = mode;
@@ -65,7 +71,7 @@ namespace Kumulos.iOS
             payload.Add("token", deviceToken);
 
             payload.Add("type", 1);
-            payload.Add("iosTokenType", mode.ToString());
+            payload.Add("iosTokenType", mode);
 
             return payload;
         }

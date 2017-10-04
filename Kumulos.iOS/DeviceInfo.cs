@@ -37,7 +37,7 @@ namespace Kumulos.iOS
 
             JObject sdk = new JObject();
             sdk.Add("id", SDK_TYPE);
-            sdk.Add("version", "1.0.0");
+            sdk.Add("version", "1.1.1");
 
             JObject runtime = new JObject();
             runtime.Add("id", RUNTIME_TYPE);
