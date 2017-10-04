@@ -8,7 +8,7 @@ Add the SDK package to your project via the package manager console by entering 
 
 After installation, you can now import & initialize the SDK with:
 
-```c-sharp
+```csharp
 import KumulosSDK
 
 KumulosSDK.Initialize (ISendDeviceInformation deviceInfo, ISettings appSettings, Dictionary<string, string> config);
