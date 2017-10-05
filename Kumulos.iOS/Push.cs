@@ -13,7 +13,9 @@ namespace Kumulos.iOS
         {
             var center = UNUserNotificationCenter.Current;
             center.RequestAuthorization(
-            UNAuthorizationOptions.Badge,
+            UNAuthorizationOptions.Badge |
+            UNAuthorizationOptions.Alert |
+            UNAuthorizationOptions.Sound,
             (bool arg1, Foundation.NSError arg2) =>
             {
 
