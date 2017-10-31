@@ -88,9 +88,6 @@
     <Reference Include="Plugin.Settings">
       <HintPath>..\..\Downloads\CiberDemo\packages\Xam.Plugins.Settings.3.1.1\lib\MonoAndroid10\Plugin.Settings.dll</HintPath>
     </Reference>
-    <Reference Include="Kumulos">
-      <HintPath>..\..\Downloads\CiberDemo\packages\KumulosXamarinShared.1.1.1\lib\portable45-net45+win8+wpa81\Kumulos.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Basement">
       <HintPath>..\..\Downloads\CiberDemo\packages\Xamarin.GooglePlayServices.Basement.42.1021.1\lib\MonoAndroid70\Xamarin.GooglePlayServices.Basement.dll</HintPath>
     </Reference>
@@ -109,6 +106,12 @@
     <Reference Include="Xamarin.Android.Arch.Core.Common">
       <HintPath>..\..\Downloads\CiberDemo\packages\Xamarin.Android.Arch.Core.Common.26.1.0\lib\MonoAndroid80\Xamarin.Android.Arch.Core.Common.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Kumulos">
+      <HintPath>..\packages\KumulosXamarinShared.1.1.1\lib\portable45-net45+win8+wpa81\Kumulos.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
