@@ -153,13 +153,13 @@ namespace Kumulos.Droid
             //int icon = config != null ? config.getNotificationSmallIconId() : Kumulos.DEFAULT_NOTIFICATION_ICON_ID;
 
             notificationBuilder
-                .SetSmallIcon(Resource.Drawable.common_plus_signin_btn_icon_light_focused)
+                .SetSmallIcon(Resource.Drawable.common_google_signin_btn_icon_light_focused)
                 .SetContentTitle(pushMessage.Title)
                 .SetContentText(pushMessage.Message)
                 .SetAutoCancel(true)
                 .SetContentIntent(pendingOpenIntent);
 
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.JellyBean)
+            if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.JellyBean)
             {
                 return notificationBuilder.Build();
             }
