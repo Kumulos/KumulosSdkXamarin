@@ -2,7 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.Gms.Gcm;
-using Android.Gms.Gcm.Iid;
+using Android.Gms.Iid;
 using Android.Content.PM;
 using Android.OS;
 
@@ -19,8 +19,9 @@ namespace Kumulos.Droid
         {
             lock (locker)
             {
-                var instanceID = InstanceID.GetInstance(this);
-                var token = instanceID.GetToken(getDefaultSenderId(), GoogleCloudMessaging.InstanceIdScope, null);
+                
+                var instanceID =  InstanceID.GetInstance(this);
+                var token = instanceID.GetToken(getDefaultSenderId(), GoogleCloudMessaging.InstanceIdScope);
 
                 KumulosSDK.Push.RegisterDeviceToken(new RegisterDeviceToken(token));
             }
@@ -40,7 +41,7 @@ namespace Kumulos.Droid
 
 			Bundle meta = info.MetaData;
             String senderId = meta.GetString("kumulos_gcm_sender_id");
-			if (senderId == string.Empty)
+			if (senderId == string.Empty || senderId == null)
 			{
 				throw new Exception("Unable to read Google project number for GCM registration, aborting!");
 			}
