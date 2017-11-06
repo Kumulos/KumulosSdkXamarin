@@ -305,40 +305,43 @@ namespace Kumulos.Droid
 			public static int googleg_standard_color_18 = 2130837524;
 			
 			// aapt resource value: 0x7f020015
-			public static int notification_action_background = 2130837525;
+			public static int kumulos_ic_stat_notifications = 2130837525;
 			
 			// aapt resource value: 0x7f020016
-			public static int notification_bg = 2130837526;
+			public static int notification_action_background = 2130837526;
 			
 			// aapt resource value: 0x7f020017
-			public static int notification_bg_low = 2130837527;
+			public static int notification_bg = 2130837527;
 			
 			// aapt resource value: 0x7f020018
-			public static int notification_bg_low_normal = 2130837528;
+			public static int notification_bg_low = 2130837528;
 			
 			// aapt resource value: 0x7f020019
-			public static int notification_bg_low_pressed = 2130837529;
+			public static int notification_bg_low_normal = 2130837529;
 			
 			// aapt resource value: 0x7f02001a
-			public static int notification_bg_normal = 2130837530;
+			public static int notification_bg_low_pressed = 2130837530;
 			
 			// aapt resource value: 0x7f02001b
-			public static int notification_bg_normal_pressed = 2130837531;
+			public static int notification_bg_normal = 2130837531;
 			
 			// aapt resource value: 0x7f02001c
-			public static int notification_icon_background = 2130837532;
-			
-			// aapt resource value: 0x7f02001f
-			public static int notification_template_icon_bg = 2130837535;
-			
-			// aapt resource value: 0x7f020020
-			public static int notification_template_icon_low_bg = 2130837536;
+			public static int notification_bg_normal_pressed = 2130837532;
 			
 			// aapt resource value: 0x7f02001d
-			public static int notification_tile_bg = 2130837533;
+			public static int notification_icon_background = 2130837533;
+			
+			// aapt resource value: 0x7f020020
+			public static int notification_template_icon_bg = 2130837536;
+			
+			// aapt resource value: 0x7f020021
+			public static int notification_template_icon_low_bg = 2130837537;
 			
 			// aapt resource value: 0x7f02001e
-			public static int notify_panel_notification_icon_bg = 2130837534;
+			public static int notification_tile_bg = 2130837534;
+			
+			// aapt resource value: 0x7f02001f
+			public static int notify_panel_notification_icon_bg = 2130837535;
 			
 			static Drawable()
 			{

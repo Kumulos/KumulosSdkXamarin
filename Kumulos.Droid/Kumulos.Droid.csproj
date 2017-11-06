@@ -130,6 +130,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\kumulos_ic_stat_notifications.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\kumulos_ic_stat_notifications.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\kumulos_ic_stat_notifications.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\kumulos_ic_stat_notifications.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\kumulos_ic_stat_notifications.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Basement.29.0.0.2\build\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Basement.29.0.0.2\build\Xamarin.GooglePlayServices.Basement.targets')" />

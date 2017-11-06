@@ -173,7 +173,7 @@ namespace Kumulos.Droid
                 NotificationChannel channel = notificationManager.GetNotificationChannel(DEFAULT_CHANNEL_ID);
                 if (null == channel)
                 {
-                    channel = new NotificationChannel(DEFAULT_CHANNEL_ID, "General", NotificationManager.ImportanceDefault);
+                    channel = new NotificationChannel(DEFAULT_CHANNEL_ID, "General", NotificationImportance.Default);
                     notificationManager.CreateNotificationChannel(channel);
                 }
 
@@ -186,7 +186,7 @@ namespace Kumulos.Droid
 
 
             notificationBuilder
-                .SetSmallIcon(Resource.Drawable.common_google_signin_btn_icon_light_focused)
+                .SetSmallIcon(Resource.Drawable.kumulos_ic_stat_notifications)
                 .SetContentTitle(pushMessage.Title)
                 .SetContentText(pushMessage.Message)
                 .SetAutoCancel(true)
