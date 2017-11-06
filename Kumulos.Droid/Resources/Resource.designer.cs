@@ -167,6 +167,9 @@ namespace Kumulos.Droid
 			// aapt resource value: 0x7f020014
 			public static int googleg_standard_color_18 = 2130837524;
 			
+			// aapt resource value: 0x7f020015
+			public static int kumulos_ic_stat_notifications = 2130837525;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

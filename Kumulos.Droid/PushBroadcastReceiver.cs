@@ -20,9 +20,17 @@ namespace Kumulos.Droid
         public const string ACTION_PUSH_RECEIVED = "com.kumulos.push.RECEIVED";
         public const string ACTION_PUSH_OPENED = "com.kumulos.push.OPENED";
 
+        const string DEFAULT_CHANNEL_ID = "general";
+
         public override void OnReceive(Context context, Intent intent)
         {
             string action = intent.Action;
+
+            if (null == action)
+            {
+                return;
+            }
+
             PushMessage pushMessage = JsonConvert.DeserializeObject<PushMessage>(intent.GetStringExtra(PushMessage.EXTRAS_KEY));
 
             switch (action)
@@ -74,6 +82,11 @@ namespace Kumulos.Droid
 
             NotificationManager notificationManager =
                     (NotificationManager)context.GetSystemService(Context.NotificationService);
+
+            if (null == notificationManager)
+            {
+                return;
+            }
 
             // TODO fix this in 2038 when we run out of time
             notificationManager.Notify((int)pushMessage.TimeSent, notification);
@@ -148,12 +161,32 @@ namespace Kumulos.Droid
 
             Notification.Builder notificationBuilder = new Notification.Builder(context);
 
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                NotificationManager notificationManager = (NotificationManager)context.GetSystemService(Context.NotificationService);
 
-            //KumulosConfig config = Kumulos.getConfig();
-            //int icon = config != null ? config.getNotificationSmallIconId() : Kumulos.DEFAULT_NOTIFICATION_ICON_ID;
+                if (null == notificationManager)
+                {
+                    return null;
+                }
+
+                NotificationChannel channel = notificationManager.GetNotificationChannel(DEFAULT_CHANNEL_ID);
+                if (null == channel)
+                {
+                    channel = new NotificationChannel(DEFAULT_CHANNEL_ID, "General", NotificationImportance.Default);
+                    notificationManager.CreateNotificationChannel(channel);
+                }
+
+                notificationBuilder = new Notification.Builder(context, "general");
+            }
+            else
+            {
+                notificationBuilder = new Notification.Builder(context);
+            }
+
 
             notificationBuilder
-                .SetSmallIcon(Resource.Drawable.common_google_signin_btn_icon_light_focused)
+                .SetSmallIcon(Resource.Drawable.kumulos_ic_stat_notifications)
                 .SetContentTitle(pushMessage.Title)
                 .SetContentText(pushMessage.Message)
                 .SetAutoCancel(true)
