@@ -17,10 +17,10 @@
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <PackageId>KumulosXamarinDroid</PackageId>
-    <PackageVersion>2.0.2</PackageVersion>
+    <PackageVersion>2.0.3</PackageVersion>
     <Authors>Kumulos Ltd</Authors>
     <Description>Android Xamarin project abstracting platform specific features for the Kumulos shared SDK</Description>
-    <ReleaseVersion>2.0.2</ReleaseVersion>
+    <ReleaseVersion>2.0.3</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

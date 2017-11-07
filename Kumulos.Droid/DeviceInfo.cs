@@ -42,7 +42,7 @@ namespace Kumulos.Droid
 
             JObject sdk = new JObject();
             sdk.Add("id", SDK_TYPE);
-            sdk.Add("version", "2.0.2");
+            sdk.Add("version", "2.0.3");
 
             JObject runtime = new JObject();
             runtime.Add("id", RUNTIME_TYPE);
