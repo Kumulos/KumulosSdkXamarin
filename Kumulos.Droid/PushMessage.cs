@@ -26,6 +26,7 @@ namespace Kumulos.Droid
 
         public Android.Net.Uri GetUri()
         {
+            if (this.Uri == null) { return null; }
             return Android.Net.Uri.Parse(Uri);
         }
     }

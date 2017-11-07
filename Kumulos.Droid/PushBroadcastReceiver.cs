@@ -115,6 +115,11 @@ namespace Kumulos.Droid
 
 
             ComponentName component = launchIntent.Component;
+            if (null == component)
+            {
+                Log.Info(TAG, "Intent to handle push notification open does not specify a component, ignoring. Override PushBroadcastReceiver#onPushOpened to change this behaviour.");
+                return;
+            }
 
             if (null != pushMessage.GetUri())
             {
@@ -214,6 +219,8 @@ namespace Kumulos.Droid
         protected Intent GetPushOpenActivityIntent(Context context, PushMessage pushMessage)
         {
             Intent launchIntent = context.PackageManager.GetLaunchIntentForPackage(context.PackageName);
+            if (null == launchIntent) { return null;  }
+
             launchIntent.PutExtra(PushMessage.EXTRAS_KEY, JsonConvert.SerializeObject(pushMessage));
             return launchIntent;
         }
