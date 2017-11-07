@@ -51,7 +51,7 @@ namespace Kumulos.Droid
 		 * @param pushMessage
 		 * @see PushBroadcastReceiver#buildNotification(Context, PushMessage) for customization
 		 */
-        protected void OnPushReceived(Context context, PushMessage pushMessage)
+        protected virtual void OnPushReceived(Context context, PushMessage pushMessage)
         {
             Log.Info(TAG, "Push received");
 
@@ -152,7 +152,7 @@ namespace Kumulos.Droid
 		 * @return
 		 * @see Kumulos#pushTrackOpen(String) for correctly tracking conversions if you customize the content intent
 		 */
-        protected Notification BuildNotification(Context context, PushMessage pushMessage)
+        protected virtual Notification BuildNotification(Context context, PushMessage pushMessage)
         {
             Intent openIntent = new Intent(ACTION_PUSH_OPENED);
             openIntent.PutExtra(PushMessage.EXTRAS_KEY, JsonConvert.SerializeObject(pushMessage));
@@ -216,7 +216,7 @@ namespace Kumulos.Droid
 		 * @param pushMessage
 		 * @return
 		 */
-        protected Intent GetPushOpenActivityIntent(Context context, PushMessage pushMessage)
+        protected virtual Intent GetPushOpenActivityIntent(Context context, PushMessage pushMessage)
         {
             Intent launchIntent = context.PackageManager.GetLaunchIntentForPackage(context.PackageName);
             if (null == launchIntent) { return null;  }
@@ -236,7 +236,7 @@ namespace Kumulos.Droid
 		 * @param pushMessage
 		 * @return
 		 */
-        protected Intent GetBackgroundPushServiceIntent(Context context, PushMessage pushMessage)
+        protected virtual Intent GetBackgroundPushServiceIntent(Context context, PushMessage pushMessage)
         {
             return null;
         }
