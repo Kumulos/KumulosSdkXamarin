@@ -27,7 +27,7 @@ namespace Kumulos.Droid
 
             string id = string.Empty;
             JObject customData = new JObject();
-            string uri = string.Empty;
+            string uri = null;
 
             try
             {
