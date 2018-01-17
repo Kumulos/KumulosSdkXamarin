@@ -37,22 +37,29 @@ namespace Kumulos.iOS
 
         private static int GetAPNSMode()
         {
-            string mobileProvision = NSBundle.MainBundle.PathForResource("embedded", "mobileprovision");
-            string content = System.IO.File.ReadAllText(mobileProvision);
+            try
+            {
+                string mobileProvision = NSBundle.MainBundle.PathForResource("embedded", "mobileprovision");
+                string content = System.IO.File.ReadAllText(mobileProvision);
 
-            int start = content.IndexOf("<key>aps-environment</key>");
+                int start = content.IndexOf("<key>aps-environment</key>");
 
-            string endContent = content.Substring(start);
+                string endContent = content.Substring(start);
 
-            int end = endContent.IndexOf("</dict>");
+                int end = endContent.IndexOf("</dict>");
 
-            string parsed = endContent.Substring(0, end);
+                string parsed = endContent.Substring(0, end);
 
-            if (parsed.Contains("development")) {
-                return Development;
+                if (parsed.Contains("development"))
+                {
+                    return Development;
+                }
+
+                return Production;
             }
-
-            return Production;
+            catch (Exception) {
+                return Production;
+            }
         }
     }
 
