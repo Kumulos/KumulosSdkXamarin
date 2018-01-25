@@ -11,8 +11,6 @@ using Newtonsoft.Json;
 
 namespace Kumulos.Droid
 {
-    [BroadcastReceiver(Enabled = true, Exported = false)]
-    [IntentFilter(new[] { ACTION_PUSH_RECEIVED, ACTION_PUSH_OPENED })]
     public class PushBroadcastReceiver : BroadcastReceiver
     {
         public const string TAG = "com.kumulos.push.PUSH_BROADCAST_RECEIVER";
