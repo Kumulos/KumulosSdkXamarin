@@ -11,17 +11,17 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Kumulos.Droid</RootNamespace>
     <AssemblyName>Kumulos.Droid</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <PackageId>KumulosXamarinDroid</PackageId>
-    <PackageVersion>2.0.4</PackageVersion>
+    <PackageVersion>2.0.5</PackageVersion>
     <Authors>Kumulos Ltd</Authors>
     <Description>Android Xamarin project abstracting platform specific features for the Kumulos shared SDK</Description>
-    <ReleaseVersion>2.0.4</ReleaseVersion>
+    <ReleaseVersion>2.0.5</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
