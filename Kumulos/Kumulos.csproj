@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
     <PackageId>KumulosXamarinShared</PackageId>
-    <PackageVersion>1.1.1</PackageVersion>
+    <PackageVersion>1.2.0</PackageVersion>
     <Authors>Kumulos Ltd</Authors>
     <Description>PCL shared code for iOS/Android Xamarin apps abstracting network requests to Kumulos services.</Description>
     <ReleaseVersion>1.1.1</ReleaseVersion>
