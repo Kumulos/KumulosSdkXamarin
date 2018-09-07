@@ -10,6 +10,7 @@ namespace Kumulos
     public class KumulosBuild
     {
         private string apiKey;
+        private string sessionToken;
 
         public KumulosBuild(string apiKey)
         {
@@ -45,6 +46,10 @@ namespace Kumulos
             postParams.Add(new KeyValuePair<string, string>("deviceID", KumulosSDK.InstallId));
             postParams.Add(new KeyValuePair<string, string>("installId", KumulosSDK.InstallId));
 
+            if (sessionToken != null) {
+                postParams.Add(new KeyValuePair<string, string>("sessionToken", sessionToken));
+            }
+
             return new FormUrlEncodedContent(postParams);
         }
 
@@ -54,11 +59,17 @@ namespace Kumulos
             ApiResponse response = new ApiResponse();
             var result = await MakeRPCApiCallAsync(methodName, parameters);
 
+            this.updateSessionToken(result);
+
             response.responseCode = (int)result["responseCode"];
             response.responseMessage = (string)result["responseMessage"];
             response.payload = (object)result["payload"];
 
             return response;
+        }
+
+        private void updateSessionToken(JObject response) {
+            this.sessionToken = (string)response["sessionToken"];
         }
     }
 }
