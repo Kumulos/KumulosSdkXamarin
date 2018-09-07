@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System;
 
 namespace Kumulos
 {
@@ -15,6 +16,7 @@ namespace Kumulos
         public KumulosBuild(string apiKey)
         {
             this.apiKey = apiKey;
+            this.sessionToken = Guid.NewGuid().ToString();
         }
 
         private async Task<JObject> MakeRPCApiCallAsync(string methodName, List<KeyValuePair<string, string>> parameters)
