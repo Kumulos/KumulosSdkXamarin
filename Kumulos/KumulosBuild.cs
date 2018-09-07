@@ -19,13 +19,13 @@ namespace Kumulos
         private async Task<JObject> MakeRPCApiCallAsync(string methodName, List<KeyValuePair<string, string>> parameters)
         {
             var uri = new Uri(string.Format("https://api.kumulos.com/b2.2/{0}/{1}.json", apiKey, methodName));
-            var postContent = new FormUrlEncodedContent(parameters);
+
+            var postContent = BuildRequestParameters(parameters);
 
             HttpResponseMessage request = await KumulosSDK.GetHttpClient().PostAsync(uri, postContent);
 
             if (request.IsSuccessStatusCode)
             {
-                
                 var responseContent = request.Content.ReadAsStringAsync().Result;
                 JObject stuff = (JObject)JsonConvert.DeserializeObject(responseContent);
 
@@ -33,6 +33,19 @@ namespace Kumulos
             }
 
             return null;
+        }
+
+        FormUrlEncodedContent BuildRequestParameters(List<KeyValuePair<string, string>> parameters) {
+            var postParams = new List<KeyValuePair<string, string>>{};
+
+            foreach(KeyValuePair<string, string> parameter in parameters) {
+                postParams.Add(new KeyValuePair<string, string>("params[" + parameter.Key + "]", parameter.Value));
+            }
+
+            postParams.Add(new KeyValuePair<string, string>("deviceID", KumulosSDK.InstallId));
+            postParams.Add(new KeyValuePair<string, string>("installId", KumulosSDK.InstallId));
+
+            return new FormUrlEncodedContent(postParams);
         }
 
         public async Task<ApiResponse> CallAPI(string methodName, List<KeyValuePair<string, string>> parameters)
