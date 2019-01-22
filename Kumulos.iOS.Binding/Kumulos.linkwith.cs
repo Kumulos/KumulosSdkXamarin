@@ -7,4 +7,4 @@
 
 using ObjCRuntime;
 
-[assembly: LinkWith ("Kumulos.a", SmartLink = true, ForceLoad = true)]
+[assembly: LinkWith ("Kumulos.a", IsCxx = true, LinkerFlags = "-ObjC", SmartLink = true, ForceLoad = true, Frameworks = "SystemConfiguration UserNotifications")]
