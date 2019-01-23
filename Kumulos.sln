@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Kumulos.iOS", "Com.Kumu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyIOSTestApp", "MyIOSTestApp\MyIOSTestApp.csproj", "{DC8EF4A9-3E43-4ABA-99CB-A82DCB18A080}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Kumulos.Abstractions", "Com.Kumulos.Abstractions\Com.Kumulos.Abstractions.csproj", "{4284B520-2352-48F8-A87D-BC071FD8085B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Kumulos", "Com.Kumulos\Com.Kumulos.csproj", "{865EAD94-07CE-4F4C-8054-12F618A9129E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

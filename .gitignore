@@ -2,3 +2,8 @@ Kumulos.iOS.Binding/obj
 Com.Kumulos.iOS/bin
 Com.Kumulos.iOS/obj
 Kumulos.iOS.Binding/bin
+.vs
+Com.Kumulos.Abstractions/bin
+Com.Kumulos.Abstractions/obj
+Com.Kumulos/bin
+Com.Kumulos/obj
