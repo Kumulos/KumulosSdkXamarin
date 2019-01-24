@@ -42,6 +42,11 @@ namespace Com.Kumulos
             iOS.Kumulos_Push.PushRegisterWithDeviceToken(thisRef, (NSData)NSDataDeviceToken);
         }
 
+        public void TrackNotificationOpen(object NSDictionaryInfo)
+        {
+            iOS.Kumulos_Push.PushTrackOpenFromNotification(thisRef, (NSDictionary)NSDictionaryInfo);
+        }
+
         public void TrackEvent(string eventType, object properties)
         {
             throw new NotImplementedException();
@@ -84,6 +89,6 @@ namespace Com.Kumulos
             throw new NotImplementedException();
         }
 
-      
+
     }
 }

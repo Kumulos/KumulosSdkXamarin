@@ -70,5 +70,10 @@ namespace Com.Kumulos
         {
             throw new NotImplementedException("This method does not need to be called on Android");
         }
+
+        public void TrackNotificationOpen(object NSDictionaryInfo)
+        {
+            throw new NotImplementedException("This method does not need to be called on Android");
+        }
     }
 }

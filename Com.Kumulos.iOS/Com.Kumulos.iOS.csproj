@@ -58,6 +58,7 @@
       <Link>Kumulos.cs</Link>
     </Compile>
 
+    <Compile Include="UserNotificationCenterDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kumulos.iOS.Binding\Kumulos.iOS.Binding.csproj">
