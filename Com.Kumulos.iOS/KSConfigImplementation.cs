@@ -1,6 +1,7 @@
 ﻿using System;
 using Com.Kumulos;
 using Com.Kumulos.Abstractions;
+using Foundation;
 
 namespace Com.Kumulos
 {
@@ -10,11 +11,7 @@ namespace Com.Kumulos
         private bool enableCrashReporting;
         private int timeoutSeconds;
 
-        public KSConfigImplementation()
-        {
-
-        }
-
+       
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
             this.apiKey = apiKey;
@@ -44,13 +41,22 @@ namespace Com.Kumulos
                 specificConfig.EnableCrashReporting();
             }
 
+            var sdkKeys = new object[] { "id", "version" };
+            var sdkValues = new object[] { Consts.SDK_TYPE, "2.0" };
+
+            var sdkInfo = NSDictionary.FromObjectsAndKeys(sdkValues, sdkKeys);
+
+            specificConfig.SetSdkInfo(sdkInfo);
+
+            var runtimeKeys = new object[] { "id", "version" };
+            var runtimeValues = new object[] { Consts.RUNTIME_TYPE, "2.0" };
+
+            var runtimeInfo = NSDictionary.FromObjectsAndKeys(sdkValues, sdkKeys);
+
+            specificConfig.SetRuntimeInfo(runtimeInfo);
+
             return specificConfig;
         }
-
-        private KSConfigImplementation(string apiKey, string secretKey)
-        {
-            this.apiKey = apiKey;
-            this.secretKey = secretKey;
-        }
+             
     }
 }

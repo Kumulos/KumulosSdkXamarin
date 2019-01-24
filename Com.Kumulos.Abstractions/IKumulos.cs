@@ -6,5 +6,14 @@ namespace Com.Kumulos.Abstractions
         void Initialize(IKSConfig config);
 
         string GetInstallId();
+
+        void TrackEvent(string eventType, object properties);
+        void TrackEventImmediately(string eventType, object properties);
+        void LogException(Exception e);
+        void LogUncaughtException(Exception e);
+        void SendLocationUpdate(decimal lat, decimal lng);
+        void AssociateUserWithInstall(string userIdentifier, object attributes);
+        void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, int? distanceMetres);
+        void TrackiBeaconProximity(string uuid, int major, int minor, int proximity);
     }
 }
