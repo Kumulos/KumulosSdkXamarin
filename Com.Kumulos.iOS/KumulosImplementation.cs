@@ -1,15 +1,20 @@
 ﻿using System;
 using Com.Kumulos.Abstractions;
+using Foundation;
+using UIKit;
+using UserNotifications;
 
 namespace Com.Kumulos
 {
     public class KumulosImplementation : IKumulos
     {
+        private iOS.Kumulos thisRef;
+
         public void Initialize(IKSConfig config)
         {
             var iosKSConfig = (KSConfigImplementation)config;
 
-            iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
+            thisRef = iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
         }
 
         public string GetInstallId()
@@ -17,18 +22,40 @@ namespace Com.Kumulos
             return iOS.Kumulos.InstallId;
         }
 
+        public void RegisterForRemoteNotifications()
+        { 
+            var center = UNUserNotificationCenter.Current;
+            center.RequestAuthorization(
+                UNAuthorizationOptions.Badge |
+                UNAuthorizationOptions.Alert |
+                UNAuthorizationOptions.Sound,
+                (bool arg1, Foundation.NSError arg2) =>
+                {
+
+                });
+
+            UIApplication.SharedApplication.RegisterForRemoteNotifications();
+        }
+
+        public void RegisterDeviceToken(object NSDataDeviceToken)
+        {
+            iOS.Kumulos_Push.PushRegisterWithDeviceToken(thisRef, (NSData)NSDataDeviceToken);
+        }
+
         public void TrackEvent(string eventType, object properties)
         {
             throw new NotImplementedException();
+            //iOS.Kumulos_Analytics.TrackEvent(iOS.Kumulos, eventType, properties);
         }
 
         public void TrackEventImmediately(string eventType, object properties)
         {
-            throw new NotImplementedException();
-        }
+            iOS.Kumulos_Analytics.TrackEventImmediately(thisRef, eventType, (NSDictionary)properties);
+}
 
         public void LogException(Exception e)
         {
+
             throw new NotImplementedException();
         }
 
@@ -56,5 +83,7 @@ namespace Com.Kumulos
         {
             throw new NotImplementedException();
         }
+
+      
     }
 }

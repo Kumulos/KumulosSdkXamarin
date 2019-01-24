@@ -49,9 +49,9 @@ namespace Com.Kumulos
             specificConfig.SetSdkInfo(sdkInfo);
 
             var runtimeKeys = new object[] { "id", "version" };
-            var runtimeValues = new object[] { Consts.RUNTIME_TYPE, "2.0" };
-
-            var runtimeInfo = NSDictionary.FromObjectsAndKeys(sdkValues, sdkKeys);
+            var runtimeValues = new object[] { Consts.RUNTIME_TYPE, ObjCRuntime.Constants.Version };
+        
+            var runtimeInfo = NSDictionary.FromObjectsAndKeys(runtimeValues, runtimeKeys);
 
             specificConfig.SetRuntimeInfo(runtimeInfo);
 

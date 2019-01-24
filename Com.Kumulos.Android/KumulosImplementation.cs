@@ -26,7 +26,9 @@ namespace Com.Kumulos
 
         public void TrackEventImmediately(string eventType, object properties)
         {
-            throw new NotImplementedException();
+            Org.Json.JSONObject foo = new Org.Json.JSONObject();
+
+            Android.Kumulos.TrackEventImmediately(Application.Context.ApplicationContext, eventType, foo);
         }
 
         public void LogException(Exception e)
@@ -57,6 +59,16 @@ namespace Com.Kumulos
         public void TrackiBeaconProximity(string uuid, int major, int minor, int proximity)
         {
             throw new NotImplementedException();
+        }
+
+        public void RegisterForRemoteNotifications()
+        {
+            throw new NotImplementedException("This method does not need to be called on Android");
+        }
+
+        public void RegisterDeviceToken(object NSDataDeviceToken)
+        {
+            throw new NotImplementedException("This method does not need to be called on Android");
         }
     }
 }

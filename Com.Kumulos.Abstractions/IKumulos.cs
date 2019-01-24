@@ -7,6 +7,9 @@ namespace Com.Kumulos.Abstractions
 
         string GetInstallId();
 
+        void RegisterForRemoteNotifications();
+        void RegisterDeviceToken(object NSDataDeviceToken);
+
         void TrackEvent(string eventType, object properties);
         void TrackEventImmediately(string eventType, object properties);
         void LogException(Exception e);

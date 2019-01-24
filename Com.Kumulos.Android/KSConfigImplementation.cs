@@ -1,6 +1,8 @@
 ﻿using System;
+using Android.OS;
 using Com.Kumulos;
 using Com.Kumulos.Abstractions;
+using Org.Json;
 
 namespace Com.Kumulos
 {
@@ -9,13 +11,6 @@ namespace Com.Kumulos
         private string apiKey, secretKey;
         private bool enableCrashReporting;
         private int timeoutSeconds;
-
-        public KSConfigImplementation()
-        {
-
-        }
-
-
 
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
@@ -47,13 +42,19 @@ namespace Com.Kumulos
                 specificConfig.EnableCrashReporting();
             }
 
-            return specificConfig.Build();
-        }
+            JSONObject sdkInfo = new JSONObject();
+            sdkInfo.Put("id", Consts.SDK_TYPE);
+            sdkInfo.Put("version", "2.0");
 
-        private KSConfigImplementation(string apiKey, string secretKey)
-        {
-            this.apiKey = apiKey;
-            this.secretKey = secretKey;
+            specificConfig.SetSdkInfo(sdkInfo);
+
+            JSONObject runtimeInfo = new JSONObject();
+            runtimeInfo.Put("id", Consts.RUNTIME_TYPE);
+            runtimeInfo.Put("version", Build.VERSION.Release);
+
+            specificConfig.SetRuntimeInfo(runtimeInfo);
+
+            return specificConfig.Build();
         }
     }
 }
