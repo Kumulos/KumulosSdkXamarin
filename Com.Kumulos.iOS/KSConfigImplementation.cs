@@ -1,6 +1,4 @@
-﻿using System;
-using Com.Kumulos;
-using Com.Kumulos.Abstractions;
+﻿using Com.Kumulos.Abstractions;
 using Foundation;
 
 namespace Com.Kumulos
@@ -57,6 +55,15 @@ namespace Com.Kumulos
 
             return specificConfig;
         }
-             
+
+        public string GetApiKey()
+        {
+            return apiKey;
+        }
+
+        public string GetSecretKey()
+        {
+            return secretKey;
+        }
     }
 }

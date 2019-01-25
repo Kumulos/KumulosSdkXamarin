@@ -9,12 +9,22 @@ namespace Com.Kumulos
     public class KumulosImplementation : IKumulos
     {
         private iOS.Kumulos thisRef;
+        private Build buildRef;
+
+        public Build Build
+        {
+            get
+            {
+                return buildRef;
+            }
+        }
 
         public void Initialize(IKSConfig config)
         {
             var iosKSConfig = (KSConfigImplementation)config;
 
             thisRef = iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
+            buildRef = new Build(GetInstallId(), config.GetApiKey(), config.GetSecretKey());
         }
 
         public string GetInstallId()

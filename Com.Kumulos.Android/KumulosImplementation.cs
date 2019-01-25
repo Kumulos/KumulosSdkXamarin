@@ -7,11 +7,23 @@ namespace Com.Kumulos
 {
     public class KumulosImplementation : IKumulos
     {
+        private Build buildRef;
+
+        public Build Build
+        {
+            get
+            {
+                return buildRef;
+            }
+        }
+
         public void Initialize(IKSConfig config)
         {
             var androidConfig = (KSConfigImplementation)config;
 
             Android.Kumulos.Initialize((Application)Application.Context.ApplicationContext, androidConfig.GetConfig());
+
+            buildRef = new Build(GetInstallId(), config.GetApiKey(), config.GetSecretKey());
         }
 
         public string GetInstallId()

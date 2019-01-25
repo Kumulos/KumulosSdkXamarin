@@ -1,7 +1,4 @@
-﻿using System;
-using Android.OS;
-using Com.Kumulos;
-using Com.Kumulos.Abstractions;
+﻿using Android.OS;
 using Org.Json;
 
 namespace Com.Kumulos
@@ -12,7 +9,7 @@ namespace Com.Kumulos
         private bool enableCrashReporting;
         private int timeoutSeconds;
 
-        public IKSConfig AddKeys(string apiKey, string secretKey)
+        public Abstractions.IKSConfig AddKeys(string apiKey, string secretKey)
         {
             this.apiKey = apiKey;
             this.secretKey = secretKey;
@@ -20,13 +17,13 @@ namespace Com.Kumulos
             return this;
         }
 
-        public IKSConfig EnableCrashReporting()
+        public Abstractions.IKSConfig EnableCrashReporting()
         {
             enableCrashReporting = true;
             return this;
         }
 
-        public IKSConfig SetSessionIdleTimeout(int timeoutSeconds)
+        public Abstractions.IKSConfig SetSessionIdleTimeout(int timeoutSeconds)
         {
             this.timeoutSeconds = timeoutSeconds;
             return this;
@@ -43,18 +40,28 @@ namespace Com.Kumulos
             }
 
             JSONObject sdkInfo = new JSONObject();
-            sdkInfo.Put("id", Consts.SDK_TYPE);
+            sdkInfo.Put("id", Abstractions.Consts.SDK_TYPE);
             sdkInfo.Put("version", "2.0");
 
             specificConfig.SetSdkInfo(sdkInfo);
 
             JSONObject runtimeInfo = new JSONObject();
-            runtimeInfo.Put("id", Consts.RUNTIME_TYPE);
+            runtimeInfo.Put("id", Abstractions.Consts.RUNTIME_TYPE);
             runtimeInfo.Put("version", Build.VERSION.Release);
 
             specificConfig.SetRuntimeInfo(runtimeInfo);
 
             return specificConfig.Build();
+        }
+
+        public string GetApiKey()
+        {
+            return apiKey;
+        }
+
+        public string GetSecretKey()
+        {
+            return secretKey;
         }
     }
 }

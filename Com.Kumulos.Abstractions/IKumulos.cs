@@ -7,6 +7,8 @@ namespace Com.Kumulos.Abstractions
 
         string GetInstallId();
 
+        Build Build { get; }
+
         void RegisterForRemoteNotifications();
         void RegisterDeviceToken(object NSDataDeviceToken);
         void TrackNotificationOpen(object NSDictionaryInfo);

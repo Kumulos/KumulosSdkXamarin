@@ -7,8 +7,7 @@ namespace Com.Kumulos.Abstractions
         IKSConfig EnableCrashReporting();
         IKSConfig SetSessionIdleTimeout(int timeoutSeconds);
 
-  /*IKSConfig SetRuntimeInfo(NSDictionary info);
-        IKSConfig SetSdkInfo(NSDictionary info);
-        IKSConfig SetTargetType(KSTargetType type);*/
+        string GetApiKey();
+        string GetSecretKey();
     }
 }
