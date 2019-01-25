@@ -4,6 +4,7 @@ using Android.App;
 using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Collections.Generic;
+using Org.Json;
 
 namespace Com.Kumulos
 {
@@ -28,13 +29,16 @@ namespace Com.Kumulos
             )));
 
 
-            Build = new Build(GetInstallId(), httpClient, config.GetApiKey());
-            PushChannels = new PushChannels(GetInstallId(), httpClient);
+            Build = new Build(InstallId, httpClient, config.GetApiKey());
+            PushChannels = new PushChannels(InstallId, httpClient);
         }
 
-        public string GetInstallId()
+        public string InstallId
         {
-            return Android.Installation.Id(Application.Context.ApplicationContext);
+            get
+            {
+                return Android.Installation.Id(Application.Context.ApplicationContext);
+            }
         }
 
         public void RegisterForRemoteNotifications()
@@ -55,12 +59,14 @@ namespace Com.Kumulos
 
         public void TrackEvent(string eventType, Dictionary<string, string> properties)
         {
-            throw new NotImplementedException();
+            JSONObject props = new JSONObject(properties);
+            Android.Kumulos.TrackEvent(Application.Context.ApplicationContext, eventType, props);
         }
 
         public void TrackEventImmediately(string eventType, Dictionary<string, string> properties)
         {
-            throw new NotImplementedException();
+            JSONObject props = new JSONObject(properties);
+            Android.Kumulos.TrackEventImmediately(Application.Context.ApplicationContext, eventType, props);
         }
 
         public void LogException(Exception e)
@@ -80,12 +86,14 @@ namespace Com.Kumulos
 
         public void AssociateUserWithInstall(string userIdentifier)
         {
-            throw new NotImplementedException();
+            Android.Kumulos.AssociateUserWithInstall(Application.Context.ApplicationContext, userIdentifier);
         }
 
         public void AssociateUserWithInstall(string userIdentifier, Dictionary<string, string> attributes)
         {
-            throw new NotImplementedException();
+            JSONObject attr = new JSONObject(attributes);
+
+            Android.Kumulos.AssociateUserWithInstall(Application.Context.ApplicationContext, userIdentifier, attr);
         }
 
         public void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, int? distanceMetres)

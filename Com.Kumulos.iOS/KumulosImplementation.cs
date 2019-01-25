@@ -34,13 +34,16 @@ namespace Com.Kumulos
             )));
 
 
-            Build = new Build(GetInstallId(), httpClient, config.GetApiKey());
-            PushChannels = new PushChannels(GetInstallId(), httpClient);
+            Build = new Build(InstallId, httpClient, config.GetApiKey());
+            PushChannels = new PushChannels(InstallId, httpClient);
         }
 
-        public string GetInstallId()
+        public string InstallId
         {
-            return iOS.Kumulos.InstallId;
+            get
+            {
+                return iOS.Kumulos.InstallId;
+            }
         }
 
         public void RegisterForRemoteNotifications()
