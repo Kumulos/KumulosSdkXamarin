@@ -8,24 +8,9 @@ namespace Com.Kumulos
 {
     public class KumulosImplementation : IKumulos
     {
-        private Build buildRef;
-        private PushChannels channelsRef;
+        public Build Build { get; private set; }
 
-        public Build Build
-        {
-            get
-            {
-                return buildRef;
-            }
-        }
-
-        public PushChannels PushChannels
-        {
-            get
-            {
-                return channelsRef;
-            }
-        }
+        public PushChannels PushChannels { get; private set; }
 
         public void Initialize(IKSConfig config)
         {
@@ -42,8 +27,8 @@ namespace Com.Kumulos
             )));
 
 
-            buildRef = new Build(GetInstallId(), httpClient, config.GetApiKey());
-            channelsRef = new PushChannels(GetInstallId(), httpClient);
+            Build = new Build(GetInstallId(), httpClient, config.GetApiKey());
+            PushChannels = new PushChannels(GetInstallId(), httpClient);
         }
 
         public string GetInstallId()

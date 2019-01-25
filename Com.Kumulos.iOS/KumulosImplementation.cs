@@ -11,24 +11,10 @@ namespace Com.Kumulos
     public class KumulosImplementation : IKumulos
     {
         private iOS.Kumulos thisRef;
-        private Build buildRef;
-        private PushChannels channelsRef;
 
-        public Build Build
-        {
-            get
-            {
-                return buildRef;
-            }
-        }
+        public Build Build { get; private set; }
 
-        public PushChannels PushChannels
-        {
-            get
-            {
-                return channelsRef;
-            }
-        }
+        public PushChannels PushChannels { get; private set; }
 
         public void Initialize(IKSConfig config)
         {
@@ -45,8 +31,8 @@ namespace Com.Kumulos
             )));
 
 
-            buildRef = new Build(GetInstallId(), httpClient, config.GetApiKey());
-            channelsRef = new PushChannels(GetInstallId(), httpClient);
+            Build = new Build(GetInstallId(), httpClient, config.GetApiKey());
+            PushChannels = new PushChannels(GetInstallId(), httpClient);
         }
 
         public string GetInstallId()
@@ -81,8 +67,7 @@ namespace Com.Kumulos
 
         public void TrackEvent(string eventType, object properties)
         {
-            throw new NotImplementedException();
-            //iOS.Kumulos_Analytics.TrackEvent(iOS.Kumulos, eventType, properties);
+            iOS.Kumulos_Analytics.TrackEvent(thisRef, eventType, (NSDictionary)properties);
         }
 
         public void TrackEventImmediately(string eventType, object properties)
