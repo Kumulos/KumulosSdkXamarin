@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Com.Kumulos.Abstractions
 {
     public interface IKumulos
@@ -14,13 +16,14 @@ namespace Com.Kumulos.Abstractions
         void RegisterDeviceToken(object NSDataDeviceToken);
         void TrackNotificationOpen(object NSDictionaryInfo);
 
-        void TrackEvent(string eventType, object properties);
-        void TrackEventImmediately(string eventType, object properties);
+        void TrackEvent(string eventType, Dictionary<string, string> properties);
+        void TrackEventImmediately(string eventType, Dictionary<string, string> properties);
         void LogException(Exception e);
         void LogUncaughtException(Exception e);
         void SendLocationUpdate(decimal lat, decimal lng);
-        void AssociateUserWithInstall(string userIdentifier, object attributes);
+        void AssociateUserWithInstall(string userIdentifier);
+        void AssociateUserWithInstall(string userIdentifier, Dictionary<string, string> attributes);
         void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, int? distanceMetres);
-        void TrackiBeaconProximity(string uuid, int major, int minor, int proximity);
+        void TrackiBeaconProximity(object CLBeaconObject);
     }
 }

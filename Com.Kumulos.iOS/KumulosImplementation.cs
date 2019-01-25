@@ -5,6 +5,9 @@ using UIKit;
 using UserNotifications;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using CoreLocation;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Com.Kumulos
 {
@@ -65,19 +68,22 @@ namespace Com.Kumulos
             iOS.Kumulos_Push.PushTrackOpenFromNotification(thisRef, (NSDictionary)NSDictionaryInfo);
         }
 
-        public void TrackEvent(string eventType, object properties)
+        public void TrackEvent(string eventType, Dictionary<string, string> properties)
         {
-            iOS.Kumulos_Analytics.TrackEvent(thisRef, eventType, (NSDictionary)properties);
+            var nsDict = NSDictionary.FromObjectsAndKeys(properties.Values.ToArray(), properties.Keys.ToArray());
+
+            iOS.Kumulos_Analytics.TrackEvent(thisRef, eventType, nsDict);
         }
 
-        public void TrackEventImmediately(string eventType, object properties)
+        public void TrackEventImmediately(string eventType, Dictionary<string, string> properties)
         {
-            iOS.Kumulos_Analytics.TrackEventImmediately(thisRef, eventType, (NSDictionary)properties);
+            var nsDict = NSDictionary.FromObjectsAndKeys(properties.Values.ToArray(), properties.Keys.ToArray());
+
+            iOS.Kumulos_Analytics.TrackEventImmediately(thisRef, eventType, nsDict);
         }
 
         public void LogException(Exception e)
         {
-
             throw new NotImplementedException();
         }
 
@@ -86,26 +92,36 @@ namespace Com.Kumulos
             throw new NotImplementedException();
         }
 
-        public void SendLocationUpdate(decimal lat, decimal lng)
+        public void SendLocationUpdate(object locationObject)
         {
-            throw new NotImplementedException();
+            iOS.Kumulos_Location.SendLocationUpdate(thisRef, (CLLocation)locationObject);
         }
 
-        public void AssociateUserWithInstall(string userIdentifier, object attributes)
+        public void AssociateUserWithInstall(string userIdentifier)
         {
-            throw new NotImplementedException();
+            iOS.Kumulos_Analytics.AssociateUserWithInstall(thisRef, userIdentifier);
+        }
+
+        public void AssociateUserWithInstall(string userIdentifier, Dictionary<string, string> attributes)
+        {
+            var nsDict = NSDictionary.FromObjectsAndKeys(attributes.Values.ToArray(), attributes.Keys.ToArray());
+
+            iOS.Kumulos_Analytics.AssociateUserWithInstall(thisRef, userIdentifier, nsDict);
         }
 
         public void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, int? distanceMetres)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("This method should not be called on iOS");
         }
 
-        public void TrackiBeaconProximity(string uuid, int major, int minor, int proximity)
+        public void TrackiBeaconProximity(object CLBeaconObject)
+        {
+            iOS.Kumulos_Location.SendiBeaconProximity(thisRef, (CLBeacon)CLBeaconObject);
+        }
+
+        public void SendLocationUpdate(decimal lat, decimal lng)
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

@@ -3,6 +3,7 @@ using Com.Kumulos.Abstractions;
 using Android.App;
 using System.Net.Http.Headers;
 using System.Net.Http;
+using System.Collections.Generic;
 
 namespace Com.Kumulos
 {
@@ -36,16 +37,30 @@ namespace Com.Kumulos
             return Android.Installation.Id(Application.Context.ApplicationContext);
         }
 
-        public void TrackEvent(string eventType, object properties)
+        public void RegisterForRemoteNotifications()
+        {
+            throw new NotImplementedException("This method does not need to be called on Android");
+
+        }
+
+        public void RegisterDeviceToken(object NSDataDeviceToken)
+        {
+            throw new NotImplementedException("This method does not need to be called on Android");
+        }
+
+        public void TrackNotificationOpen(object NSDictionaryInfo)
         {
             throw new NotImplementedException();
         }
 
-        public void TrackEventImmediately(string eventType, object properties)
+        public void TrackEvent(string eventType, Dictionary<string, string> properties)
         {
-            Org.Json.JSONObject foo = new Org.Json.JSONObject();
+            throw new NotImplementedException();
+        }
 
-            Android.Kumulos.TrackEventImmediately(Application.Context.ApplicationContext, eventType, foo);
+        public void TrackEventImmediately(string eventType, Dictionary<string, string> properties)
+        {
+            throw new NotImplementedException();
         }
 
         public void LogException(Exception e)
@@ -63,7 +78,12 @@ namespace Com.Kumulos
             throw new NotImplementedException();
         }
 
-        public void AssociateUserWithInstall(string userIdentifier, object attributes)
+        public void AssociateUserWithInstall(string userIdentifier)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AssociateUserWithInstall(string userIdentifier, Dictionary<string, string> attributes)
         {
             throw new NotImplementedException();
         }
@@ -73,24 +93,9 @@ namespace Com.Kumulos
             throw new NotImplementedException();
         }
 
-        public void TrackiBeaconProximity(string uuid, int major, int minor, int proximity)
+        public void TrackiBeaconProximity(object CLBeaconObject)
         {
-            throw new NotImplementedException();
-        }
-
-        public void RegisterForRemoteNotifications()
-        {
-            throw new NotImplementedException("This method does not need to be called on Android");
-        }
-
-        public void RegisterDeviceToken(object NSDataDeviceToken)
-        {
-            throw new NotImplementedException("This method does not need to be called on Android");
-        }
-
-        public void TrackNotificationOpen(object NSDictionaryInfo)
-        {
-            throw new NotImplementedException("This method does not need to be called on Android");
+            throw new NotImplementedException("This method should not be called on Android");
         }
     }
 }
