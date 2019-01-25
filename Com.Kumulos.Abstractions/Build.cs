@@ -17,21 +17,15 @@ namespace Com.Kumulos.Abstractions
 
         private string sessionToken = Guid.NewGuid().ToString();
 
-        public Build(string installId, string apiKey, string secretKey)
+        public Build(string installId, HttpClient httpClient, string apiKey)
         {
             this.installId = installId;
+            this.httpClient = httpClient;
             this.apiKey = apiKey;
-
-            httpClient.MaxResponseContentBufferSize = 256000;
-
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
-                System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", apiKey, secretKey)
-            )));
         }
 
         public async Task<ApiResponse> CallAPI(string methodName, List<KeyValuePair<string, string>> parameters)
         {
-
             ApiResponse response = new ApiResponse();
             var result = await MakeRPCApiCallAsync(methodName, parameters);
 

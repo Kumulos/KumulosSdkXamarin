@@ -1,13 +1,15 @@
 ﻿using System;
 using Com.Kumulos.Abstractions;
-using Android.Content;
 using Android.App;
+using System.Net.Http.Headers;
+using System.Net.Http;
 
 namespace Com.Kumulos
 {
     public class KumulosImplementation : IKumulos
     {
         private Build buildRef;
+        private PushChannels channelsRef;
 
         public Build Build
         {
@@ -17,13 +19,31 @@ namespace Com.Kumulos
             }
         }
 
+        public PushChannels PushChannels
+        {
+            get
+            {
+                return channelsRef;
+            }
+        }
+
         public void Initialize(IKSConfig config)
         {
             var androidConfig = (KSConfigImplementation)config;
 
             Android.Kumulos.Initialize((Application)Application.Context.ApplicationContext, androidConfig.GetConfig());
 
-            buildRef = new Build(GetInstallId(), config.GetApiKey(), config.GetSecretKey());
+            var httpClient = new HttpClient();
+
+            httpClient.MaxResponseContentBufferSize = 256000;
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
+                System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", config.GetApiKey(), config.GetSecretKey())
+            )));
+
+
+            buildRef = new Build(GetInstallId(), httpClient, config.GetApiKey());
+            channelsRef = new PushChannels(GetInstallId(), httpClient);
         }
 
         public string GetInstallId()

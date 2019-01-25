@@ -3,6 +3,8 @@ using Com.Kumulos.Abstractions;
 using Foundation;
 using UIKit;
 using UserNotifications;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Com.Kumulos
 {
@@ -10,6 +12,7 @@ namespace Com.Kumulos
     {
         private iOS.Kumulos thisRef;
         private Build buildRef;
+        private PushChannels channelsRef;
 
         public Build Build
         {
@@ -19,12 +22,31 @@ namespace Com.Kumulos
             }
         }
 
+        public PushChannels PushChannels
+        {
+            get
+            {
+                return channelsRef;
+            }
+        }
+
         public void Initialize(IKSConfig config)
         {
             var iosKSConfig = (KSConfigImplementation)config;
 
             thisRef = iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
-            buildRef = new Build(GetInstallId(), config.GetApiKey(), config.GetSecretKey());
+
+            var httpClient = new HttpClient(); 
+            
+            httpClient.MaxResponseContentBufferSize = 256000;
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
+                System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", config.GetApiKey(), config.GetSecretKey())
+            )));
+
+
+            buildRef = new Build(GetInstallId(), httpClient, config.GetApiKey());
+            channelsRef = new PushChannels(GetInstallId(), httpClient);
         }
 
         public string GetInstallId()

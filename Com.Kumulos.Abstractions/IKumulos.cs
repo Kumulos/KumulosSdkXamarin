@@ -8,6 +8,7 @@ namespace Com.Kumulos.Abstractions
         string GetInstallId();
 
         Build Build { get; }
+        PushChannels PushChannels {get;}
 
         void RegisterForRemoteNotifications();
         void RegisterDeviceToken(object NSDataDeviceToken);

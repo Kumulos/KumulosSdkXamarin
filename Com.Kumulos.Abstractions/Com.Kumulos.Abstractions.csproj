@@ -33,6 +33,7 @@
     <Compile Include="Consts.cs" />
     <Compile Include="Build.cs" />
     <Compile Include="ApiResponse.cs" />
+    <Compile Include="PushChannels.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
