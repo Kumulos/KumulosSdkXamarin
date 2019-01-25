@@ -22,8 +22,8 @@ namespace Com.Kumulos
 
             thisRef = iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
 
-            var httpClient = new HttpClient(); 
-            
+            var httpClient = new HttpClient();
+
             httpClient.MaxResponseContentBufferSize = 256000;
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
@@ -41,7 +41,7 @@ namespace Com.Kumulos
         }
 
         public void RegisterForRemoteNotifications()
-        { 
+        {
             var center = UNUserNotificationCenter.Current;
             center.RequestAuthorization(
                 UNAuthorizationOptions.Badge |
@@ -73,7 +73,7 @@ namespace Com.Kumulos
         public void TrackEventImmediately(string eventType, object properties)
         {
             iOS.Kumulos_Analytics.TrackEventImmediately(thisRef, eventType, (NSDictionary)properties);
-}
+        }
 
         public void LogException(Exception e)
         {
