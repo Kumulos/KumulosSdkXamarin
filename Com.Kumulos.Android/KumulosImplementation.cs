@@ -79,7 +79,7 @@ namespace Com.Kumulos
             throw new NotImplementedException();
         }
 
-        public void SendLocationUpdate(decimal lat, decimal lng)
+        public void SendLocationUpdate(double lat, double lng)
         {
             throw new NotImplementedException();
         }

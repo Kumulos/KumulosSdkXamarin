@@ -95,9 +95,11 @@ namespace Com.Kumulos
             throw new NotImplementedException();
         }
 
-        public void SendLocationUpdate(object locationObject)
+        public void SendLocationUpdate(double lat, double lng)
         {
-            iOS.Kumulos_Location.SendLocationUpdate(thisRef, (CLLocation)locationObject);
+            CLLocation cl = new CLLocation(lat, lng);
+
+            iOS.Kumulos_Location.SendLocationUpdate(thisRef, cl);
         }
 
         public void AssociateUserWithInstall(string userIdentifier)
@@ -122,9 +124,6 @@ namespace Com.Kumulos
             iOS.Kumulos_Location.SendiBeaconProximity(thisRef, (CLBeacon)CLBeaconObject);
         }
 
-        public void SendLocationUpdate(decimal lat, decimal lng)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

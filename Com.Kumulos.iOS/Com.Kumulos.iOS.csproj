@@ -61,6 +61,8 @@
     </Compile>
 
     <Compile Include="UserNotificationCenterDelegate.cs" />
+    <Compile Include="LocationManager.cs" />
+    <Compile Include="LocationUpdateEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kumulos.iOS.Binding\Kumulos.iOS.Binding.csproj">
