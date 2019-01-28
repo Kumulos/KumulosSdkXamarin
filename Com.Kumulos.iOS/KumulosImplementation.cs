@@ -66,9 +66,9 @@ namespace Com.Kumulos
             iOS.Kumulos_Push.PushRegisterWithDeviceToken(thisRef, (NSData)NSDataDeviceToken);
         }
 
-        public void TrackNotificationOpen(object NSDictionaryInfo)
+        public void TrackNotificationOpen(object NSDictionaryUserInfo)
         {
-            iOS.Kumulos_Push.PushTrackOpenFromNotification(thisRef, (NSDictionary)NSDictionaryInfo);
+            iOS.Kumulos_Push.PushTrackOpenFromNotification(thisRef, (NSDictionary)NSDictionaryUserInfo);
         }
 
         public void TrackEvent(string eventType, Dictionary<string, string> properties)
@@ -123,7 +123,5 @@ namespace Com.Kumulos
         {
             iOS.Kumulos_Location.SendiBeaconProximity(thisRef, (CLBeacon)CLBeaconObject);
         }
-
-
     }
 }

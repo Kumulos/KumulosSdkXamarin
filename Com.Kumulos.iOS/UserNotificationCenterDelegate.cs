@@ -36,8 +36,8 @@ namespace Com.Kumulos
 
         public override void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
         {
-            NSDictionary custom = (NSDictionary)response.Notification.Request.Content.UserInfo["custom"];
-            sdkRef.TrackNotificationOpen(custom);
+            NSDictionary userInfo = response.Notification.Request.Content.UserInfo;
+            sdkRef.TrackNotificationOpen(userInfo);
         }
     }
 }
