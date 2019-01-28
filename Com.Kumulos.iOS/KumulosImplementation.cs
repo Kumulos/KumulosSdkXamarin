@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using CoreLocation;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Com.Kumulos
 {
@@ -36,7 +37,7 @@ namespace Com.Kumulos
 
             Build = new Build(InstallId, httpClient, config.GetApiKey());
             PushChannels = new PushChannels(InstallId, httpClient);
-        }
+}
 
         public string InstallId
         {
@@ -71,14 +72,14 @@ namespace Com.Kumulos
             iOS.Kumulos_Push.PushTrackOpenFromNotification(thisRef, (NSDictionary)NSDictionaryUserInfo);
         }
 
-        public void TrackEvent(string eventType, Dictionary<string, string> properties)
+        public void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
             var nsDict = NSDictionary.FromObjectsAndKeys(properties.Values.ToArray(), properties.Keys.ToArray());
 
             iOS.Kumulos_Analytics.TrackEvent(thisRef, eventType, nsDict);
         }
 
-        public void TrackEventImmediately(string eventType, Dictionary<string, string> properties)
+        public void TrackEventImmediately(string eventType, Dictionary<string, object> properties)
         {
             var nsDict = NSDictionary.FromObjectsAndKeys(properties.Values.ToArray(), properties.Keys.ToArray());
 
@@ -87,12 +88,30 @@ namespace Com.Kumulos
 
         public void LogException(Exception e)
         {
-            throw new NotImplementedException();
+            var st = new StackTrace(e, true);
+            var frame = st.GetFrame(0);
+            var line = frame.GetFileLineNumber();
+
+            var dict = Crash.GetDictionaryForExceptionTracking(e, false);
+
+            var report = (Dictionary<string, object>)dict["report"];
+            report.Add("lineNumber", line);
+
+            TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
         }
 
         public void LogUncaughtException(Exception e)
         {
-            throw new NotImplementedException();
+            var dict = Crash.GetDictionaryForExceptionTracking(e, true);
+
+            var st = new StackTrace(e, true);
+            var frame = st.GetFrame(0);
+            var line = frame.GetFileLineNumber();
+
+            var report = (Dictionary<string, object>)dict["report"];
+            report.Add("lineNumber", line);
+
+            TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
         }
 
         public void SendLocationUpdate(double lat, double lng)
@@ -107,7 +126,7 @@ namespace Com.Kumulos
             iOS.Kumulos_Analytics.AssociateUserWithInstall(thisRef, userIdentifier);
         }
 
-        public void AssociateUserWithInstall(string userIdentifier, Dictionary<string, string> attributes)
+        public void AssociateUserWithInstall(string userIdentifier, Dictionary<string, object> attributes)
         {
             var nsDict = NSDictionary.FromObjectsAndKeys(attributes.Values.ToArray(), attributes.Keys.ToArray());
 

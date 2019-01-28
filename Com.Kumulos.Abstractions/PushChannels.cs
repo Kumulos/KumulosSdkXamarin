@@ -15,6 +15,7 @@ namespace Com.Kumulos.Abstractions
 
         public PushChannels(string installId, HttpClient httpClient)
         {
+            this.installId = installId;
             this.httpClient = httpClient;
         }
 

@@ -10,9 +10,13 @@ namespace Com.Kumulos
 {
     public class KumulosImplementation : IKumulos
     {
+
+
         public Build Build { get; private set; }
 
         public PushChannels PushChannels { get; private set; }
+
+        public Crash Crash => throw new NotImplementedException();
 
         public void Initialize(IKSConfig config)
         {
@@ -52,21 +56,41 @@ namespace Com.Kumulos
             throw new NotImplementedException("This method does not need to be called on Android");
         }
 
-        public void TrackNotificationOpen(object NSDictionaryInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void TrackEvent(string eventType, Dictionary<string, string> properties)
+        public void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
             JSONObject props = new JSONObject(properties);
             Android.Kumulos.TrackEvent(Application.Context.ApplicationContext, eventType, props);
         }
 
-        public void TrackEventImmediately(string eventType, Dictionary<string, string> properties)
+        public void TrackEventImmediately(string eventType, Dictionary<string, object> properties)
         {
             JSONObject props = new JSONObject(properties);
             Android.Kumulos.TrackEventImmediately(Application.Context.ApplicationContext, eventType, props);
+        }
+
+
+        public void AssociateUserWithInstall(string userIdentifier)
+        {
+            Android.Kumulos.AssociateUserWithInstall(Application.Context.ApplicationContext, userIdentifier);
+        }
+
+        public void AssociateUserWithInstall(string userIdentifier, Dictionary<string, object> attributes)
+        {
+            JSONObject attr = new JSONObject(attributes);
+
+            Android.Kumulos.AssociateUserWithInstall(Application.Context.ApplicationContext, userIdentifier, attr);
+        }
+
+
+
+        public void TrackiBeaconProximity(object CLBeaconObject)
+        {
+            throw new NotImplementedException("This method should not be called on Android");
+        }
+
+        public void TrackNotificationOpen(object NSDictionaryInfo)
+        {
+            throw new NotImplementedException();
         }
 
         public void LogException(Exception e)
@@ -84,26 +108,9 @@ namespace Com.Kumulos
             throw new NotImplementedException();
         }
 
-        public void AssociateUserWithInstall(string userIdentifier)
-        {
-            Android.Kumulos.AssociateUserWithInstall(Application.Context.ApplicationContext, userIdentifier);
-        }
-
-        public void AssociateUserWithInstall(string userIdentifier, Dictionary<string, string> attributes)
-        {
-            JSONObject attr = new JSONObject(attributes);
-
-            Android.Kumulos.AssociateUserWithInstall(Application.Context.ApplicationContext, userIdentifier, attr);
-        }
-
         public void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, int? distanceMetres)
         {
             throw new NotImplementedException();
-        }
-
-        public void TrackiBeaconProximity(object CLBeaconObject)
-        {
-            throw new NotImplementedException("This method should not be called on Android");
         }
     }
 }

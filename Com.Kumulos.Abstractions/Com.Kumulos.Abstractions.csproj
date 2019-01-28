@@ -34,6 +34,7 @@
     <Compile Include="Build.cs" />
     <Compile Include="ApiResponse.cs" />
     <Compile Include="PushChannels.cs" />
+    <Compile Include="Crash.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

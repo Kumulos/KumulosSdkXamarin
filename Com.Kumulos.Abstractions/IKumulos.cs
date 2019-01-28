@@ -16,8 +16,8 @@ namespace Com.Kumulos.Abstractions
         void RegisterDeviceToken(object NSDataDeviceToken);
         void TrackNotificationOpen(object NSDictionaryInfo);
 
-        void TrackEvent(string eventType, Dictionary<string, string> properties);
-        void TrackEventImmediately(string eventType, Dictionary<string, string> properties);
+        void TrackEvent(string eventType, Dictionary<string, object> properties);
+        void TrackEventImmediately(string eventType, Dictionary<string, object> properties);
 
         void LogException(Exception e);
         void LogUncaughtException(Exception e);
@@ -25,7 +25,7 @@ namespace Com.Kumulos.Abstractions
         void SendLocationUpdate(double lat, double lng);
 
         void AssociateUserWithInstall(string userIdentifier);
-        void AssociateUserWithInstall(string userIdentifier, Dictionary<string, string> attributes);
+        void AssociateUserWithInstall(string userIdentifier, Dictionary<string, object> attributes);
 
         void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, int? distanceMetres);
         void TrackiBeaconProximity(object CLBeaconObject);
