@@ -124,11 +124,6 @@ namespace Com.Kumulos
             iOS.Kumulos_Analytics.AssociateUserWithInstall(thisRef, userIdentifier, nsDict);
         }
 
-        public void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, int? distanceMetres)
-        {
-            throw new NotImplementedException("This method should not be called on iOS");
-        }
-
         public void TrackiBeaconProximity(object CLBeaconObject)
         {
             iOS.Kumulos_Location.SendiBeaconProximity(thisRef, (CLBeacon)CLBeaconObject);
@@ -237,6 +232,11 @@ namespace Com.Kumulos
             }
 
             return nsDict;
+        }
+
+        public void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, double distanceMetres)
+        {
+            throw new NotImplementedException("This method should not be called on iOS");
         }
     }
 }

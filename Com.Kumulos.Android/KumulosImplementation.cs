@@ -108,9 +108,10 @@ namespace Com.Kumulos
             throw new NotImplementedException();
         }
 
-        public void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, int? distanceMetres)
+        public void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, double distanceMetres)
         {
-            throw new NotImplementedException();
+            Java.Lang.Double dblDistance = new Java.Lang.Double(distanceMetres);
+            Android.Kumulos.TrackEddystoneBeaconProximity(Application.Context.ApplicationContext, namespaceHex, instanceHex, dblDistance);
         }
     }
 }
