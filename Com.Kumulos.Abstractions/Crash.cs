@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Xamarin.Essentials;
 
 namespace Com.Kumulos.Abstractions
 {
     public class Crash
     {
-
-
         public static Dictionary<string, object> GetDictionaryForExceptionTracking(Exception e, bool uncaught)
         {
-
-
-
             Dictionary<string, object> dict = new Dictionary<string, object>();
 
             dict.Add("format", Consts.CRASH_REPORT_FORMAT);
@@ -28,5 +22,7 @@ namespace Com.Kumulos.Abstractions
 
             return dict;
         }
-}
+
+
+    }
 }
