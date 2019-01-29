@@ -93,9 +93,8 @@
       <Link>Kumulos.cs</Link>
     </Compile>
     <Compile Include="GcmListenerIntentService.cs" />
-    <Compile Include="GcmRegistrationIntentService.cs" />
-    <Compile Include="PushBroadcastReceiver.cs" />
-    <Compile Include="PushMessage.cs" />
+    <Compile Include="PushBroadcastReceiverImplementation.cs" />
+    <Compile Include="PushMessageImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

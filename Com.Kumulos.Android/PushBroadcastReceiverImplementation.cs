@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace Com.Kumulos.Android
 {
-    public class PushBroadcastReceiver : BroadcastReceiver
+    public class PushBroadcastReceiverImplementation : BroadcastReceiver
     {
         public const string TAG = "com.kumulos.push.PUSH_BROADCAST_RECEIVER";
 
@@ -29,7 +29,7 @@ namespace Com.Kumulos.Android
                 return;
             }
 
-            PushMessage pushMessage = JsonConvert.DeserializeObject<PushMessage>(intent.GetStringExtra(PushMessage.EXTRAS_KEY));
+            PushMessageImplementation pushMessage = JsonConvert.DeserializeObject<PushMessageImplementation>(intent.GetStringExtra(PushMessageImplementation.EXTRAS_KEY));
 
             switch (action)
             {
@@ -49,7 +49,7 @@ namespace Com.Kumulos.Android
          * @param pushMessage
          * @see PushBroadcastReceiver#buildNotification(Context, PushMessage) for customization
          */
-        protected virtual void OnPushReceived(Context context, PushMessage pushMessage)
+        protected virtual void OnPushReceived(Context context, PushMessageImplementation pushMessage)
         {
             Log.Info(TAG, "Push received");
 
@@ -98,11 +98,11 @@ namespace Com.Kumulos.Android
          * @param pushMessage
          * @see PushBroadcastReceiver#getPushOpenActivityIntent(Context, PushMessage) for customization
          */
-        protected void OnPushOpened(Context context, PushMessage pushMessage)
+        protected void OnPushOpened(Context context, PushMessageImplementation pushMessage)
         {
             Log.Info(TAG, "Push opened");
 
-            KumulosSDK.Push.TrackPushOpen(pushMessage.Id);
+            //KumulosSDK.Push.TrackPushOpen(pushMessage.Id);
 
             Intent launchIntent = GetPushOpenActivityIntent(context, pushMessage);
 
@@ -119,10 +119,10 @@ namespace Com.Kumulos.Android
                 return;
             }
 
-            if (null != pushMessage.GetUri())
-            {
-                launchIntent = new Intent(Intent.ActionView, pushMessage.GetUri());
-            }
+            //if (null != pushMessage.GetUri())
+            //{
+            //    launchIntent = new Intent(Intent.ActionView, pushMessage.GetUri());
+            //}
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
             {
@@ -150,10 +150,10 @@ namespace Com.Kumulos.Android
          * @return
          * @see Kumulos#pushTrackOpen(String) for correctly tracking conversions if you customize the content intent
          */
-        protected virtual Notification BuildNotification(Context context, PushMessage pushMessage)
+        protected virtual Notification BuildNotification(Context context, PushMessageImplementation pushMessage)
         {
             Intent openIntent = new Intent(ACTION_PUSH_OPENED);
-            openIntent.PutExtra(PushMessage.EXTRAS_KEY, JsonConvert.SerializeObject(pushMessage));
+            openIntent.PutExtra(PushMessageImplementation.EXTRAS_KEY, JsonConvert.SerializeObject(pushMessage));
             openIntent.SetPackage(context.PackageName);
 
             PendingIntent pendingOpenIntent = PendingIntent.GetBroadcast(
@@ -195,7 +195,9 @@ namespace Com.Kumulos.Android
                 .SetAutoCancel(true)
                 .SetContentIntent(pendingOpenIntent);
 
-            if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.JellyBean)
+
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
             {
                 return notificationBuilder.Build();
             }
@@ -214,12 +216,12 @@ namespace Com.Kumulos.Android
          * @param pushMessage
          * @return
          */
-        protected virtual Intent GetPushOpenActivityIntent(Context context, PushMessage pushMessage)
+        protected virtual Intent GetPushOpenActivityIntent(Context context, PushMessageImplementation pushMessage)
         {
             Intent launchIntent = context.PackageManager.GetLaunchIntentForPackage(context.PackageName);
             if (null == launchIntent) { return null; }
 
-            launchIntent.PutExtra(PushMessage.EXTRAS_KEY, JsonConvert.SerializeObject(pushMessage));
+            launchIntent.PutExtra(PushMessageImplementation.EXTRAS_KEY, JsonConvert.SerializeObject(pushMessage));
             return launchIntent;
         }
 
@@ -234,7 +236,7 @@ namespace Com.Kumulos.Android
          * @param pushMessage
          * @return
          */
-        protected virtual Intent GetBackgroundPushServiceIntent(Context context, PushMessage pushMessage)
+        protected virtual Intent GetBackgroundPushServiceIntent(Context context, PushMessageImplementation pushMessage)
         {
             return null;
         }

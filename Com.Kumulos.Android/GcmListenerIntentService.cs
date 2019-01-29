@@ -53,7 +53,7 @@ namespace Com.Kumulos.Android
             string bgn = data.GetString("bgn");
             bool isBackground = (null != bgn && bgn.Equals("1"));
 
-            var pushMessage = new PushMessage
+            var pushMessage = new PushMessageImplementation
             {
                 Id = id,
                 Title = data.GetString("title"),
@@ -64,12 +64,12 @@ namespace Com.Kumulos.Android
                 Data = customData
             };
 
-            Intent intent = new Intent(PushBroadcastReceiver.ACTION_PUSH_RECEIVED);
+            Intent intent = new Intent(PushBroadcastReceiverImplementation.ACTION_PUSH_RECEIVED);
 
             intent.SetPackage(PackageName);
 
             string payload = JsonConvert.SerializeObject(pushMessage);
-            intent.PutExtra(PushMessage.EXTRAS_KEY, payload);
+            intent.PutExtra(PushMessageImplementation.EXTRAS_KEY, payload);
 
             SendBroadcast(intent);
         }

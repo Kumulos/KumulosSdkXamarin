@@ -58,6 +58,22 @@ namespace Com.Kumulos
             }
         }
 
+        public void RegisterForRemoteNotifications()
+        {
+            Android.Kumulos.PushRegister(Application.Context.ApplicationContext);
+        }
+
+        public void RegisterDeviceToken(object NSDataDeviceToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TrackNotificationOpen(object NSDictionaryInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
             JSONObject props = new JSONObject(properties);
@@ -177,22 +193,7 @@ namespace Com.Kumulos
 
             File.Delete(filename);
         }
-
-        public void RegisterForRemoteNotifications()
-        {
-            throw new NotImplementedException("This method does not need to be called on Android");
-        }
-
-        public void RegisterDeviceToken(object NSDataDeviceToken)
-        {
-            throw new NotImplementedException("This method does not need to be called on Android");
-        }
-
-        public void TrackNotificationOpen(object NSDictionaryInfo)
-        {
-            throw new NotImplementedException();
-        }
-
+              
         public void TrackiBeaconProximity(object CLBeaconObject)
         {
             throw new NotImplementedException("This method should not be called on Android");
