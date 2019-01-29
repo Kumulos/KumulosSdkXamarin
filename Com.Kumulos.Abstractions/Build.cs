@@ -40,7 +40,7 @@ namespace Com.Kumulos.Abstractions
 
         private async Task<JObject> MakeRPCApiCallAsync(string methodName, List<KeyValuePair<string, string>> parameters)
         {
-            var uri = new Uri(string.Format("https://api.kumulos.com/b2.2/{0}/{1}.json", apiKey, methodName));
+            var uri = new Uri(string.Format("{0}/b2.2/{1}/{2}.json", Consts.BUILD_SERVICE_BASE_URI, apiKey, methodName));
 
             var postContent = BuildRequestParameters(parameters);
 

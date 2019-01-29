@@ -33,7 +33,6 @@ namespace Com.Kumulos
         {
             var specificConfig = new Android.KumulosConfig.Builder(apiKey, secretKey);
 
-
             if (enableCrashReporting)
             {
                 specificConfig.EnableCrashReporting();
@@ -41,7 +40,7 @@ namespace Com.Kumulos
 
             JSONObject sdkInfo = new JSONObject();
             sdkInfo.Put("id", Abstractions.Consts.SDK_TYPE);
-            sdkInfo.Put("version", "2.0");
+            sdkInfo.Put("version", Abstractions.Consts.SDK_VERSION);
 
             specificConfig.SetSdkInfo(sdkInfo);
 

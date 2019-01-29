@@ -40,7 +40,7 @@ namespace Com.Kumulos
             }
 
             var sdkKeys = new object[] { "id", "version" };
-            var sdkValues = new object[] { Consts.SDK_TYPE, "2.0" };
+            var sdkValues = new object[] { Consts.SDK_TYPE, Consts.SDK_VERSION };
 
             var sdkInfo = NSDictionary.FromObjectsAndKeys(sdkValues, sdkKeys);
 

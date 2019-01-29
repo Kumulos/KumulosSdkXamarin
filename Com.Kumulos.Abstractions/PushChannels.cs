@@ -21,7 +21,7 @@ namespace Com.Kumulos.Abstractions
 
        public async Task<object> ListChannels()
         {
-            var uri = new Uri(string.Format("https://push.kumulos.com/v1/app-installs/{0}/channels", installId));
+            var uri = new Uri(string.Format("{0}/app-installs/{1}/channels", Consts.PUSH_SERVICE_BASE_URI, installId));
 
             HttpResponseMessage request = await httpClient.GetAsync(uri);
 
@@ -37,7 +37,7 @@ namespace Com.Kumulos.Abstractions
 
         public async Task<object> CreateChannel(string uuid, bool subscribe, string name, bool showInPortal, Dictionary<string, object> meta)
         {
-            var uri = new Uri("https://push.kumulos.com/v1/channels");
+            var uri = new Uri(string.Format("{0}/channels", Consts.PUSH_SERVICE_BASE_URI));
 
             JObject payload = new JObject();
             payload.Add("uuid", uuid);
@@ -91,7 +91,7 @@ namespace Com.Kumulos.Abstractions
 
         private async Task<object> MakeSubscriptionNetworkRequest(HttpMethod method, string payload)
         {
-            var uri = new Uri(string.Format("https://push.kumulos.com/v1/app-installs/{0}/channels/subscriptions", installId));
+            var uri = new Uri(string.Format("{0}/app-installs/{1}/channels/subscriptions", Consts.PUSH_SERVICE_BASE_URI, installId));
             var requestMessage = new HttpRequestMessage(method, uri);
 
             requestMessage.Headers.Add("Accept", "application/json");
