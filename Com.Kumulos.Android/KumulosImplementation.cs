@@ -5,13 +5,12 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Collections.Generic;
 using Org.Json;
+using Android.Locations;
 
 namespace Com.Kumulos
 {
     public class KumulosImplementation : IKumulos
     {
-
-
         public Build Build { get; private set; }
 
         public PushChannels PushChannels { get; private set; }
@@ -45,17 +44,6 @@ namespace Com.Kumulos
             }
         }
 
-        public void RegisterForRemoteNotifications()
-        {
-            throw new NotImplementedException("This method does not need to be called on Android");
-
-        }
-
-        public void RegisterDeviceToken(object NSDataDeviceToken)
-        {
-            throw new NotImplementedException("This method does not need to be called on Android");
-        }
-
         public void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
             JSONObject props = new JSONObject(properties);
@@ -68,7 +56,6 @@ namespace Com.Kumulos
             Android.Kumulos.TrackEventImmediately(Application.Context.ApplicationContext, eventType, props);
         }
 
-
         public void AssociateUserWithInstall(string userIdentifier)
         {
             Android.Kumulos.AssociateUserWithInstall(Application.Context.ApplicationContext, userIdentifier);
@@ -79,18 +66,6 @@ namespace Com.Kumulos
             JSONObject attr = new JSONObject(attributes);
 
             Android.Kumulos.AssociateUserWithInstall(Application.Context.ApplicationContext, userIdentifier, attr);
-        }
-
-
-
-        public void TrackiBeaconProximity(object CLBeaconObject)
-        {
-            throw new NotImplementedException("This method should not be called on Android");
-        }
-
-        public void TrackNotificationOpen(object NSDictionaryInfo)
-        {
-            throw new NotImplementedException();
         }
 
         public void LogException(Exception e)
@@ -105,13 +80,37 @@ namespace Com.Kumulos
 
         public void SendLocationUpdate(double lat, double lng)
         {
-            throw new NotImplementedException();
+            Location location = new Location("provider?"); 
+            location.Latitude = lat;
+            location.Longitude = lng;
+
+            Android.Kumulos.SendLocationUpdate(Application.Context.ApplicationContext, location);
         }
 
         public void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, double distanceMetres)
         {
             Java.Lang.Double dblDistance = new Java.Lang.Double(distanceMetres);
             Android.Kumulos.TrackEddystoneBeaconProximity(Application.Context.ApplicationContext, namespaceHex, instanceHex, dblDistance);
+        }
+
+        public void RegisterForRemoteNotifications()
+        {
+            throw new NotImplementedException("This method does not need to be called on Android");
+        }
+
+        public void RegisterDeviceToken(object NSDataDeviceToken)
+        {
+            throw new NotImplementedException("This method does not need to be called on Android");
+        }
+
+        public void TrackNotificationOpen(object NSDictionaryInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TrackiBeaconProximity(object CLBeaconObject)
+        {
+            throw new NotImplementedException("This method should not be called on Android");
         }
     }
 }
