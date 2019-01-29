@@ -11,6 +11,6 @@ namespace Com.Kumulos.Abstractions
         public const int TARGET_TYPE_RELEASE = 2;
 
         public const string CRASH_REPORT_FORMAT = "xamarin-csharp";
-        public const string CRASH_REPORT_EVENT_TYPE = "k.crash.loggedException-custom-xamarin";
+        public const string CRASH_REPORT_EVENT_TYPE = "k.crash.loggedException";
     }
 }
