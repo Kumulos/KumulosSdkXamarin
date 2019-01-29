@@ -6,6 +6,11 @@ using System.Net.Http;
 using System.Collections.Generic;
 using Org.Json;
 using Android.Locations;
+using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics;
+using Android.Gms.Common;
 
 namespace Com.Kumulos
 {
@@ -34,6 +39,15 @@ namespace Com.Kumulos
 
             Build = new Build(InstallId, httpClient, config.GetApiKey());
             PushChannels = new PushChannels(InstallId, httpClient);
+
+            try
+            {
+                LogPreviousCrash();
+            }
+            catch (Exception e)
+            {
+                //- Don't cause further exceptions trying to log exceptions.
+            }
         }
 
         public string InstallId
@@ -70,12 +84,12 @@ namespace Com.Kumulos
 
         public void LogException(Exception e)
         {
-            throw new NotImplementedException();
+            AttemptToLogException(e, false);
         }
 
         public void LogUncaughtException(Exception e)
         {
-            throw new NotImplementedException();
+            AttemptToLogException(e, true);
         }
 
         public void SendLocationUpdate(double lat, double lng)
@@ -91,6 +105,77 @@ namespace Com.Kumulos
         {
             Java.Lang.Double dblDistance = new Java.Lang.Double(distanceMetres);
             Android.Kumulos.TrackEddystoneBeaconProximity(Application.Context.ApplicationContext, namespaceHex, instanceHex, dblDistance);
+        }
+
+        private void AttemptToLogException(Exception e, bool uncaught)
+        {
+            try
+            {
+                var dict = GetDictionaryForException(e, uncaught);
+                WriteCrashToDisk(dict);
+            }
+            catch (Exception ex)
+            {
+                // Dont cause
+            }
+        }
+
+        private Dictionary<string, object> GetDictionaryForException(Exception e, bool uncaught)
+        {
+            var st = new StackTrace(e, true);
+            var frame = st.GetFrame(0);
+            var line = frame.GetFileLineNumber();
+
+            var dict = Crash.GetDictionaryForExceptionTracking(e, uncaught);
+
+            var report = (Dictionary<string, object>)dict["report"];
+            report.Add("lineNumber", line);
+
+            return dict;
+        }
+
+        private void WriteCrashToDisk(Dictionary<string, object> crash)
+        {
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            var filename = Path.Combine(documents, "CrashLog.json");
+            File.WriteAllText(filename, JsonConvert.SerializeObject(crash, Formatting.None));
+        }
+
+        private void LogPreviousCrash()
+        {
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            var filename = Path.Combine(documents, "CrashLog.json");
+
+            if (!File.Exists(filename))
+            {
+                return;
+            }
+
+            var text = File.ReadAllText(filename);
+            var jsonObj = (JContainer)JsonConvert.DeserializeObject(text);
+
+            var dict = new Dictionary<string, object>
+                {
+                    { "format", (string)jsonObj["format"] },
+                    { "uncaught", (bool)jsonObj["uncaught"] }
+                };
+
+            var reportObj = (JContainer)jsonObj["report"];
+
+            var report = new Dictionary<string, object>
+            {
+                { "stackTrace", (string)reportObj["stackTrace"] },
+                { "message", (string)reportObj["message"] },
+                { "type", (string)reportObj["type"] },
+                { "source", (string)reportObj["source"] },
+                { "lineNumber", (int)reportObj["lineNumber"] }
+            };
+
+            dict.Add("report", report);
+
+            TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
+
+            File.Delete(filename);
         }
 
         public void RegisterForRemoteNotifications()
@@ -111,6 +196,12 @@ namespace Com.Kumulos
         public void TrackiBeaconProximity(object CLBeaconObject)
         {
             throw new NotImplementedException("This method should not be called on Android");
+        }
+
+        public bool IsGooglePlayServicesAvailable()
+        {
+            int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(Application.Context.ApplicationContext);
+            return resultCode == ConnectionResult.Success;
         }
     }
 }

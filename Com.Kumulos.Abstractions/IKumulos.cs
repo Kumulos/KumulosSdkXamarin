@@ -29,5 +29,7 @@ namespace Com.Kumulos.Abstractions
 
         void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, double distanceMetres);
         void TrackiBeaconProximity(object CLBeaconObject);
+
+        bool IsGooglePlayServicesAvailable();
     }
 }

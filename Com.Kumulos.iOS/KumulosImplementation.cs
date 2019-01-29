@@ -238,5 +238,10 @@ namespace Com.Kumulos
         {
             throw new NotImplementedException("This method should not be called on iOS");
         }
+
+        public bool IsGooglePlayServicesAvailable()
+        {
+            throw new NotImplementedException("This method should not be called on iOS");
+        }
     }
 }
