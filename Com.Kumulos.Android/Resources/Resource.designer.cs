@@ -566,8 +566,8 @@ namespace Com.Kumulos.Android
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040013
-			public static int app_name = 2130968595;
+			// aapt resource value: 0x7f040014
+			public static int app_name = 2130968596;
 			
 			// aapt resource value: 0x7f040002
 			public static int common_google_play_services_enable_button = 2130968578;
@@ -620,14 +620,17 @@ namespace Com.Kumulos.Android
 			// aapt resource value: 0x7f040011
 			public static int common_signin_button_text_long = 2130968593;
 			
+			// aapt resource value: 0x7f040012
+			public static int fcm_fallback_notification_channel_label = 2130968594;
+			
 			// aapt resource value: 0x7f040000
 			public static int gcm_fallback_notification_channel_label = 2130968576;
 			
-			// aapt resource value: 0x7f040014
-			public static int library_name = 2130968596;
+			// aapt resource value: 0x7f040015
+			public static int library_name = 2130968597;
 			
-			// aapt resource value: 0x7f040012
-			public static int status_bar_notification_info_overflow = 2130968594;
+			// aapt resource value: 0x7f040013
+			public static int status_bar_notification_info_overflow = 2130968595;
 			
 			static String()
 			{

@@ -83,6 +83,15 @@
     <Reference Include="Xamarin.GooglePlayServices.Gcm">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Gcm.60.1142.1\lib\MonoAndroid80\Xamarin.GooglePlayServices.Gcm.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Firebase.Common">
+      <HintPath>..\packages\Xamarin.Firebase.Common.60.1142.1\lib\MonoAndroid80\Xamarin.Firebase.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Firebase.Iid">
+      <HintPath>..\packages\Xamarin.Firebase.Iid.60.1142.1\lib\MonoAndroid80\Xamarin.Firebase.Iid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Firebase.Messaging">
+      <HintPath>..\packages\Xamarin.Firebase.Messaging.60.1142.1\lib\MonoAndroid80\Xamarin.Firebase.Messaging.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
@@ -92,7 +101,6 @@
     <Compile Include="..\Com.Kumulos\Kumulos.cs">
       <Link>Kumulos.cs</Link>
     </Compile>
-    <Compile Include="GcmListenerIntentService.cs" />
     <Compile Include="PushBroadcastReceiverImplementation.cs" />
     <Compile Include="PushMessageImplementation.cs" />
   </ItemGroup>
@@ -127,4 +135,7 @@
   <Import Project="..\packages\Xamarin.GooglePlayServices.Location.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Location.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Location.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Location.targets')" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Iid.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Iid.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Iid.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Iid.targets')" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Gcm.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Gcm.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Gcm.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Gcm.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.Common.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Common.targets" Condition="Exists('..\packages\Xamarin.Firebase.Common.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Common.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.Iid.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Iid.targets" Condition="Exists('..\packages\Xamarin.Firebase.Iid.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Iid.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.Messaging.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Messaging.targets" Condition="Exists('..\packages\Xamarin.Firebase.Messaging.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Messaging.targets')" />
 </Project>
