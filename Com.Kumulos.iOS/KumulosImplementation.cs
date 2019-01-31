@@ -59,6 +59,14 @@ namespace Com.Kumulos
             }
         }
 
+        public string UserIdentifier
+        {
+            get
+            {
+                return "wibble";
+            }
+        }
+
         public void RegisterForRemoteNotifications()
         {
             var center = UNUserNotificationCenter.Current;
@@ -240,6 +248,11 @@ namespace Com.Kumulos
         }
 
         public bool IsGooglePlayServicesAvailable()
+        {
+            throw new NotImplementedException("This method should not be called on iOS");
+        }
+
+        public void TrackNotificationOpen(string notificationId)
         {
             throw new NotImplementedException("This method should not be called on iOS");
         }

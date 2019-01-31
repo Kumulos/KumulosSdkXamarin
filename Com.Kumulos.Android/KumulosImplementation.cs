@@ -58,21 +58,18 @@ namespace Com.Kumulos
             }
         }
 
+        public string UserIdentifier
+        {
+            get
+            {
+                return "wibble";
+            }
+        }
+
         public void RegisterForRemoteNotifications()
         {
             Android.Kumulos.PushRegister(Application.Context.ApplicationContext);
         }
-
-        public void RegisterDeviceToken(object NSDataDeviceToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void TrackNotificationOpen(object NSDictionaryInfo)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
@@ -132,7 +129,7 @@ namespace Com.Kumulos
             }
             catch (Exception ex)
             {
-                // Dont cause
+                //- Don't cause further exceptions trying to log exceptions.
             }
         }
 
@@ -194,15 +191,32 @@ namespace Com.Kumulos
             File.Delete(filename);
         }
               
-        public void TrackiBeaconProximity(object CLBeaconObject)
-        {
-            throw new NotImplementedException("This method should not be called on Android");
-        }
+       
 
         public bool IsGooglePlayServicesAvailable()
         {
             int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(Application.Context.ApplicationContext);
             return resultCode == ConnectionResult.Success;
+        }
+
+        public void TrackNotificationOpen(string notificationId)
+        {
+            Android.Kumulos.PushTrackOpen(Application.Context.ApplicationContext, notificationId);
+        }
+
+        public void RegisterDeviceToken(object NSDataDeviceToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TrackNotificationOpen(object NSDictionaryInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TrackiBeaconProximity(object CLBeaconObject)
+        {
+            throw new NotImplementedException("This method should not be called on Android");
         }
     }
 }

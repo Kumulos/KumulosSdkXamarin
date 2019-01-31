@@ -8,13 +8,16 @@ namespace Com.Kumulos.Abstractions
         void Initialize(IKSConfig config);
 
         string InstallId { get; }
+        string UserIdentifier { get; }
 
         Build Build { get; }
         PushChannels PushChannels { get; }
 
         void RegisterForRemoteNotifications();
         void RegisterDeviceToken(object NSDataDeviceToken);
+
         void TrackNotificationOpen(object NSDictionaryInfo);
+        void TrackNotificationOpen(string notificationId);
 
         void TrackEvent(string eventType, Dictionary<string, object> properties);
         void TrackEventImmediately(string eventType, Dictionary<string, object> properties);

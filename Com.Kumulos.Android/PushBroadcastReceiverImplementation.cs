@@ -29,15 +29,15 @@ namespace Com.Kumulos.Android
                 return;
             }
 
-            PushMessageImplementation pushMessage = JsonConvert.DeserializeObject<PushMessageImplementation>(intent.GetStringExtra(PushMessageImplementation.EXTRAS_KEY));
+            PushMessage message = (PushMessage)intent.GetParcelableExtra(PushMessage.ExtrasKey);
 
             switch (action)
             {
                 case ACTION_PUSH_RECEIVED:
-                    OnPushReceived(context, pushMessage);
+                    OnPushReceived(context, message);
                     break;
                 case ACTION_PUSH_OPENED:
-                    OnPushOpened(context, pushMessage);
+                    OnPushOpened(context, message);
                     break;
             }
         }
@@ -49,11 +49,11 @@ namespace Com.Kumulos.Android
          * @param pushMessage
          * @see PushBroadcastReceiver#buildNotification(Context, PushMessage) for customization
          */
-        protected virtual void OnPushReceived(Context context, PushMessageImplementation pushMessage)
+        protected virtual void OnPushReceived(Context context, PushMessage pushMessage)
         {
             Log.Info(TAG, "Push received");
 
-            if (pushMessage.IsBackground)
+            if (pushMessage.IsBackgroundPush)
             {
                 Intent serviceIntent = GetBackgroundPushServiceIntent(context, pushMessage);
 
@@ -65,7 +65,7 @@ namespace Com.Kumulos.Android
                 context.StartService(serviceIntent);
                 return;
             }
-            else if (!pushMessage.HasTitleAndMessage())
+            else if (!pushMessage.HasTitleAndMessage)
             {
                 // Non-background pushes should always have a title & message otherwise we can't show a notification
                 return;
@@ -98,11 +98,11 @@ namespace Com.Kumulos.Android
          * @param pushMessage
          * @see PushBroadcastReceiver#getPushOpenActivityIntent(Context, PushMessage) for customization
          */
-        protected void OnPushOpened(Context context, PushMessageImplementation pushMessage)
+        protected void OnPushOpened(Context context, PushMessage pushMessage)
         {
             Log.Info(TAG, "Push opened");
 
-            //KumulosSDK.Push.TrackPushOpen(pushMessage.Id);
+            Com.Kumulos.Kumulos.Current.TrackNotificationOpen(pushMessage.Id);
 
             Intent launchIntent = GetPushOpenActivityIntent(context, pushMessage);
 
@@ -150,10 +150,10 @@ namespace Com.Kumulos.Android
          * @return
          * @see Kumulos#pushTrackOpen(String) for correctly tracking conversions if you customize the content intent
          */
-        protected virtual Notification BuildNotification(Context context, PushMessageImplementation pushMessage)
+        protected virtual Notification BuildNotification(Context context, PushMessage pushMessage)
         {
             Intent openIntent = new Intent(ACTION_PUSH_OPENED);
-            openIntent.PutExtra(PushMessageImplementation.EXTRAS_KEY, JsonConvert.SerializeObject(pushMessage));
+            openIntent.PutExtra(PushMessage.ExtrasKey, pushMessage);
             openIntent.SetPackage(context.PackageName);
 
             PendingIntent pendingOpenIntent = PendingIntent.GetBroadcast(
@@ -216,12 +216,12 @@ namespace Com.Kumulos.Android
          * @param pushMessage
          * @return
          */
-        protected virtual Intent GetPushOpenActivityIntent(Context context, PushMessageImplementation pushMessage)
+        protected virtual Intent GetPushOpenActivityIntent(Context context, PushMessage pushMessage)
         {
             Intent launchIntent = context.PackageManager.GetLaunchIntentForPackage(context.PackageName);
             if (null == launchIntent) { return null; }
 
-            launchIntent.PutExtra(PushMessageImplementation.EXTRAS_KEY, JsonConvert.SerializeObject(pushMessage));
+            launchIntent.PutExtra(PushMessage.ExtrasKey, pushMessage);
             return launchIntent;
         }
 
@@ -236,7 +236,7 @@ namespace Com.Kumulos.Android
          * @param pushMessage
          * @return
          */
-        protected virtual Intent GetBackgroundPushServiceIntent(Context context, PushMessageImplementation pushMessage)
+        protected virtual Intent GetBackgroundPushServiceIntent(Context context, PushMessage pushMessage)
         {
             return null;
         }

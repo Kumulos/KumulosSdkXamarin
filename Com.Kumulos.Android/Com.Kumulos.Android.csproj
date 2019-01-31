@@ -102,7 +102,6 @@
       <Link>Kumulos.cs</Link>
     </Compile>
     <Compile Include="PushBroadcastReceiverImplementation.cs" />
-    <Compile Include="PushMessageImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
