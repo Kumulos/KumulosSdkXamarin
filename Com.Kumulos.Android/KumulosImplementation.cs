@@ -95,6 +95,11 @@ namespace Com.Kumulos
             Android.Kumulos.AssociateUserWithInstall(Application.Context.ApplicationContext, userIdentifier, attr);
         }
 
+        public void ClearUserAssociation()
+        {
+            throw new NotImplementedException();
+        }
+
         public void LogException(Exception e)
         {
             AttemptToLogException(e, false);

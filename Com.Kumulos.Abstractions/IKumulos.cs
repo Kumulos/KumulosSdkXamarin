@@ -29,6 +29,7 @@ namespace Com.Kumulos.Abstractions
 
         void AssociateUserWithInstall(string userIdentifier);
         void AssociateUserWithInstall(string userIdentifier, Dictionary<string, object> attributes);
+        void ClearUserAssociation();
 
         void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, double distanceMetres);
         void TrackiBeaconProximity(object CLBeaconObject);

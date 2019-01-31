@@ -63,7 +63,7 @@ namespace Com.Kumulos
         {
             get
             {
-                return "wibble";
+                return iOS.Kumulos_Analytics.CurrentUserIdentifier;
             }
         }
 
@@ -95,11 +95,13 @@ namespace Com.Kumulos
         public void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
             var nsDict = ConvertDictionaryToNSDictionary(properties);
+
             iOS.Kumulos_Analytics.TrackEvent(thisRef, eventType, nsDict);
         }
 
         public void TrackEventImmediately(string eventType, Dictionary<string, object> properties)
         {
+
             iOS.Kumulos_Analytics.TrackEventImmediately(thisRef, eventType, ConvertDictionaryToNSDictionary(properties));
         }
 
@@ -130,6 +132,11 @@ namespace Com.Kumulos
             var nsDict = NSDictionary.FromObjectsAndKeys(attributes.Values.ToArray(), attributes.Keys.ToArray());
 
             iOS.Kumulos_Analytics.AssociateUserWithInstall(thisRef, userIdentifier, nsDict);
+        }
+
+        public void ClearUserAssociation()
+        {
+            iOS.Kumulos_Analytics.ClearUserAssociation(thisRef);
         }
 
         public void TrackiBeaconProximity(object CLBeaconObject)

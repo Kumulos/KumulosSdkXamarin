@@ -5,7 +5,6 @@ using CoreLocation;
 
 namespace Com.Kumulos.iOS
 {
-
     // typedef void (^ _Nullable)(KSAPIResponse * _Nonnull, KSAPIOperation * _Nonnull) KSAPIOperationSuccessBlock;
     delegate void KSAPIOperationSuccessBlock(KSAPIResponse arg0, KSAPIOperation arg1);
 
@@ -92,7 +91,6 @@ namespace Com.Kumulos.iOS
         // +(NSString * _Nonnull)installId;
         [Static]
         [Export("installId")]
-        //[Verify(MethodToProperty)]
         string InstallId { get; }
 
         // +(instancetype _Nullable)initializeWithConfig:(KSConfig * _Nonnull)config;
@@ -258,6 +256,15 @@ namespace Com.Kumulos.iOS
         // -(void)associateUserWithInstall:(NSString * _Nonnull)userIdentifier attributes:(NSDictionary * _Nonnull)attributes;
         [Export("associateUserWithInstall:attributes:")]
         void AssociateUserWithInstall(string userIdentifier, NSDictionary attributes);
+
+        // -(void)clearUserAssociation;
+        [Export("clearUserAssociation")]
+        void ClearUserAssociation();
+
+        // +(NSString * _Nonnull)currentUserIdentifier;
+        [Static]
+        [Export("currentUserIdentifier")]
+        string CurrentUserIdentifier { get; }
     }
 
     // @protocol KSAPIOperationDelegate <NSObject>
@@ -350,4 +357,6 @@ namespace Com.Kumulos.iOS
         [Export("logExceptionWithName:reason:language:lineNumber:stackTrace:loggingAllThreads:")]
         void LogExceptionWithName(string name, string reason, string language, [NullAllowed] string lineNumber, [NullAllowed] NSObject[] stackTrace, bool loggingAllThreads);
     }
+
+
 }
