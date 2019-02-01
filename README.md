@@ -4,14 +4,16 @@ Kumulos provides tools to build and host backend storage for apps, send push not
 
 ## Get Started with NuGet
 
-Add the SDK package to your project via the package manager console by entering `Install-Package KumulosXamariniOS` or `Install-Package KumulosXamarinDroid` depending on which platform your project targets.
+Add the SDK package to your project via the package manager console by entering `Install-Package Com.Kumulos`.
 
 After installation, you can now import & initialize the SDK with:
 
 ```csharp
-import KumulosSDK
+using Com.Kumulos;
+using Com.Kumulos.Abstractions;
 
-KumulosSDK.Initialize (ISendDeviceInformation deviceInfo, ISettings appSettings, Dictionary<string, string> config);
+var config = Kumulos.CurrentConfig.AddKeys("YOUR_API_KEY", "YOUR_SECRET_KEY");
+Kumulos.Current.Initialize(config);
 ```
 
 For more information on integrating the Xamarin SDK with your project, please see the [Kumulos Xamarin integration guide](https://docs.kumulos.com/integration/xamarin).
