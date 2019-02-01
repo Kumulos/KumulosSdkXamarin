@@ -9,7 +9,6 @@ namespace Com.Kumulos
         private bool enableCrashReporting;
         private int timeoutSeconds;
 
-       
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
             this.apiKey = apiKey;
@@ -48,7 +47,7 @@ namespace Com.Kumulos
 
             var runtimeKeys = new object[] { "id", "version" };
             var runtimeValues = new object[] { Consts.RUNTIME_TYPE, ObjCRuntime.Constants.Version };
-        
+
             var runtimeInfo = NSDictionary.FromObjectsAndKeys(runtimeValues, runtimeKeys);
 
             specificConfig.SetRuntimeInfo(runtimeInfo);

@@ -2,7 +2,6 @@
 using CoreLocation;
 using UIKit;
 
-
 namespace Com.Kumulos
 {
     public class LocationManager
