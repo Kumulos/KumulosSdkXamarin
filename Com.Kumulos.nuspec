@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>Com.Kumulos</id>
+        <version>1.0</version>
+        <title>Kumulos SDK for Xamarin</title>
+        <authors>Kumulos Ltd</authors>
+        <owners>Kumulos Ltd</owners>
+        <licenseUrl>https://github.com/Kumulos/KumulosSdkXamarin/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/Kumulos/KumulosSdkXamarin</projectUrl>
+        <iconUrl>https://github.com/Kumulos/KumulosSdkXamarin/blob/master/nuget_icon.png?raw=true</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Xamarin SDK For Kumulos</description>
+        <summary>The Kumulos SDK provides audience and engagement analytics; marketing automation and geo-targeted push notifications; backend storage and API management; and crash reporting for your Xamarin apps.</summary>
+        <tags>xamarin, monodroid, C#, Kumulos, push, analytics, crash reporting</tags>
+        <dependencies>
+            <group targetFramework="MonoAndroid9.0">
+                <dependency id="Newtonsoft.Json" version="12.0.1"  />
+                <dependency id="Xamarin.Android.Support.Annotations" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Compat" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Core.UI" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Core.Utils" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Fragment" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Media.Compat" version="26.0.2" />
+                <dependency id="Xamarin.Build.Download" version="0.4.9" />
+                <dependency id="Xamarin.Firebase.Common" version="60.1142.1" />
+                <dependency id="Xamarin.Firebase.Iid" version="60.1142.1" />
+                <dependency id="Xamarin.Firebase.Messaging" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Base" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Basement" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Gcm" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Iid" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Location" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Tasks" version="60.1142.1" />
+                <dependency id="Square.OkHttp3" version="3.8.1" />
+            </group>
+            <group targetFramework="MonoAndroid8.1">
+                <dependency id="Newtonsoft.Json" version="12.0.1"  />
+                <dependency id="Xamarin.Android.Support.Annotations" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Compat" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Core.UI" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Core.Utils" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Fragment" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Media.Compat" version="26.0.2" />
+                <dependency id="Xamarin.Build.Download" version="0.4.9" />
+                <dependency id="Xamarin.Firebase.Common" version="60.1142.1" />
+                <dependency id="Xamarin.Firebase.Iid" version="60.1142.1" />
+                <dependency id="Xamarin.Firebase.Messaging" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Base" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Basement" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Gcm" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Iid" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Location" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Tasks" version="60.1142.1" />
+                <dependency id="Square.OkHttp3" version="3.8.1" />
+            </group>
+            <group targetFramework="MonoAndroid8.0">
+                <dependency id="Newtonsoft.Json" version="12.0.1"  />
+                <dependency id="Xamarin.Android.Support.Annotations" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Compat" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Core.UI" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Core.Utils" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Fragment" version="26.0.2" />
+                <dependency id="Xamarin.Android.Support.Media.Compat" version="26.0.2" />
+                <dependency id="Xamarin.Build.Download" version="0.4.9" />
+                <dependency id="Xamarin.Firebase.Common" version="60.1142.1" />
+                <dependency id="Xamarin.Firebase.Iid" version="60.1142.1" />
+                <dependency id="Xamarin.Firebase.Messaging" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Base" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Basement" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Gcm" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Iid" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Location" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Tasks" version="60.1142.1" />
+                <dependency id="Square.OkHttp3" version="3.8.1" />
+            </group>
+            <group targetFramework="netstandard1.0">
+                <dependency id="NETStandard.Library" version="1.6.1" />
+            </group>
+            <group targetFramework="portable45-net45+win8+wpa81">
+                <dependency id="Newtonsoft.Json" version="12.0.1"  />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <!--Core-->
+        <file src="Com.Kumulos\bin\Release\netstandard1.0\Com.Kumulos.pdb" target="lib\netstandard1.0" />
+        <file src="Com.Kumulos\bin\Release\netstandard1.0\Com.Kumulos.dll" target="lib\netstandard1.0" />
+        <file src="Com.Kumulos.Abstractions\bin\Release\Com.Kumulos.Abstractions.dll" target="lib\netstandard1.0" />
+
+        <!--Xamarin.Android-->
+        <file src="Com.Kumulos.Android\bin\Release\*Kumulos.*" target="lib\MonoAndroid10" />
+
+        <!--Xamarin.iOS Unified-->
+        <file src="Com.Kumulos.iOS\bin\Release\*Kumulos.*" target="lib\Xamarin.iOS10" />
+    </files>
+</package>
