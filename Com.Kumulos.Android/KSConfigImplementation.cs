@@ -1,4 +1,5 @@
-﻿using Android.OS;
+﻿using System;
+using Android.OS;
 using Org.Json;
 
 namespace Com.Kumulos
@@ -6,7 +7,6 @@ namespace Com.Kumulos
     public class KSConfigImplementation : Abstractions.IKSConfig
     {
         private string apiKey, secretKey;
-        private bool enableCrashReporting;
         private int timeoutSeconds;
 
         public Abstractions.IKSConfig AddKeys(string apiKey, string secretKey)
@@ -19,8 +19,7 @@ namespace Com.Kumulos
 
         public Abstractions.IKSConfig EnableCrashReporting()
         {
-            enableCrashReporting = true;
-            return this;
+            throw new NotImplementedException("Native crash reporting is not available on Android - please refer to the integration guide.");
         }
 
         public Abstractions.IKSConfig SetSessionIdleTimeout(int timeoutSeconds)
@@ -32,11 +31,6 @@ namespace Com.Kumulos
         public Android.KumulosConfig GetConfig()
         {
             var specificConfig = new Android.KumulosConfig.Builder(apiKey, secretKey);
-
-            if (enableCrashReporting)
-            {
-                specificConfig.EnableCrashReporting();
-            }
 
             JSONObject sdkInfo = new JSONObject();
             sdkInfo.Put("id", Abstractions.Consts.SDK_TYPE);

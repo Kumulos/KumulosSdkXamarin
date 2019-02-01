@@ -62,7 +62,7 @@ namespace Com.Kumulos
         {
             get
             {
-                return "wibble";
+                return Android.Kumulos.GetCurrentUserIdentifier(Application.Context.ApplicationContext);
             }
         }
 
@@ -97,7 +97,7 @@ namespace Com.Kumulos
 
         public void ClearUserAssociation()
         {
-            throw new NotImplementedException();
+            Android.Kumulos.ClearUserAssociation(Application.Context.ApplicationContext);
         }
 
         public void LogException(Exception e)
@@ -195,9 +195,7 @@ namespace Com.Kumulos
 
             File.Delete(filename);
         }
-              
        
-
         public bool IsGooglePlayServicesAvailable()
         {
             int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(Application.Context.ApplicationContext);
