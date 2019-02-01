@@ -1,5 +1,4 @@
-﻿using System;
-namespace Com.Kumulos.Abstractions
+﻿namespace Com.Kumulos.Abstractions
 {
     public class Consts
     {

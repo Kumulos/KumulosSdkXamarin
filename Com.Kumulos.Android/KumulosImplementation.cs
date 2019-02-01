@@ -112,7 +112,7 @@ namespace Com.Kumulos
 
         public void SendLocationUpdate(double lat, double lng)
         {
-            Location location = new Location("provider?"); 
+            Location location = new Location("provider");
             location.Latitude = lat;
             location.Longitude = lng;
 
@@ -195,7 +195,7 @@ namespace Com.Kumulos
 
             File.Delete(filename);
         }
-       
+
         public bool IsGooglePlayServicesAvailable()
         {
             int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(Application.Context.ApplicationContext);

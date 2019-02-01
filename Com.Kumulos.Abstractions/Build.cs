@@ -4,7 +4,6 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Net.Http.Headers;
 
 namespace Com.Kumulos.Abstractions
 {

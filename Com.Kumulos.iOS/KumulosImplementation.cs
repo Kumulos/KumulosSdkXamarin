@@ -144,7 +144,7 @@ namespace Com.Kumulos
             iOS.Kumulos_Location.SendiBeaconProximity(thisRef, (CLBeacon)CLBeaconObject);
         }
 
-        private void AttemptToLogException(Exception e , bool uncaught)
+        private void AttemptToLogException(Exception e, bool uncaught)
         {
             try
             {

@@ -1,9 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-
-namespace Com.Kumulos.Abstractions
+﻿namespace Com.Kumulos.Abstractions
 {
     public class ApiResponse
     {

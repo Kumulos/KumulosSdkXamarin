@@ -111,7 +111,6 @@ namespace Com.Kumulos.Android
                 return;
             }
 
-
             ComponentName component = launchIntent.Component;
             if (null == component)
             {
@@ -119,10 +118,10 @@ namespace Com.Kumulos.Android
                 return;
             }
 
-            //if (null != pushMessage.GetUri())
-            //{
-            //    launchIntent = new Intent(Intent.ActionView, pushMessage.GetUri());
-            //}
+            if (null != pushMessage.Url)
+            {
+                launchIntent = new Intent(Intent.ActionView, pushMessage.Url);
+            }
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
             {
@@ -187,7 +186,6 @@ namespace Com.Kumulos.Android
                 notificationBuilder = new Notification.Builder(context);
             }
 
-
             notificationBuilder
                 .SetSmallIcon(Resource.Drawable.kumulos_ic_stat_notifications)
                 .SetContentTitle(pushMessage.Title)
@@ -240,6 +238,5 @@ namespace Com.Kumulos.Android
         {
             return null;
         }
-
     }
 }

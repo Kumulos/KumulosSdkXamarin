@@ -40,10 +40,10 @@ namespace Com.Kumulos
             Debug.WriteLine("PORTABLE Reached");
             return null;
 #else
-         Debug.WriteLine("Other reached");
-         return new KSConfigImplementation();
+            Debug.WriteLine("Other reached");
+            return new KSConfigImplementation();
 #endif
-}
+        }
 
         static IKumulos CreateKumulos()
         {
@@ -51,8 +51,8 @@ namespace Com.Kumulos
             Debug.WriteLine("PORTABLE Reached");
             return null;
 #else
-         Debug.WriteLine("Other reached");
-         return new KumulosImplementation();
+            Debug.WriteLine("Other reached");
+            return new KumulosImplementation();
 #endif
         }
 

@@ -22,7 +22,5 @@ namespace Com.Kumulos.Abstractions
 
             return dict;
         }
-
-
     }
 }
