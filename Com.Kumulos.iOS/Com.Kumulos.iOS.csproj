@@ -51,5 +51,15 @@
       <Link>Kumulos.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Com.Kumulos.Abstractions\Com.Kumulos.Abstractions.csproj">
+      <Project>{4284B520-2352-48F8-A87D-BC071FD8085B}</Project>
+      <Name>Com.Kumulos.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kumulos.iOS.Binding\Kumulos.iOS.Binding.csproj">
+      <Project>{2C14FE31-E8F5-457F-9DD6-C8C58D74B8F8}</Project>
+      <Name>Kumulos.iOS.Binding</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
