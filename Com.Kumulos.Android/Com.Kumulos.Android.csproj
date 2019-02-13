@@ -7,36 +7,34 @@
     <ProjectGuid>{454DF95C-2D14-4EA3-82AE-7599494C809F}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Com.Kumulos.Android</RootNamespace>
-    <AssemblyName>Com.Kumulos.Android</AssemblyName>
+    <RootNamespace>Com.Kumulos</RootNamespace>
+    <AssemblyName>Com.Kumulos</AssemblyName>
     <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
-    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
-    <AndroidResgenClass>Resource</AndroidResgenClass>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <AndroidTlsProvider>
+    </AndroidTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AndroidLinkMode>None</AndroidLinkMode>
-    <JavaMaximumHeapSize></JavaMaximumHeapSize>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AndroidManagedSymbols>true</AndroidManagedSymbols>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <JavaMaximumHeapSize></JavaMaximumHeapSize>
-  </PropertyGroup>
+     <DebugSymbols>true</DebugSymbols>
+     <DebugType>full</DebugType>
+     <Optimize>false</Optimize>
+     <OutputPath>bin\Debug</OutputPath>
+     <DefineConstants>DEBUG;</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+     <AndroidLinkMode>None</AndroidLinkMode>
+   </PropertyGroup>
+   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+     <DebugSymbols>true</DebugSymbols>
+     <DebugType>full</DebugType>
+     <Optimize>true</Optimize>
+     <OutputPath>bin\Release</OutputPath>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+     <AndroidManagedSymbols>true</AndroidManagedSymbols>
+     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -94,7 +92,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="KSConfigImplementation.cs" />
     <Compile Include="KumulosImplementation.cs" />
@@ -102,22 +99,19 @@
       <Link>Kumulos.cs</Link>
     </Compile>
     <Compile Include="PushBroadcastReceiverImplementation.cs" />
+    <Compile Include="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AboutResources.txt" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Kumulos.Android.Binding\Kumulos.Android.Binding.csproj">
-      <Project>{DCCBC2E3-138B-4C68-8C45-0E29318A11A7}</Project>
-      <Name>Kumulos.Android.Binding</Name>
-    </ProjectReference>
+    <ItemGroup>
     <ProjectReference Include="..\Com.Kumulos.Abstractions\Com.Kumulos.Abstractions.csproj">
       <Project>{4284B520-2352-48F8-A87D-BC071FD8085B}</Project>
       <Name>Com.Kumulos.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kumulos.Android.Binding\Kumulos.Android.Binding.csproj">
+      <Project>{DCCBC2E3-138B-4C68-8C45-0E29318A11A7}</Project>
+      <Name>Kumulos.Android.Binding</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
