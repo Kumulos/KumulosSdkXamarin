@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Com.Kumulos</id>
-        <version>1.0</version>
+        <version>1.0.1</version>
         <title>Kumulos SDK for Xamarin</title>
         <authors>Kumulos Ltd</authors>
         <owners>Kumulos Ltd</owners>
@@ -84,9 +84,10 @@
     </metadata>
     <files>
         <!--Core-->
-        <file src="Com.Kumulos\bin\Release\netstandard1.0\Com.Kumulos.pdb" target="lib\netstandard1.0" />
-        <file src="Com.Kumulos\bin\Release\netstandard1.0\Com.Kumulos.dll" target="lib\netstandard1.0" />
-        <file src="Com.Kumulos.Abstractions\bin\Release\Com.Kumulos.Abstractions.dll" target="lib\netstandard1.0" />
+        <file src="Com.Kumulos\bin\Release\netstandard2.0\Com.Kumulos.pdb" target="lib\netstandard2.0" />
+        <file src="Com.Kumulos\bin\Release\netstandard2.0\Com.Kumulos.dll" target="lib\netstandard2.0" />
+        <file src="Com.Kumulos.Abstractions\bin\Release\netstandard2.0\Com.Kumulos.Abstractions.pdb" target="lib\netstandard2.0" />
+        <file src="Com.Kumulos.Abstractions\bin\Release\netstandard2.0\Com.Kumulos.Abstractions.dll" target="lib\netstandard2.0" />
 
         <!--Xamarin.Android-->
         <file src="Com.Kumulos.Android\bin\Release\*Kumulos.*" target="lib\MonoAndroid10" />
