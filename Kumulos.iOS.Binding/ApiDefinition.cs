@@ -1,7 +1,7 @@
-﻿using System;
+using System;
+using CoreLocation;
 using Foundation;
 using ObjCRuntime;
-using CoreLocation;
 
 namespace Com.Kumulos.iOS
 {
@@ -136,6 +136,10 @@ namespace Com.Kumulos.iOS
         // -(void)pushRegisterWithDeviceToken:(NSData * _Nonnull)deviceToken;
         [Export("pushRegisterWithDeviceToken:")]
         void PushRegisterWithDeviceToken(NSData deviceToken);
+
+        // -(void)pushUnregister;
+        [Export("pushUnregister")]
+        void PushUnregister();
 
         // -(void)pushTrackOpenFromNotification:(NSDictionary * _Nullable)userInfo;
         [Export("pushTrackOpenFromNotification:")]
@@ -357,6 +361,4 @@ namespace Com.Kumulos.iOS
         [Export("logExceptionWithName:reason:language:lineNumber:stackTrace:loggingAllThreads:")]
         void LogExceptionWithName(string name, string reason, string language, [NullAllowed] string lineNumber, [NullAllowed] NSObject[] stackTrace, bool loggingAllThreads);
     }
-
-
 }
