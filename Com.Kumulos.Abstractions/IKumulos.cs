@@ -15,6 +15,7 @@ namespace Com.Kumulos.Abstractions
 
         void RegisterForRemoteNotifications();
         void RegisterDeviceToken(object NSDataDeviceToken);
+        void UnregisterDeviceToken();
 
         void TrackNotificationOpen(object NSDictionaryInfo);
         void TrackNotificationOpen(string notificationId);

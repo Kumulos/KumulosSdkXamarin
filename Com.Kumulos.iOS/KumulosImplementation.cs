@@ -87,6 +87,11 @@ namespace Com.Kumulos
             iOS.Kumulos_Push.PushRegisterWithDeviceToken(thisRef, (NSData)NSDataDeviceToken);
         }
 
+        public void UnregisterDeviceToken()
+        {
+            throw new NotImplementedException();
+        }
+
         public void TrackNotificationOpen(object NSDictionaryUserInfo)
         {
             iOS.Kumulos_Push.PushTrackOpenFromNotification(thisRef, (NSDictionary)NSDictionaryUserInfo);
