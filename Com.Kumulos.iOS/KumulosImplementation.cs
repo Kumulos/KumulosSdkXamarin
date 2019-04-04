@@ -90,7 +90,6 @@ namespace Com.Kumulos
         public void UnregisterDeviceToken()
         {
             iOS.Kumulos_Push.PushUnregister(thisRef);
-            
         }
 
         public void TrackNotificationOpen(object NSDictionaryUserInfo)
