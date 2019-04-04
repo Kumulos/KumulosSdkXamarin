@@ -73,7 +73,7 @@ namespace Com.Kumulos
 
         public void UnregisterDeviceToken()
         {
-            throw new NotImplementedException();
+            Android.Kumulos.PushUnregister(Application.Context.ApplicationContext);
         }
 
         public void TrackEvent(string eventType, Dictionary<string, object> properties)
