@@ -71,6 +71,11 @@ namespace Com.Kumulos
             Android.Kumulos.PushRegister(Application.Context.ApplicationContext);
         }
 
+        public void UnregisterDeviceToken()
+        {
+            Android.Kumulos.PushUnregister(Application.Context.ApplicationContext);
+        }
+
         public void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
             JSONObject props = new JSONObject(properties);

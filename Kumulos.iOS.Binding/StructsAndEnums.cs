@@ -1,7 +1,7 @@
-﻿using System;
 using ObjCRuntime;
 
-namespace Com.Kumulos.iOS {
+namespace Com.Kumulos.iOS
+{
     [Native]
     public enum KSTargetType : long
     {
