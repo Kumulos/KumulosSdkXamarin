@@ -70,24 +70,28 @@ namespace Com.Kumulos.Abstractions
 
         public async Task<object> Subscribe(string[] uuids)
         {
-
-            return await MakeSubscriptionNetworkRequest(HttpMethod.Post, JsonConvert.SerializeObject(uuids));
+			return await MakeSubscriptionNetworkRequest(HttpMethod.Post, this.GetSubcriptionPayload(uuids));
         }
 
         public async Task<object> Unsubscribe(string[] uuids)
         {
-            return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, JsonConvert.SerializeObject(uuids));
+            return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, this.GetSubcriptionPayload(uuids));
         }
 
         public async Task<object> SetSubscriptions(string[] uuids)
         {
-            return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, JsonConvert.SerializeObject(uuids));
+            return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, this.GetSubcriptionPayload(uuids));
         }
 
         public async Task<object> ClearSubscriptions()
         {
             return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, "");
         }
+
+        private string GetSubcriptionPayload(string [] uuids)
+		{
+            return JsonConvert.SerializeObject(new JObject(new JProperty("uuids", uuids)));
+		}
 
         private async Task<object> MakeSubscriptionNetworkRequest(HttpMethod method, string payload)
         {
