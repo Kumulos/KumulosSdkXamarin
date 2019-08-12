@@ -70,17 +70,17 @@ namespace Com.Kumulos.Abstractions
 
 		public async Task<object> Subscribe(string[] uuids)
 		{
-			return await MakeSubscriptionNetworkRequest(HttpMethod.Post, this.GetSubcriptionPayload(uuids));
+			return await MakeSubscriptionNetworkRequest(HttpMethod.Post, GetSubcriptionPayload(uuids));
 		}
 
 		public async Task<object> Unsubscribe(string[] uuids)
 		{
-			return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, this.GetSubcriptionPayload(uuids));
+			return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, GetSubcriptionPayload(uuids));
 		}
 
 		public async Task<object> SetSubscriptions(string[] uuids)
 		{
-			return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, this.GetSubcriptionPayload(uuids));
+			return await MakeSubscriptionNetworkRequest(HttpMethod.Put, GetSubcriptionPayload(uuids));
 		}
 
 		public async Task<object> ClearSubscriptions()
