@@ -8,103 +8,107 @@ using System.Collections.Generic;
 
 namespace Com.Kumulos.Abstractions
 {
-    public class PushChannels
-    {
-        private readonly HttpClient httpClient;
-        private readonly string installId;
+	public class PushChannels
+	{
+		private readonly HttpClient httpClient;
+		private readonly string installId;
 
-        public PushChannels(string installId, HttpClient httpClient)
-        {
-            this.installId = installId;
-            this.httpClient = httpClient;
-        }
+		public PushChannels(string installId, HttpClient httpClient)
+		{
+			this.installId = installId;
+			this.httpClient = httpClient;
+		}
 
-       public async Task<object> ListChannels()
-        {
-            var uri = new Uri(string.Format("{0}/app-installs/{1}/channels", Consts.PUSH_SERVICE_BASE_URI, installId));
+		public async Task<object> ListChannels()
+		{
+			var uri = new Uri(string.Format("{0}/app-installs/{1}/channels", Consts.PUSH_SERVICE_BASE_URI, installId));
 
-            HttpResponseMessage request = await httpClient.GetAsync(uri);
+			HttpResponseMessage request = await httpClient.GetAsync(uri);
 
-            if (request.IsSuccessStatusCode)
-            {
-                var responseContent = request.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject(responseContent);
+			if (request.IsSuccessStatusCode)
+			{
+				var responseContent = request.Content.ReadAsStringAsync().Result;
+				return JsonConvert.DeserializeObject(responseContent);
 
-            }
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        public async Task<object> CreateChannel(string uuid, bool subscribe, string name, bool showInPortal, Dictionary<string, object> meta)
-        {
-            var uri = new Uri(string.Format("{0}/channels", Consts.PUSH_SERVICE_BASE_URI));
+		public async Task<object> CreateChannel(string uuid, bool subscribe, string name, bool showInPortal, Dictionary<string, object> meta)
+		{
+			var uri = new Uri(string.Format("{0}/channels", Consts.PUSH_SERVICE_BASE_URI));
 
-            JObject payload = new JObject();
-            payload.Add("uuid", uuid);
-            payload.Add("showInPortal", showInPortal);
+			JObject payload = new JObject();
+			payload.Add("uuid", uuid);
+			payload.Add("showInPortal", showInPortal);
 
-            payload.Add("name", name);
+			payload.Add("name", name);
 
 
-            if (subscribe == true)
-            {
-                payload.Add("installId", installId);
-            }
+			if (subscribe == true)
+			{
+				payload.Add("installId", installId);
+			}
 
-            var content = new StringContent(payload.ToString(), Encoding.UTF8, "application/json");
+			var content = new StringContent(payload.ToString(), Encoding.UTF8, "application/json");
 
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
-            requestMessage.Headers.Add("Accept", "application/json");
-            requestMessage.Content = content;
+			var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
+			requestMessage.Headers.Add("Accept", "application/json");
+			requestMessage.Content = content;
 
-            HttpResponseMessage request = await httpClient.SendAsync(requestMessage);
+			HttpResponseMessage request = await httpClient.SendAsync(requestMessage);
 
-            if (request.IsSuccessStatusCode)
-            {
-                var responseContent = request.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject(responseContent);
-            }
+			if (request.IsSuccessStatusCode)
+			{
+				var responseContent = request.Content.ReadAsStringAsync().Result;
+				return JsonConvert.DeserializeObject(responseContent);
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        public async Task<object> Subscribe(string[] uuids)
-        {
+		public async Task<object> Subscribe(string[] uuids)
+		{
+			return await MakeSubscriptionNetworkRequest(HttpMethod.Post, this.GetSubcriptionPayload(uuids));
+		}
 
-            return await MakeSubscriptionNetworkRequest(HttpMethod.Post, JsonConvert.SerializeObject(uuids));
-        }
+		public async Task<object> Unsubscribe(string[] uuids)
+		{
+			return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, this.GetSubcriptionPayload(uuids));
+		}
 
-        public async Task<object> Unsubscribe(string[] uuids)
-        {
-            return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, JsonConvert.SerializeObject(uuids));
-        }
+		public async Task<object> SetSubscriptions(string[] uuids)
+		{
+			return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, this.GetSubcriptionPayload(uuids));
+		}
 
-        public async Task<object> SetSubscriptions(string[] uuids)
-        {
-            return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, JsonConvert.SerializeObject(uuids));
-        }
+		public async Task<object> ClearSubscriptions()
+		{
+			return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, "");
+		}
 
-        public async Task<object> ClearSubscriptions()
-        {
-            return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, "");
-        }
+		private string GetSubcriptionPayload(string[] uuids)
+		{
+			return JsonConvert.SerializeObject(new JObject(new JProperty("uuids", uuids)));
+		}
 
-        private async Task<object> MakeSubscriptionNetworkRequest(HttpMethod method, string payload)
-        {
-            var uri = new Uri(string.Format("{0}/app-installs/{1}/channels/subscriptions", Consts.PUSH_SERVICE_BASE_URI, installId));
-            var requestMessage = new HttpRequestMessage(method, uri);
+		private async Task<object> MakeSubscriptionNetworkRequest(HttpMethod method, string payload)
+		{
+			var uri = new Uri(string.Format("{0}/app-installs/{1}/channels/subscriptions", Consts.PUSH_SERVICE_BASE_URI, installId));
+			var requestMessage = new HttpRequestMessage(method, uri);
 
-            requestMessage.Headers.Add("Accept", "application/json");
-            requestMessage.Content = new StringContent(payload, Encoding.UTF8, "application/json");
+			requestMessage.Headers.Add("Accept", "application/json");
+			requestMessage.Content = new StringContent(payload, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage request = await httpClient.SendAsync(requestMessage);
-            if (request.IsSuccessStatusCode)
-            {
-                var responseContent = request.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject(responseContent);
-            }
+			HttpResponseMessage request = await httpClient.SendAsync(requestMessage);
+			if (request.IsSuccessStatusCode)
+			{
+				var responseContent = request.Content.ReadAsStringAsync().Result;
+				return JsonConvert.DeserializeObject(responseContent);
+			}
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 }
