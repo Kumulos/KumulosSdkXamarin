@@ -85,7 +85,7 @@ namespace Com.Kumulos.Abstractions
 
 		public async Task<object> ClearSubscriptions()
 		{
-			return await MakeSubscriptionNetworkRequest(HttpMethod.Delete, "");
+			return await SetSubscriptions(new string[] { });
 		}
 
 		private string GetSubcriptionPayload(string[] uuids)

@@ -12,3 +12,5 @@ Com.Kumulos.Android/obj
 Kumulos.Android.Binding/bin
 Kumulos.Android.Binding/obj
 MyAndroidTestApp/bin
+packages/
+*.nupkg
