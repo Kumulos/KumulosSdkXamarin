@@ -53,7 +53,7 @@ namespace Com.Kumulos.Android
         {
             Log.Info(TAG, "Push received");
 
-            if (pushMessage.IsBackgroundPush)
+            if (pushMessage.RunBackgroundHandler())
             {
                 Intent serviceIntent = GetBackgroundPushServiceIntent(context, pushMessage);
 
@@ -101,9 +101,7 @@ namespace Com.Kumulos.Android
         protected void OnPushOpened(Context context, PushMessage pushMessage)
         {
             Log.Info(TAG, "Push opened");
-
-            Com.Kumulos.Kumulos.Current.TrackNotificationOpen(pushMessage.Id);
-
+            
             Intent launchIntent = GetPushOpenActivityIntent(context, pushMessage);
 
             if (null == launchIntent)

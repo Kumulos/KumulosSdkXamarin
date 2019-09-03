@@ -201,27 +201,6 @@ namespace Com.Kumulos
             File.Delete(filename);
         }
 
-        public bool IsGooglePlayServicesAvailable()
-        {
-            int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(Application.Context.ApplicationContext);
-            return resultCode == ConnectionResult.Success;
-        }
-
-        public void TrackNotificationOpen(string notificationId)
-        {
-            Android.Kumulos.PushTrackOpen(Application.Context.ApplicationContext, notificationId);
-        }
-
-        public void RegisterDeviceToken(object NSDataDeviceToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void TrackNotificationOpen(object NSDictionaryInfo)
-        {
-            throw new NotImplementedException();
-        }
-
         public void TrackiBeaconProximity(object CLBeaconObject)
         {
             throw new NotImplementedException("This method should not be called on Android");
