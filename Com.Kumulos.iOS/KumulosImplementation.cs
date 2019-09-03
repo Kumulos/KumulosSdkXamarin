@@ -67,7 +67,13 @@ namespace Com.Kumulos
             }
         }
 
-        public InAppInboxItem[] InboxItems => throw new NotImplementedException();
+        public InAppInboxItem[] InboxItems { get
+            {
+                var iosInboxItems = iOS.KumulosInApp.InboxItems;
+
+                return new InAppInboxItem[0];
+            }
+        }
 
         public void RegisterForRemoteNotifications()
         {
