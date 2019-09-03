@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using Android.Gms.Common;
+using Java.Util;
 
 namespace Com.Kumulos
 {
@@ -19,8 +20,6 @@ namespace Com.Kumulos
         public Build Build { get; private set; }
 
         public PushChannels PushChannels { get; private set; }
-
-        public Crash Crash => throw new NotImplementedException();
 
         public void Initialize(IKSConfig config)
         {
@@ -66,7 +65,53 @@ namespace Com.Kumulos
             }
         }
 
-        public InAppInboxItem[] InboxItems => throw new NotImplementedException();
+        public void UpdateInAppConsentForUser(bool consentGiven)
+        {
+            Android.KumulosInApp.UpdateConsentForUser(consentGiven);
+        }
+
+        public InAppInboxItem[] InboxItems
+        {
+            get
+            {
+                var androidInboxItems = Android.KumulosInApp.GetInboxItems(Application.Context.ApplicationContext);
+                var inboxItems = new InAppInboxItem[androidInboxItems.Count];
+
+                Java.Util.Date d = new Java.Util.Date();
+
+
+                for (var i = 0; i < androidInboxItems.Count; i++)
+                {
+                    var androidInboxItem = androidInboxItems[i];
+                    inboxItems[i] = new InAppInboxItem(
+                        (int)androidInboxItem.Id,
+                        androidInboxItem.Title,
+                        androidInboxItem.Subtitle,
+                        FromJavaDate(androidInboxItem.AvailableFrom),
+                        FromJavaDate(androidInboxItem.AvailableTo),
+                        FromJavaDate(androidInboxItem.DismissedAt)
+                    );
+                }
+
+                return inboxItems;
+            }
+        }
+
+        public DateTime? FromJavaDate(Date javaDate)
+        {
+            if (javaDate == null)
+            {
+                return null;
+            }
+
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddMilliseconds(javaDate.Time);
+        }
+
+        public InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item)
+        {
+            throw new NotImplementedException();
+        }
 
         public void RegisterForRemoteNotifications()
         {
@@ -202,20 +247,10 @@ namespace Com.Kumulos
 
             File.Delete(filename);
         }
-                
+
         public void TrackiBeaconProximity(object CLBeaconObject)
         {
             throw new NotImplementedException("This method should not be called on Android");
-        }
-
-        public void UpdateInAppConsentForUser(bool consentGiven)
-        {
-            throw new NotImplementedException();
-        }
-
-        public InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item)
-        {
-            throw new NotImplementedException();
         }
     }
 }
