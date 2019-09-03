@@ -66,6 +66,8 @@ namespace Com.Kumulos
             }
         }
 
+        public InAppInboxItem[] InboxItems => throw new NotImplementedException();
+
         public void RegisterForRemoteNotifications()
         {
             Android.Kumulos.PushRegister(Application.Context.ApplicationContext);
@@ -200,10 +202,20 @@ namespace Com.Kumulos
 
             File.Delete(filename);
         }
-
+                
         public void TrackiBeaconProximity(object CLBeaconObject)
         {
             throw new NotImplementedException("This method should not be called on Android");
+        }
+
+        public void UpdateInAppConsentForUser(bool consentGiven)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

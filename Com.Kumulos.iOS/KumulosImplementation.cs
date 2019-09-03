@@ -28,7 +28,7 @@ namespace Com.Kumulos
             var iosKSConfig = (KSConfigImplementation)config;
 
             thisRef = iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
-
+            
             var httpClient = new HttpClient();
 
             httpClient.MaxResponseContentBufferSize = 256000;
@@ -67,6 +67,8 @@ namespace Com.Kumulos
             }
         }
 
+        public InAppInboxItem[] InboxItems => throw new NotImplementedException();
+
         public void RegisterForRemoteNotifications()
         {
             var center = UNUserNotificationCenter.Current;
@@ -81,14 +83,12 @@ namespace Com.Kumulos
 
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
         }
-
-      
+              
         public void UnregisterDeviceToken()
         {
             iOS.Kumulos_Push.PushUnregister(thisRef);
         }
 
-      
         public void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
             var nsDict = ConvertDictionaryToNSDictionary(properties);
@@ -251,6 +251,19 @@ namespace Com.Kumulos
             throw new NotImplementedException("This method should not be called on iOS");
         }
 
-       
+        public void TrackNotificationOpen(string notificationId)
+        {
+            throw new NotImplementedException("This method should not be called on iOS");
+        }
+
+        public void UpdateInAppConsentForUser(bool consentGiven)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

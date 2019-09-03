@@ -16,6 +16,11 @@ namespace Com.Kumulos.Abstractions
         void RegisterForRemoteNotifications();
         void UnregisterDeviceToken();
 
+        void UpdateInAppConsentForUser(bool consentGiven);
+
+        InAppInboxItem[] InboxItems { get; }
+        InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item);
+
         void TrackEvent(string eventType, Dictionary<string, object> properties);
         void TrackEventImmediately(string eventType, Dictionary<string, object> properties);
 
