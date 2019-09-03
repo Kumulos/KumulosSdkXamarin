@@ -110,9 +110,44 @@ namespace Com.Kumulos
 
         public InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item)
         {
-            throw new NotImplementedException();
+            var nativeItem = FindInboxItemForDTO(item);
+            var r = Android.KumulosInApp.PresentInboxMessage(Application.Context.ApplicationContext, nativeItem);
+
+            return MapPresentationResult(r);
         }
 
+        private Android.InAppInboxItem FindInboxItemForDTO(InAppInboxItem item)
+        {
+            var androidInboxItems = Android.KumulosInApp.GetInboxItems(Application.Context.ApplicationContext);
+            for (var i = 0; i < androidInboxItems.Count; i++)
+            {
+                if (androidInboxItems[i].Id == item.Id)
+                {
+                    return androidInboxItems[i];
+                }
+            }
+            throw new Exception("Failed to find inbox item for DTO");
+        }
+
+        private InAppMessagePresentationResult MapPresentationResult(Android.KumulosInApp.InboxMessagePresentationResult r)
+        {
+            if (r == Android.KumulosInApp.InboxMessagePresentationResult.Presented)
+            {
+                return InAppMessagePresentationResult.Presented;
+            }
+            if (r == Android.KumulosInApp.InboxMessagePresentationResult.FailedExpired)
+            {
+                return InAppMessagePresentationResult.Expired;
+            }
+
+            if (r == Android.KumulosInApp.InboxMessagePresentationResult.Failed)
+            {
+                return InAppMessagePresentationResult.Failed;
+            }
+
+            throw new Exception("Failed to map InAppMessagePresentationResult");
+        }
+        
         public void RegisterForRemoteNotifications()
         {
             Android.Kumulos.PushRegister(Application.Context.ApplicationContext);
