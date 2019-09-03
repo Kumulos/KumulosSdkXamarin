@@ -4,7 +4,7 @@
     {
         IKSConfig AddKeys(string apiKey, string secretKey);
         IKSConfig EnableCrashReporting();
-        IKSConfig SetSessionIdleTimeout(int timeoutSeconds);
+        IKSConfig EnableInAppMessaging(InAppConsentStrategy consentStrategy);
 
         string GetApiKey();
         string GetSecretKey();
