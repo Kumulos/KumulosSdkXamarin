@@ -1,13 +1,14 @@
-﻿using Com.Kumulos.Abstractions;
+﻿using System;
+using Com.Kumulos.Abstractions;
 using Foundation;
 
 namespace Com.Kumulos
 {
-    public class KSConfigImplementation : Abstractions.IKSConfig
+    public class KSConfigImplementation : IKSConfig
     {
         private string apiKey, secretKey;
         private bool enableCrashReporting;
-        private int timeoutSeconds;
+        private InAppConsentStrategy consentStrategy = InAppConsentStrategy.NotEnabled;
 
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
@@ -23,9 +24,9 @@ namespace Com.Kumulos
             return this;
         }
 
-        public IKSConfig SetSessionIdleTimeout(int timeoutSeconds)
+        public IKSConfig EnableInAppMessaging(InAppConsentStrategy consentStrategy)
         {
-            this.timeoutSeconds = timeoutSeconds;
+            this.consentStrategy = consentStrategy;
             return this;
         }
 
@@ -38,6 +39,11 @@ namespace Com.Kumulos
                 specificConfig.EnableCrashReporting();
             }
 
+            if (consentStrategy != InAppConsentStrategy.NotEnabled)
+            {
+                specificConfig.EnableInAppMessaging(GetInAppConsentStrategy());
+            }
+            
             var sdkKeys = new object[] { "id", "version" };
             var sdkValues = new object[] { Consts.SDK_TYPE, Consts.SDK_VERSION };
 
@@ -52,7 +58,24 @@ namespace Com.Kumulos
 
             specificConfig.SetRuntimeInfo(runtimeInfo);
 
+            specificConfig.EnableCrashReporting();
+            
             return specificConfig;
+        }
+
+        private iOS.KSInAppConsentStrategy GetInAppConsentStrategy()
+        {
+            if (consentStrategy == InAppConsentStrategy.AutoEnroll)
+            {
+                return iOS.KSInAppConsentStrategy.AutoEnroll;
+            }
+
+            if (consentStrategy == InAppConsentStrategy.ExplicitByUser)
+            {
+                return iOS.KSInAppConsentStrategy.ExplicitByUser;
+            }
+
+            throw new Exception("Invalid InAppConsent strategy");
         }
 
         public string GetApiKey()

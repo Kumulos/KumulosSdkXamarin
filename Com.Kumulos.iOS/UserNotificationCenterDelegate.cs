@@ -33,11 +33,5 @@ namespace Com.Kumulos
             completionHandler(UNNotificationPresentationOptions.Alert);
 
         }
-
-        public override void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
-        {
-            NSDictionary userInfo = response.Notification.Request.Content.UserInfo;
-            sdkRef.TrackNotificationOpen(userInfo);
-        }
     }
 }

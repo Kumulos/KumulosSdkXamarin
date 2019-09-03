@@ -82,21 +82,13 @@ namespace Com.Kumulos
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
         }
 
-        public void RegisterDeviceToken(object NSDataDeviceToken)
-        {
-            iOS.Kumulos_Push.PushRegisterWithDeviceToken(thisRef, (NSData)NSDataDeviceToken);
-        }
-
+      
         public void UnregisterDeviceToken()
         {
             iOS.Kumulos_Push.PushUnregister(thisRef);
         }
 
-        public void TrackNotificationOpen(object NSDictionaryUserInfo)
-        {
-            iOS.Kumulos_Push.PushTrackOpenFromNotification(thisRef, (NSDictionary)NSDictionaryUserInfo);
-        }
-
+      
         public void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
             var nsDict = ConvertDictionaryToNSDictionary(properties);
@@ -259,14 +251,6 @@ namespace Com.Kumulos
             throw new NotImplementedException("This method should not be called on iOS");
         }
 
-        public bool IsGooglePlayServicesAvailable()
-        {
-            throw new NotImplementedException("This method should not be called on iOS");
-        }
-
-        public void TrackNotificationOpen(string notificationId)
-        {
-            throw new NotImplementedException("This method should not be called on iOS");
-        }
+       
     }
 }
