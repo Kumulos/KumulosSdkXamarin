@@ -67,12 +67,71 @@ namespace Com.Kumulos
             }
         }
 
+        public void UpdateInAppConsentForUser(bool consentGiven)
+        {
+            iOS.KumulosInApp.UpdateConsentForUser(consentGiven);
+        }
+
         public InAppInboxItem[] InboxItems { get
             {
                 var iosInboxItems = iOS.KumulosInApp.InboxItems;
+                var inboxItems = new InAppInboxItem[iosInboxItems.Length];
 
-                return new InAppInboxItem[0];
+
+                for(var i = 0; i < iosInboxItems.Length; i++)
+                {
+                    var iosInboxItem = iosInboxItems[i];
+                    inboxItems[i] = new InAppInboxItem(
+                        (int)iosInboxItem.Id,
+                        iosInboxItem.Title,
+                        iosInboxItem.Subtitle,
+                        (DateTime)iosInboxItem.AvailableFrom,
+                        (DateTime)iosInboxItem.AvailableTo,
+                        (DateTime)iosInboxItem.DismissedAt
+                    );
+                }
+
+                return inboxItems;
             }
+        }
+
+        public InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item)
+        {
+            var nativeItem = FindInboxItemForDTO(item);
+            var r = iOS.KumulosInApp.PresentInboxMessage(nativeItem);
+
+            return MapPresentationResult(r);
+        }
+
+        private iOS.KSInAppInboxItem FindInboxItemForDTO(InAppInboxItem item)
+        {
+            var iosInboxItems = iOS.KumulosInApp.InboxItems;
+            for (var i = 0; i < iosInboxItems.Length; i++)
+            {
+                if ((int)iosInboxItems[i].Id == item.Id)
+                {
+                    return iosInboxItems[i];
+                }
+            }
+            throw new Exception("Failed to find inbox item for DTO");
+        }
+
+        private InAppMessagePresentationResult MapPresentationResult(iOS.KSInAppMessagePresentationResult r)
+        {
+            if (r == iOS.KSInAppMessagePresentationResult.Presented)
+            {
+                return InAppMessagePresentationResult.Presented;
+            }
+            if (r == iOS.KSInAppMessagePresentationResult.Expired) {
+                return InAppMessagePresentationResult.Expired;
+            }
+
+            if (r == iOS.KSInAppMessagePresentationResult.Failed)
+            {
+                return InAppMessagePresentationResult.Failed;
+            }
+
+            throw new Exception("Failed to map InAppMessagePresentationResult");
         }
 
         public void RegisterForRemoteNotifications()
@@ -255,21 +314,6 @@ namespace Com.Kumulos
         public void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, double distanceMetres)
         {
             throw new NotImplementedException("This method should not be called on iOS");
-        }
-
-        public void TrackNotificationOpen(string notificationId)
-        {
-            throw new NotImplementedException("This method should not be called on iOS");
-        }
-
-        public void UpdateInAppConsentForUser(bool consentGiven)
-        {
-            throw new NotImplementedException();
-        }
-
-        public InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item)
-        {
-            throw new NotImplementedException();
         }
     }
 }
