@@ -18,7 +18,10 @@ namespace Com.Kumulos.Android
         public const string ACTION_PUSH_RECEIVED = "com.kumulos.push.RECEIVED";
         public const string ACTION_PUSH_OPENED = "com.kumulos.push.OPENED";
 
+        public const string EXTRAS_KEY_TICKLE_ID = "com.kumulos.inapp.tickle.id";
+
         const string DEFAULT_CHANNEL_ID = "general";
+        protected const string KUMULOS_NOTIFICATION_TAG = "kumulos";
 
         public override void OnReceive(Context context, Intent intent)
         {
@@ -53,21 +56,17 @@ namespace Com.Kumulos.Android
         {
             Log.Info(TAG, "Push received");
 
+            PushTrackDelivered(context, pushMessage);
+
+            MaybeTriggerInAppSync(context, pushMessage);
+
             if (pushMessage.RunBackgroundHandler())
             {
-                Intent serviceIntent = GetBackgroundPushServiceIntent(context, pushMessage);
-
-                if (null == serviceIntent)
-                {
-                    return;
-                }
-
-                context.StartService(serviceIntent);
-                return;
+                RunBackgroundHandler(context, pushMessage);
             }
             else if (!pushMessage.HasTitleAndMessage)
             {
-                // Non-background pushes should always have a title & message otherwise we can't show a notification
+                // Always show Notification if has title + message
                 return;
             }
 
@@ -86,8 +85,90 @@ namespace Com.Kumulos.Android
                 return;
             }
 
-            // TODO fix this in 2038 when we run out of time
-            notificationManager.Notify((int)pushMessage.TimeSent, notification);
+
+            notificationManager.Notify(KUMULOS_NOTIFICATION_TAG, GetNotificationId(pushMessage), notification);
+        }
+
+        protected void PushTrackDelivered(Context context, PushMessage pushMessage)
+        {
+            /* try
+             {
+                 JSONObject params = new JSONObject();
+                 params.put("type", AnalyticsContract.MESSAGE_TYPE_PUSH);
+                 params.put("id", pushMessage.getId());
+
+                 Kumulos.trackEvent(context, AnalyticsContract.EVENT_TYPE_MESSAGE_DELIVERED, params);
+             }
+             catch (JSONException e)
+             {
+                 Kumulos.log(TAG, e.toString());
+             }*/
+        }
+
+        protected void MaybeTriggerInAppSync(Context context, PushMessage pushMessage)
+        {
+            /* if (!KumulosInApp.isInAppEnabled())
+             {
+                 return;
+             }*/
+
+            /*  int tickleId = pushMessage.getTickleId();
+              if (tickleId == -1)
+              {
+                  return;
+              }
+
+              new Thread(new Runnable()
+              {
+              public void run()
+              {
+                  InAppMessageService.fetch(context, false);
+              }
+          }).start();*/
+        }
+
+        private int GetNotificationId(PushMessage pushMessage)
+        {
+            /*int tickleId = pushMessage.getTickleId();
+            if (tickleId == -1)
+            {
+                // TODO fix this in 2038 when we run out of time
+                return (int)pushMessage.getTimeSent();
+            }
+            return tickleId;*/
+            return 0;
+        }
+
+        private void RunBackgroundHandler(Context context, PushMessage pushMessage)
+        {
+            Intent serviceIntent = GetBackgroundPushServiceIntent(context, pushMessage);
+
+            if (null == serviceIntent)
+            {
+                return;
+            }
+
+            /*ComponentName component = serviceIntent.GetComponent();
+            if (null == component)
+            {
+                Log.Info(TAG, "Service intent did not specify a component, ignoring.");
+                return;
+            }
+
+           /* Class <? extends Service > cls = null;
+            try
+            {
+                cls = (Class <? extends Service >) Class.forName(component.getClassName());
+            }
+            catch (ClassNotFoundException e)
+            {
+                Kumulos.log(TAG, "Service intent to handle a data push was provided, but it is not for a Service, check: " + component.getClassName());
+            }
+
+            if (null != cls)
+            {
+                context.startService(serviceIntent);
+            }*/
         }
 
         /**
@@ -101,7 +182,16 @@ namespace Com.Kumulos.Android
         protected void OnPushOpened(Context context, PushMessage pushMessage)
         {
             Log.Info(TAG, "Push opened");
-            
+
+            try
+            {
+                Android.Kumulos.PushTrackOpen(context, pushMessage.Id);
+            }
+            catch (Android.Kumulos.UninitializedException e)
+            {
+                Log.Info(TAG, "Failed to track the push opening -- Kumulos is not initialized");
+            }
+
             Intent launchIntent = GetPushOpenActivityIntent(context, pushMessage);
 
             if (null == launchIntent)
@@ -202,6 +292,28 @@ namespace Com.Kumulos.Android
         }
 
         /**
+     * Used to add Kumulos extras when overriding buildNotification and providing own launch intent
+     *
+     * @param pushMessage
+     * @param launchIntent
+     */
+        protected static void AddDeepLinkExtras(PushMessage pushMessage, Intent launchIntent)
+        {
+             /*if (!KumulosInApp.isInAppEnabled)
+              {
+                  return;
+              }
+
+              int tickleId = pushMessage.GetTickleId();
+              if (tickleId == -1)
+              {
+                  return;
+              }*/
+
+              //launchIntent.putExtra(EXTRAS_KEY_TICKLE_ID, tickleId);
+        }
+
+        /**
          * Returns the Intent to launch when a push notification is opened from the notification drawer.
          * <p/>
          * The Intent must specify an Activity component or it will be ignored.
@@ -214,11 +326,12 @@ namespace Com.Kumulos.Android
          */
         protected virtual Intent GetPushOpenActivityIntent(Context context, PushMessage pushMessage)
         {
-            Intent launchIntent = context.PackageManager.GetLaunchIntentForPackage(context.PackageName);
+            return null;
+            /*Intent launchIntent = context.PackageManager.GetLaunchIntentForPackage(context.PackageName);
             if (null == launchIntent) { return null; }
 
             launchIntent.PutExtra(PushMessage.ExtrasKey, pushMessage);
-            return launchIntent;
+            return launchIntent;*/
         }
 
         /**
