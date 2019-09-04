@@ -8,6 +8,7 @@ using Android.Net;
 using Java.Lang;
 using Android.Runtime;
 using Newtonsoft.Json;
+using Org.Json;
 
 namespace Com.Kumulos.Android
 {
@@ -18,7 +19,8 @@ namespace Com.Kumulos.Android
         public const string ACTION_PUSH_RECEIVED = "com.kumulos.push.RECEIVED";
         public const string ACTION_PUSH_OPENED = "com.kumulos.push.OPENED";
 
-        public const string EXTRAS_KEY_TICKLE_ID = "com.kumulos.inapp.tickle.id";
+        private const string EXTRAS_KEY_TICKLE_ID = "com.kumulos.inapp.tickle.id";
+        private const int DEEP_LINK_TYPE_IN_APP = 1;
 
         const string DEFAULT_CHANNEL_ID = "general";
         protected const string KUMULOS_NOTIFICATION_TAG = "kumulos";
@@ -107,10 +109,10 @@ namespace Com.Kumulos.Android
 
         protected void MaybeTriggerInAppSync(Context context, PushMessage pushMessage)
         {
-            /* if (!KumulosInApp.isInAppEnabled())
+            /* if (!KumulosInApp.IsInAppEnabled)
              {
                  return;
-             }*/
+             }
 
             /*  int tickleId = pushMessage.getTickleId();
               if (tickleId == -1)
@@ -129,17 +131,44 @@ namespace Com.Kumulos.Android
 
         private int GetNotificationId(PushMessage pushMessage)
         {
-            /*int tickleId = pushMessage.getTickleId();
+            int tickleId = GetTickleId(pushMessage);
             if (tickleId == -1)
             {
                 // TODO fix this in 2038 when we run out of time
-                return (int)pushMessage.getTimeSent();
+                return (int)pushMessage.TimeSent;
             }
-            return tickleId;*/
-            return 0;
+            return tickleId;
         }
 
-        private void RunBackgroundHandler(Context context, PushMessage pushMessage)
+        private int GetTickleId(PushMessage pushMessage)
+        {
+            JSONObject data = pushMessage.Data;
+            JSONObject deepLink = data.OptJSONObject("k.deepLink");
+
+            if (deepLink == null)
+            {
+                return -1;
+            }
+
+            int linkType = deepLink.OptInt("type", -1);
+
+            if (linkType != DEEP_LINK_TYPE_IN_APP)
+            {
+                return -1;
+            }
+
+            try
+            {
+                return deepLink.GetJSONObject("data").GetInt("id");
+            }
+            catch (JSONException e)
+            {
+                Log.Info(TAG, e.ToString());
+                return -1;
+            }
+        }
+
+private void RunBackgroundHandler(Context context, PushMessage pushMessage)
         {
             Intent serviceIntent = GetBackgroundPushServiceIntent(context, pushMessage);
 
@@ -326,12 +355,12 @@ namespace Com.Kumulos.Android
          */
         protected virtual Intent GetPushOpenActivityIntent(Context context, PushMessage pushMessage)
         {
-            return null;
-            /*Intent launchIntent = context.PackageManager.GetLaunchIntentForPackage(context.PackageName);
+            
+            Intent launchIntent = context.PackageManager.GetLaunchIntentForPackage(context.PackageName);
             if (null == launchIntent) { return null; }
 
             launchIntent.PutExtra(PushMessage.ExtrasKey, pushMessage);
-            return launchIntent;*/
+            return launchIntent;
         }
 
         /**
