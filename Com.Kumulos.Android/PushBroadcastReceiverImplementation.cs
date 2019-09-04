@@ -27,6 +27,9 @@ namespace Com.Kumulos.Android
 
         private const string EVENT_TYPE_MESSAGE_DELIVERED = "k.message.delivered";
 
+        private const string PREFS_FILE = "kumulos_prefs";
+        private const string IN_APP_ENABLED_PREFERENCE = "in_app_enabled";
+
         const string DEFAULT_CHANNEL_ID = "general";
         protected const string KUMULOS_NOTIFICATION_TAG = "kumulos";
 
@@ -114,24 +117,30 @@ namespace Com.Kumulos.Android
 
         protected void MaybeTriggerInAppSync(Context context, PushMessage pushMessage)
         {
-            /* if (!KumulosInApp.IsInAppEnabled)
-             {
-                 return;
-             }
+            if (!IsInAppEnabled())
+            {
+                return;
+            }
 
-            /*  int tickleId = pushMessage.getTickleId();
-              if (tickleId == -1)
-              {
-                  return;
-              }
+            int tickleId = GetTickleId(pushMessage);
+            if (tickleId == -1)
+            {
+                return;
+            }
 
-              new Thread(new Runnable()
-              {
+            /*new Thread(new Runnable()
+            {
               public void run()
-              {
-                  InAppMessageService.fetch(context, false);
-              }
-          }).start();*/
+            {
+                InAppMessageService.fetch(context, false);
+            }
+            }).start();*/
+        }
+
+        private static bool IsInAppEnabled()
+        {
+            var prefs = Application.Context.ApplicationContext.GetSharedPreferences(PREFS_FILE, FileCreationMode.Private);
+            return prefs.GetBoolean(IN_APP_ENABLED_PREFERENCE, false);
         }
 
         private int GetNotificationId(PushMessage pushMessage)
@@ -145,7 +154,7 @@ namespace Com.Kumulos.Android
             return tickleId;
         }
 
-        private int GetTickleId(PushMessage pushMessage)
+        private static int GetTickleId(PushMessage pushMessage)
         {
             JSONObject data = pushMessage.Data;
             JSONObject deepLink = data.OptJSONObject("k.deepLink");
@@ -326,18 +335,18 @@ namespace Com.Kumulos.Android
      */
         protected static void AddDeepLinkExtras(PushMessage pushMessage, Intent launchIntent)
         {
-            /*if (!KumulosInApp.isInAppEnabled)
-             {
-                 return;
-             }
+            if (IsInAppEnabled())
+            {
+                return;
+            }
 
-             int tickleId = pushMessage.GetTickleId();
-             if (tickleId == -1)
-             {
-                 return;
-             }*/
+            int tickleId = GetTickleId(pushMessage);
+            if (tickleId == -1)
+            {
+                return;
+            }
 
-            //launchIntent.putExtra(EXTRAS_KEY_TICKLE_ID, tickleId);
+            launchIntent.PutExtra(EXTRAS_KEY_TICKLE_ID, tickleId);
         }
 
         /**
