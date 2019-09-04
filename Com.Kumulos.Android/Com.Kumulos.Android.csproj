@@ -98,7 +98,6 @@
     <Compile Include="..\Com.Kumulos\Kumulos.cs">
       <Link>Kumulos.cs</Link>
     </Compile>
-    <Compile Include="PushBroadcastReceiverImplementation.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
