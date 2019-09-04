@@ -10,6 +10,10 @@ namespace Com.Kumulos
         private bool enableCrashReporting;
         private InAppConsentStrategy consentStrategy = InAppConsentStrategy.NotEnabled;
 
+        private iOS.KSInAppDeepLinkHandlerBlock deepLinkHandler;
+        private iOS.KSPushOpenedHandlerBlock notificationHandler;
+        private iOS.KSPushReceivedInForegroundHandlerBlock receivedHandler;
+
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
             this.apiKey = apiKey;
@@ -30,6 +34,24 @@ namespace Com.Kumulos
             return this;
         }
 
+        public IKSConfig SetInAppDeepLinkHandler(iOS.KSInAppDeepLinkHandlerBlock deepLinkHandler)
+        {
+            this.deepLinkHandler = deepLinkHandler;
+            return this;
+        }
+
+        public IKSConfig SetPushOpenedHandler(iOS.KSPushOpenedHandlerBlock notificationHandler)
+        {
+            this.notificationHandler = notificationHandler;
+            return this;
+        }
+
+        public IKSConfig SetPushReceivedInForegroundHandler(iOS.KSPushReceivedInForegroundHandlerBlock receivedHandler)
+        {
+            this.receivedHandler = receivedHandler;
+            return this;
+        }
+
         public iOS.KSConfig Build()
         {
             var specificConfig = iOS.KSConfig.ConfigWithAPIKey(apiKey, secretKey);
@@ -42,6 +64,21 @@ namespace Com.Kumulos
             if (consentStrategy != InAppConsentStrategy.NotEnabled)
             {
                 specificConfig.EnableInAppMessaging(GetInAppConsentStrategy());
+            }
+
+            if (deepLinkHandler != null)
+            {
+                specificConfig.SetInAppDeepLinkHandler(deepLinkHandler);
+            }
+
+            if (notificationHandler != null)
+            {
+                specificConfig.SetPushOpenedHandler(notificationHandler);
+            }
+
+            if (receivedHandler != null)
+            {
+                specificConfig.SetPushReceivedInForegroundHandler(receivedHandler);
             }
             
             var sdkKeys = new object[] { "id", "version" };
@@ -87,5 +124,8 @@ namespace Com.Kumulos
         {
             return secretKey;
         }
+
+        
+        
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using CoreLocation;
 
-namespace Com.Kumulos
+namespace Com.Kumulos.Samples
 {
     public class LocationUpdatedEventArgs : EventArgs
     {
