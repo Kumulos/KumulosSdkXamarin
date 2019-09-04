@@ -22,6 +22,11 @@ namespace Com.Kumulos.Android
         private const string EXTRAS_KEY_TICKLE_ID = "com.kumulos.inapp.tickle.id";
         private const int DEEP_LINK_TYPE_IN_APP = 1;
 
+        private const int MESSAGE_TYPE_PUSH = 1;
+        private const int MESSAGE_TYPE_IN_APP = 2;
+
+        private const string EVENT_TYPE_MESSAGE_DELIVERED = "k.message.delivered";
+
         const string DEFAULT_CHANNEL_ID = "general";
         protected const string KUMULOS_NOTIFICATION_TAG = "kumulos";
 
@@ -93,18 +98,18 @@ namespace Com.Kumulos.Android
 
         protected void PushTrackDelivered(Context context, PushMessage pushMessage)
         {
-            /* try
-             {
-                 JSONObject params = new JSONObject();
-                 params.put("type", AnalyticsContract.MESSAGE_TYPE_PUSH);
-                 params.put("id", pushMessage.getId());
+            try
+            {
+                JSONObject parameters = new JSONObject();
+                parameters.Put("type", MESSAGE_TYPE_PUSH);
+                parameters.Put("id", pushMessage.Id);
 
-                 Kumulos.trackEvent(context, AnalyticsContract.EVENT_TYPE_MESSAGE_DELIVERED, params);
-             }
-             catch (JSONException e)
-             {
-                 Kumulos.log(TAG, e.toString());
-             }*/
+                Kumulos.TrackEvent(context, EVENT_TYPE_MESSAGE_DELIVERED, parameters);
+            }
+            catch (JSONException e)
+            {
+                Log.Info(TAG, e.ToString());
+            }
         }
 
         protected void MaybeTriggerInAppSync(Context context, PushMessage pushMessage)
@@ -168,7 +173,7 @@ namespace Com.Kumulos.Android
             }
         }
 
-private void RunBackgroundHandler(Context context, PushMessage pushMessage)
+        private void RunBackgroundHandler(Context context, PushMessage pushMessage)
         {
             Intent serviceIntent = GetBackgroundPushServiceIntent(context, pushMessage);
 
@@ -177,27 +182,20 @@ private void RunBackgroundHandler(Context context, PushMessage pushMessage)
                 return;
             }
 
-            /*ComponentName component = serviceIntent.GetComponent();
+            ComponentName component = serviceIntent.Component;
             if (null == component)
             {
                 Log.Info(TAG, "Service intent did not specify a component, ignoring.");
                 return;
             }
 
-           /* Class <? extends Service > cls = null;
-            try
+            if (!component.GetType().IsSubclassOf(typeof(Service)))
             {
-                cls = (Class <? extends Service >) Class.forName(component.getClassName());
-            }
-            catch (ClassNotFoundException e)
-            {
-                Kumulos.log(TAG, "Service intent to handle a data push was provided, but it is not for a Service, check: " + component.getClassName());
+                Log.Info(TAG, "Service intent to handle a data push was provided, but it is not for a Service, check: " + component.ClassName);
+                return;
             }
 
-            if (null != cls)
-            {
-                context.startService(serviceIntent);
-            }*/
+            context.StartService(serviceIntent);
         }
 
         /**
@@ -328,18 +326,18 @@ private void RunBackgroundHandler(Context context, PushMessage pushMessage)
      */
         protected static void AddDeepLinkExtras(PushMessage pushMessage, Intent launchIntent)
         {
-             /*if (!KumulosInApp.isInAppEnabled)
-              {
-                  return;
-              }
+            /*if (!KumulosInApp.isInAppEnabled)
+             {
+                 return;
+             }
 
-              int tickleId = pushMessage.GetTickleId();
-              if (tickleId == -1)
-              {
-                  return;
-              }*/
+             int tickleId = pushMessage.GetTickleId();
+             if (tickleId == -1)
+             {
+                 return;
+             }*/
 
-              //launchIntent.putExtra(EXTRAS_KEY_TICKLE_ID, tickleId);
+            //launchIntent.putExtra(EXTRAS_KEY_TICKLE_ID, tickleId);
         }
 
         /**
@@ -355,7 +353,7 @@ private void RunBackgroundHandler(Context context, PushMessage pushMessage)
          */
         protected virtual Intent GetPushOpenActivityIntent(Context context, PushMessage pushMessage)
         {
-            
+
             Intent launchIntent = context.PackageManager.GetLaunchIntentForPackage(context.PackageName);
             if (null == launchIntent) { return null; }
 
