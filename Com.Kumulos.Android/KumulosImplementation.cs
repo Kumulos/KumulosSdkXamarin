@@ -1,17 +1,16 @@
 ﻿using System;
-using Com.Kumulos.Abstractions;
-using Android.App;
-using System.Net.Http.Headers;
-using System.Net.Http;
 using System.Collections.Generic;
-using Org.Json;
-using Android.Locations;
+using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Android.App;
+using Android.Locations;
+using Com.Kumulos.Abstractions;
+using Java.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Diagnostics;
-using Android.Gms.Common;
-using Java.Util;
+using Org.Json;
 
 namespace Com.Kumulos
 {
@@ -81,9 +80,6 @@ namespace Com.Kumulos
             {
                 var androidInboxItems = Android.KumulosInApp.GetInboxItems(Application.Context.ApplicationContext);
                 var inboxItems = new InAppInboxItem[androidInboxItems.Count];
-
-                Java.Util.Date d = new Java.Util.Date();
-
 
                 for (var i = 0; i < androidInboxItems.Count; i++)
                 {
