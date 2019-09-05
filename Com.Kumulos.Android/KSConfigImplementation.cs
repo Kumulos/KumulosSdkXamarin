@@ -84,7 +84,5 @@ namespace Com.Kumulos
         {
             return secretKey;
         }
-
-        
     }
 }
