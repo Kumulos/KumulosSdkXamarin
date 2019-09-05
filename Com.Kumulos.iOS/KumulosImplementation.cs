@@ -78,22 +78,33 @@ namespace Com.Kumulos
             {
                 var iosInboxItems = iOS.KumulosInApp.InboxItems;
                 var inboxItems = new InAppInboxItem[iosInboxItems.Length];
-                
+
                 for (var i = 0; i < iosInboxItems.Length; i++)
                 {
                     var iosInboxItem = iosInboxItems[i];
+
                     inboxItems[i] = new InAppInboxItem(
                         (int)iosInboxItem.Id,
                         iosInboxItem.Title,
                         iosInboxItem.Subtitle,
-                        (DateTime)iosInboxItem.AvailableFrom,
-                        (DateTime)iosInboxItem.AvailableTo,
-                        (DateTime)iosInboxItem.DismissedAt
+                        GetDateTimeFromNSDate(iosInboxItem.AvailableFrom),
+                        GetDateTimeFromNSDate(iosInboxItem.AvailableTo),
+                        GetDateTimeFromNSDate(iosInboxItem.DismissedAt)
                     );
                 }
 
                 return inboxItems;
             }
+        }
+
+        private DateTime? GetDateTimeFromNSDate(NSDate d)
+        {
+            if (d == null)
+            {
+                return null;
+            }
+
+            return (DateTime)d;
         }
 
         public InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item)
