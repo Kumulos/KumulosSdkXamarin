@@ -95,8 +95,6 @@ namespace Com.Kumulos
 
             specificConfig.SetRuntimeInfo(runtimeInfo);
 
-            specificConfig.EnableCrashReporting();
-            
             return specificConfig;
         }
 
