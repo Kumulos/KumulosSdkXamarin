@@ -6,7 +6,7 @@
         IKSConfig EnableCrashReporting();
         IKSConfig EnableInAppMessaging(InAppConsentStrategy consentStrategy);
 
-        IKSConfig SetInAppDeepLinkHandler(IINAppDeepLinkHandler inAppDeepLinkHandler);
+        IKSConfig SetInAppDeepLinkHandler(IInAppDeepLinkHandler inAppDeepLinkHandler);
         
         string GetApiKey();
         string GetSecretKey();

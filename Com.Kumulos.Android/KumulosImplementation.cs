@@ -18,9 +18,9 @@ namespace Com.Kumulos
 {
     public class DeepLinkHandlerAbstraction : Java.Lang.Object, Android.IInAppDeepLinkHandlerInterface
     {
-        private IINAppDeepLinkHandler handler;
+        private IInAppDeepLinkHandler handler;
 
-        public DeepLinkHandlerAbstraction(IINAppDeepLinkHandler handler)
+        public DeepLinkHandlerAbstraction(IInAppDeepLinkHandler handler)
         {
             this.handler = handler;
         }

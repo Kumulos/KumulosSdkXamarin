@@ -10,7 +10,7 @@ namespace Com.Kumulos
         private string apiKey, secretKey;
         private Abstractions.InAppConsentStrategy consentStrategy = Abstractions.InAppConsentStrategy.NotEnabled;
 
-        public Abstractions.IINAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
+        public Abstractions.IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
 
         public Abstractions.IKSConfig AddKeys(string apiKey, string secretKey)
         {
@@ -31,7 +31,7 @@ namespace Com.Kumulos
             return this;
         }
 
-        public Abstractions.IKSConfig SetInAppDeepLinkHandler(Abstractions.IINAppDeepLinkHandler inAppDeepLinkHandler)
+        public Abstractions.IKSConfig SetInAppDeepLinkHandler(Abstractions.IInAppDeepLinkHandler inAppDeepLinkHandler)
         {
             InAppDeepLinkHandler = inAppDeepLinkHandler;
             return this;

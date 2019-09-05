@@ -13,7 +13,7 @@ namespace Com.Kumulos
         private iOS.KSPushOpenedHandlerBlock notificationHandler;
         private iOS.KSPushReceivedInForegroundHandlerBlock receivedHandler;
 
-        protected IINAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
+        protected IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
 
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
@@ -35,7 +35,7 @@ namespace Com.Kumulos
             return this;
         }
 
-        public IKSConfig SetInAppDeepLinkHandler(IINAppDeepLinkHandler inAppDeepLinkHandler)
+        public IKSConfig SetInAppDeepLinkHandler(IInAppDeepLinkHandler inAppDeepLinkHandler)
         {
             InAppDeepLinkHandler = inAppDeepLinkHandler;
             return this;

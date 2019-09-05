@@ -2,7 +2,7 @@
 
 namespace Com.Kumulos.Abstractions
 {
-    public interface IINAppDeepLinkHandler
+    public interface IInAppDeepLinkHandler
     {
         void Handle(JObject data);
     }
