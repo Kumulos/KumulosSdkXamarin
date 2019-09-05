@@ -28,7 +28,7 @@ namespace Com.Kumulos
             var iosKSConfig = (KSConfigImplementation)config;
 
             thisRef = iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
-            
+
             var httpClient = new HttpClient();
 
             httpClient.MaxResponseContentBufferSize = 256000;
@@ -72,13 +72,15 @@ namespace Com.Kumulos
             iOS.KumulosInApp.UpdateConsentForUser(consentGiven);
         }
 
-        public InAppInboxItem[] InboxItems { get
+        public InAppInboxItem[] InboxItems
+        {
+            get
             {
                 var iosInboxItems = iOS.KumulosInApp.InboxItems;
                 var inboxItems = new InAppInboxItem[iosInboxItems.Length];
 
 
-                for(var i = 0; i < iosInboxItems.Length; i++)
+                for (var i = 0; i < iosInboxItems.Length; i++)
                 {
                     var iosInboxItem = iosInboxItems[i];
                     inboxItems[i] = new InAppInboxItem(
@@ -122,7 +124,8 @@ namespace Com.Kumulos
             {
                 return InAppMessagePresentationResult.Presented;
             }
-            if (r == iOS.KSInAppMessagePresentationResult.Expired) {
+            if (r == iOS.KSInAppMessagePresentationResult.Expired)
+            {
                 return InAppMessagePresentationResult.Expired;
             }
 
@@ -148,7 +151,7 @@ namespace Com.Kumulos
 
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
         }
-              
+
         public void UnregisterDeviceToken()
         {
             iOS.Kumulos_Push.PushUnregister(thisRef);
