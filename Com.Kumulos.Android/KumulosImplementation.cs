@@ -49,6 +49,11 @@ namespace Com.Kumulos
             }
         }
 
+        public void SetDeepLinkHandler(Android.IInAppDeepLinkHandlerInterface inAppDeepLinkHandler)
+        {
+            Android.KumulosInApp.SetDeepLinkHandler(inAppDeepLinkHandler);
+        }
+
         public string InstallId
         {
             get
