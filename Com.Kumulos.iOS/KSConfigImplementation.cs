@@ -10,8 +10,8 @@ namespace Com.Kumulos
         private string apiKey, secretKey;
         private bool enableCrashReporting;
         private InAppConsentStrategy consentStrategy = InAppConsentStrategy.NotEnabled;
-        private iOS.KSPushOpenedHandlerBlock notificationHandler;
-        private iOS.KSPushReceivedInForegroundHandlerBlock receivedHandler;
+        private iOS.KSPushOpenedHandlerBlock pushOpenedHandlerBlock;
+        private iOS.KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandlerBlock;
 
         protected IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
 
@@ -41,15 +41,15 @@ namespace Com.Kumulos
             return this;
         }
 
-        public IKSConfig SetPushOpenedHandler(iOS.KSPushOpenedHandlerBlock notificationHandler)
+        public IKSConfig SetPushOpenedHandler(iOS.KSPushOpenedHandlerBlock pushOpenedHandlerBlock)
         {
-            this.notificationHandler = notificationHandler;
+            this.pushOpenedHandlerBlock = pushOpenedHandlerBlock;
             return this;
         }
 
-        public IKSConfig SetPushReceivedInForegroundHandler(iOS.KSPushReceivedInForegroundHandlerBlock receivedHandler)
+        public IKSConfig SetPushReceivedInForegroundHandler(iOS.KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandlerBlock)
         {
-            this.receivedHandler = receivedHandler;
+            this.pushReceivedInForegroundHandlerBlock = pushReceivedInForegroundHandlerBlock;
             return this;
         }
 
@@ -67,14 +67,14 @@ namespace Com.Kumulos
                 specificConfig.EnableInAppMessaging(GetInAppConsentStrategy());
             }
 
-            if (notificationHandler != null)
+            if (pushOpenedHandlerBlock != null)
             {
-                specificConfig.SetPushOpenedHandler(notificationHandler);
+                specificConfig.SetPushOpenedHandler(pushOpenedHandlerBlock);
             }
 
-            if (receivedHandler != null)
+            if (pushReceivedInForegroundHandlerBlock != null)
             {
-                specificConfig.SetPushReceivedInForegroundHandler(receivedHandler);
+                specificConfig.SetPushReceivedInForegroundHandler(pushReceivedInForegroundHandlerBlock);
             }
 
             if (InAppDeepLinkHandler != null)
