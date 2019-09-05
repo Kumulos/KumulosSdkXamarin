@@ -78,8 +78,7 @@ namespace Com.Kumulos
             {
                 var iosInboxItems = iOS.KumulosInApp.InboxItems;
                 var inboxItems = new InAppInboxItem[iosInboxItems.Length];
-
-
+                
                 for (var i = 0; i < iosInboxItems.Length; i++)
                 {
                     var iosInboxItem = iosInboxItems[i];
