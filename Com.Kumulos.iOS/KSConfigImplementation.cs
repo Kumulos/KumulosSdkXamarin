@@ -80,7 +80,7 @@ namespace Com.Kumulos
             {
                 specificConfig.SetPushReceivedInForegroundHandler(receivedHandler);
             }
-            
+
             var sdkKeys = new object[] { "id", "version" };
             var sdkValues = new object[] { Consts.SDK_TYPE, Consts.SDK_VERSION };
 
