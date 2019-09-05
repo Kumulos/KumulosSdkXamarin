@@ -1,6 +1,7 @@
 ﻿using System;
 using Com.Kumulos.Abstractions;
 using Foundation;
+using Newtonsoft.Json.Linq;
 
 namespace Com.Kumulos
 {
@@ -9,10 +10,10 @@ namespace Com.Kumulos
         private string apiKey, secretKey;
         private bool enableCrashReporting;
         private InAppConsentStrategy consentStrategy = InAppConsentStrategy.NotEnabled;
-
-        private iOS.KSInAppDeepLinkHandlerBlock deepLinkHandler;
         private iOS.KSPushOpenedHandlerBlock notificationHandler;
         private iOS.KSPushReceivedInForegroundHandlerBlock receivedHandler;
+
+        protected IINAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
 
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
@@ -34,9 +35,9 @@ namespace Com.Kumulos
             return this;
         }
 
-        public IKSConfig SetInAppDeepLinkHandler(iOS.KSInAppDeepLinkHandlerBlock deepLinkHandler)
+        public IKSConfig SetInAppDeepLinkHandler(IINAppDeepLinkHandler inAppDeepLinkHandler)
         {
-            this.deepLinkHandler = deepLinkHandler;
+            InAppDeepLinkHandler = inAppDeepLinkHandler;
             return this;
         }
 
@@ -66,11 +67,6 @@ namespace Com.Kumulos
                 specificConfig.EnableInAppMessaging(GetInAppConsentStrategy());
             }
 
-            if (deepLinkHandler != null)
-            {
-                specificConfig.SetInAppDeepLinkHandler(deepLinkHandler);
-            }
-
             if (notificationHandler != null)
             {
                 specificConfig.SetPushOpenedHandler(notificationHandler);
@@ -79,6 +75,18 @@ namespace Com.Kumulos
             if (receivedHandler != null)
             {
                 specificConfig.SetPushReceivedInForegroundHandler(receivedHandler);
+            }
+
+            if (InAppDeepLinkHandler != null)
+            {
+                specificConfig.SetInAppDeepLinkHandler((NSDictionary target) =>
+                {
+                    NSError e = new NSError();
+                    NSData d = NSJsonSerialization.Serialize(target, NSJsonWritingOptions.PrettyPrinted, out e);
+                    JObject o = JObject.Parse(d.ToString());
+
+                    InAppDeepLinkHandler.Handle(o);
+                });
             }
 
             var sdkKeys = new object[] { "id", "version" };
@@ -122,5 +130,7 @@ namespace Com.Kumulos
         {
             return secretKey;
         }
+
+
     }
 }

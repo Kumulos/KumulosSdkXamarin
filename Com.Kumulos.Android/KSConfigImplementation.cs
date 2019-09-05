@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.OS;
+
 using Org.Json;
 
 namespace Com.Kumulos
@@ -8,6 +9,8 @@ namespace Com.Kumulos
     {
         private string apiKey, secretKey;
         private Abstractions.InAppConsentStrategy consentStrategy = Abstractions.InAppConsentStrategy.NotEnabled;
+
+        public Abstractions.IINAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
 
         public Abstractions.IKSConfig AddKeys(string apiKey, string secretKey)
         {
@@ -25,6 +28,12 @@ namespace Com.Kumulos
         public Abstractions.IKSConfig EnableInAppMessaging(Abstractions.InAppConsentStrategy consentStrategy)
         {
             this.consentStrategy = consentStrategy;
+            return this;
+        }
+
+        public Abstractions.IKSConfig SetInAppDeepLinkHandler(Abstractions.IINAppDeepLinkHandler inAppDeepLinkHandler)
+        {
+            InAppDeepLinkHandler = inAppDeepLinkHandler;
             return this;
         }
 
@@ -76,5 +85,7 @@ namespace Com.Kumulos
         {
             return secretKey;
         }
+
+        
     }
 }

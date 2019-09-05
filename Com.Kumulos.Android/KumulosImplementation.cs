@@ -5,8 +5,10 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Android.App;
+using Android.Content;
 using Android.Locations;
 using Com.Kumulos.Abstractions;
+
 using Java.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,6 +16,21 @@ using Org.Json;
 
 namespace Com.Kumulos
 {
+    public class DeepLinkHandlerAbstraction : Java.Lang.Object, Android.IInAppDeepLinkHandlerInterface
+    {
+        private IINAppDeepLinkHandler handler;
+
+        public DeepLinkHandlerAbstraction(IINAppDeepLinkHandler handler)
+        {
+            this.handler = handler;
+        }
+
+        void Android.IInAppDeepLinkHandlerInterface.Handle(Context context, JSONObject data)
+        {
+            handler.Handle(JObject.Parse(data.ToString()));
+        }
+    }
+
     public class KumulosImplementation : IKumulos
     {
         public Build Build { get; private set; }
@@ -25,6 +42,11 @@ namespace Com.Kumulos
             var androidConfig = (KSConfigImplementation)config;
 
             Android.Kumulos.Initialize((Application)Application.Context.ApplicationContext, androidConfig.GetConfig());
+
+            if (androidConfig.InAppDeepLinkHandler != null)
+            {
+                Android.KumulosInApp.SetDeepLinkHandler(new DeepLinkHandlerAbstraction(androidConfig.InAppDeepLinkHandler));
+            }
 
             var httpClient = new HttpClient();
 
@@ -46,11 +68,6 @@ namespace Com.Kumulos
             {
                 //- Don't cause further exceptions trying to log exceptions.
             }
-        }
-
-        public void SetDeepLinkHandler(Android.IInAppDeepLinkHandlerInterface inAppDeepLinkHandler)
-        {
-            Android.KumulosInApp.SetDeepLinkHandler(inAppDeepLinkHandler);
         }
 
         public string InstallId
