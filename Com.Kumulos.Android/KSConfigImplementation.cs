@@ -1,6 +1,5 @@
 ﻿using System;
 using Android.OS;
-
 using Org.Json;
 
 namespace Com.Kumulos
