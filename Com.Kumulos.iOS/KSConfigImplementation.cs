@@ -30,7 +30,6 @@ namespace Com.Kumulos
             return this;
         }
 
-
         public IKSConfig SetSessionIdleTimeout(int timeoutSeconds)
         {
             this.timeoutSeconds = timeoutSeconds;
