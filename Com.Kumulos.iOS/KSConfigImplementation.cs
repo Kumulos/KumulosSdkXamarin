@@ -1,13 +1,20 @@
-﻿using Com.Kumulos.Abstractions;
+﻿using System;
+using Com.Kumulos.Abstractions;
 using Foundation;
+using Newtonsoft.Json.Linq;
 
 namespace Com.Kumulos
 {
-    public class KSConfigImplementation : Abstractions.IKSConfig
+    public class KSConfigImplementation : IKSConfig
     {
         private string apiKey, secretKey;
         private bool enableCrashReporting;
-        private int timeoutSeconds;
+        private int timeoutSeconds = -1;
+        private InAppConsentStrategy consentStrategy = InAppConsentStrategy.NotEnabled;
+        private iOS.KSPushOpenedHandlerBlock pushOpenedHandlerBlock;
+        private iOS.KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandlerBlock;
+
+        protected IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
 
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
@@ -29,6 +36,30 @@ namespace Com.Kumulos
             return this;
         }
 
+        public IKSConfig EnableInAppMessaging(InAppConsentStrategy consentStrategy)
+        {
+            this.consentStrategy = consentStrategy;
+            return this;
+        }
+
+        public IKSConfig SetInAppDeepLinkHandler(IInAppDeepLinkHandler inAppDeepLinkHandler)
+        {
+            InAppDeepLinkHandler = inAppDeepLinkHandler;
+            return this;
+        }
+
+        public IKSConfig SetPushOpenedHandler(iOS.KSPushOpenedHandlerBlock pushOpenedHandlerBlock)
+        {
+            this.pushOpenedHandlerBlock = pushOpenedHandlerBlock;
+            return this;
+        }
+
+        public IKSConfig SetPushReceivedInForegroundHandler(iOS.KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandlerBlock)
+        {
+            this.pushReceivedInForegroundHandlerBlock = pushReceivedInForegroundHandlerBlock;
+            return this;
+        }
+
         public iOS.KSConfig Build()
         {
             var specificConfig = iOS.KSConfig.ConfigWithAPIKey(apiKey, secretKey);
@@ -36,6 +67,38 @@ namespace Com.Kumulos
             if (enableCrashReporting)
             {
                 specificConfig.EnableCrashReporting();
+            }
+
+            if (timeoutSeconds > -1)
+            {
+                specificConfig.SetSessionIdleTimeout((nuint)timeoutSeconds);
+            }
+
+            if (consentStrategy != InAppConsentStrategy.NotEnabled)
+            {
+                specificConfig.EnableInAppMessaging(GetInAppConsentStrategy());
+            }
+
+            if (pushOpenedHandlerBlock != null)
+            {
+                specificConfig.SetPushOpenedHandler(pushOpenedHandlerBlock);
+            }
+
+            if (pushReceivedInForegroundHandlerBlock != null)
+            {
+                specificConfig.SetPushReceivedInForegroundHandler(pushReceivedInForegroundHandlerBlock);
+            }
+
+            if (InAppDeepLinkHandler != null)
+            {
+                specificConfig.SetInAppDeepLinkHandler((NSDictionary target) =>
+                {
+                    NSError e = new NSError();
+                    NSData d = NSJsonSerialization.Serialize(target, NSJsonWritingOptions.PrettyPrinted, out e);
+                    JObject o = JObject.Parse(d.ToString());
+
+                    InAppDeepLinkHandler.Handle(o);
+                });
             }
 
             var sdkKeys = new object[] { "id", "version" };
@@ -53,6 +116,21 @@ namespace Com.Kumulos
             specificConfig.SetRuntimeInfo(runtimeInfo);
 
             return specificConfig;
+        }
+
+        private iOS.KSInAppConsentStrategy GetInAppConsentStrategy()
+        {
+            if (consentStrategy == InAppConsentStrategy.AutoEnroll)
+            {
+                return iOS.KSInAppConsentStrategy.AutoEnroll;
+            }
+
+            if (consentStrategy == InAppConsentStrategy.ExplicitByUser)
+            {
+                return iOS.KSInAppConsentStrategy.ExplicitByUser;
+            }
+
+            throw new Exception("Invalid InAppConsent strategy");
         }
 
         public string GetApiKey()

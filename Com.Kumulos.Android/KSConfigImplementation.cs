@@ -7,7 +7,10 @@ namespace Com.Kumulos
     public class KSConfigImplementation : Abstractions.IKSConfig
     {
         private string apiKey, secretKey;
-        private int timeoutSeconds;
+        private int timeoutSeconds = -1;
+        private Abstractions.InAppConsentStrategy consentStrategy = Abstractions.InAppConsentStrategy.NotEnabled;
+
+        public Abstractions.IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
 
         public Abstractions.IKSConfig AddKeys(string apiKey, string secretKey)
         {
@@ -28,9 +31,31 @@ namespace Com.Kumulos
             return this;
         }
 
+        public Abstractions.IKSConfig EnableInAppMessaging(Abstractions.InAppConsentStrategy consentStrategy)
+        {
+            this.consentStrategy = consentStrategy;
+            return this;
+        }
+
+        public Abstractions.IKSConfig SetInAppDeepLinkHandler(Abstractions.IInAppDeepLinkHandler inAppDeepLinkHandler)
+        {
+            InAppDeepLinkHandler = inAppDeepLinkHandler;
+            return this;
+        }
+
         public Android.KumulosConfig GetConfig()
         {
             var specificConfig = new Android.KumulosConfig.Builder(apiKey, secretKey);
+
+            if (timeoutSeconds > -1)
+            {
+                specificConfig.SetSessionIdleTimeoutSeconds(timeoutSeconds);
+            }
+
+            if (consentStrategy != Abstractions.InAppConsentStrategy.NotEnabled)
+            {
+                specificConfig.EnableInAppMessaging(GetInAppConsentStrategy());
+            }
 
             JSONObject sdkInfo = new JSONObject();
             sdkInfo.Put("id", Abstractions.Consts.SDK_TYPE);
@@ -45,6 +70,21 @@ namespace Com.Kumulos
             specificConfig.SetRuntimeInfo(runtimeInfo);
 
             return specificConfig.Build();
+        }
+
+        private Android.KumulosConfig.InAppConsentStrategy GetInAppConsentStrategy()
+        {
+            if (consentStrategy == Abstractions.InAppConsentStrategy.AutoEnroll)
+            {
+                return Android.KumulosConfig.InAppConsentStrategy.AutoEnroll;
+            }
+
+            if (consentStrategy == Abstractions.InAppConsentStrategy.ExplicitByUser)
+            {
+                return Android.KumulosConfig.InAppConsentStrategy.ExplicitByUser;
+            }
+
+            throw new Exception("Invalid InAppConsent strategy");
         }
 
         public string GetApiKey()

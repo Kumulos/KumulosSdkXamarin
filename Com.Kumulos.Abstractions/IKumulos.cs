@@ -14,11 +14,12 @@ namespace Com.Kumulos.Abstractions
         PushChannels PushChannels { get; }
 
         void RegisterForRemoteNotifications();
-        void RegisterDeviceToken(object NSDataDeviceToken);
         void UnregisterDeviceToken();
 
-        void TrackNotificationOpen(object NSDictionaryInfo);
-        void TrackNotificationOpen(string notificationId);
+        void UpdateInAppConsentForUser(bool consentGiven);
+
+        InAppInboxItem[] InboxItems { get; }
+        InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item);
 
         void TrackEvent(string eventType, Dictionary<string, object> properties);
         void TrackEventImmediately(string eventType, Dictionary<string, object> properties);
@@ -34,7 +35,5 @@ namespace Com.Kumulos.Abstractions
 
         void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, double distanceMetres);
         void TrackiBeaconProximity(object CLBeaconObject);
-
-        bool IsGooglePlayServicesAvailable();
     }
 }

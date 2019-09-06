@@ -2,6 +2,7 @@ using System;
 using CoreLocation;
 using Foundation;
 using ObjCRuntime;
+using UserNotifications;
 
 namespace Com.Kumulos.iOS
 {
@@ -10,6 +11,18 @@ namespace Com.Kumulos.iOS
 
     // typedef void (^ _Nullable)(NSError * _Nonnull, KSAPIOperation * _Nonnull) KSAPIOperationFailureBlock;
     delegate void KSAPIOperationFailureBlock(NSError arg0, KSAPIOperation arg1);
+
+    // typedef void (^ _Nullable)(NSDictionary * _Nonnull) KSInAppDeepLinkHandlerBlock;
+    delegate void KSInAppDeepLinkHandlerBlock(NSDictionary arg0);
+
+    // typedef void (^ _Nullable)(KSPushNotification * _Nonnull) KSPushOpenedHandlerBlock;
+    delegate void KSPushOpenedHandlerBlock(KSPushNotification arg0);
+
+    // typedef void (^ _Nonnull)(UNNotificationPresentationOptions) KSPushReceivedInForegroundCompletionHandler;
+    delegate void KSPushReceivedInForegroundCompletionHandler(UNNotificationPresentationOptions arg0);
+
+    // typedef void (^ _Nullable)(KSPushNotification * _Nonnull, KSPushReceivedInForegroundCompletionHandler) KSPushReceivedInForegroundHandlerBlock;
+    delegate void KSPushReceivedInForegroundHandlerBlock(KSPushNotification arg0, KSPushReceivedInForegroundCompletionHandler arg1);
 
     // @interface KSConfig : NSObject
     [BaseType(typeof(NSObject))]
@@ -44,6 +57,23 @@ namespace Com.Kumulos.iOS
         [Export("targetType")]
         KSTargetType TargetType { get; }
 
+        // @property (readonly, nonatomic) KSInAppConsentStrategy inAppConsentStrategy;
+        [Export("inAppConsentStrategy")]
+        KSInAppConsentStrategy InAppConsentStrategy { get; }
+
+        // @property (readonly, nonatomic) KSInAppDeepLinkHandlerBlock inAppDeepLinkHandler;
+        [NullAllowed, Export("inAppDeepLinkHandler")]
+        KSInAppDeepLinkHandlerBlock InAppDeepLinkHandler { get; }
+
+        // @property (readonly, nonatomic) KSPushOpenedHandlerBlock pushOpenedHandler;
+        [NullAllowed, Export("pushOpenedHandler")]
+        KSPushOpenedHandlerBlock PushOpenedHandler { get; }
+
+        // @property (readonly, nonatomic) KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandler __attribute__((availability(ios, introduced=10.0))) __attribute__((availability(macos, introduced=10.14)));
+        [Mac(10, 14), iOS(10, 0)]
+        [NullAllowed, Export("pushReceivedInForegroundHandler")]
+        KSPushReceivedInForegroundHandlerBlock PushReceivedInForegroundHandler { get; }
+
         // +(instancetype _Nullable)configWithAPIKey:(NSString * _Nonnull)APIKey andSecretKey:(NSString * _Nonnull)secretKey;
         [Static]
         [Export("configWithAPIKey:andSecretKey:")]
@@ -53,6 +83,23 @@ namespace Com.Kumulos.iOS
         // -(instancetype _Nonnull)enableCrashReporting;
         [Export("enableCrashReporting")]
         KSConfig EnableCrashReporting();
+
+        // -(instancetype _Nonnull)enableInAppMessaging:(KSInAppConsentStrategy)consentStrategy;
+        [Export("enableInAppMessaging:")]
+        KSConfig EnableInAppMessaging(KSInAppConsentStrategy consentStrategy);
+
+        // -(instancetype _Nonnull)setInAppDeepLinkHandler:(KSInAppDeepLinkHandlerBlock)deepLinkHandler;
+        [Export("setInAppDeepLinkHandler:")]
+        KSConfig SetInAppDeepLinkHandler([NullAllowed] KSInAppDeepLinkHandlerBlock deepLinkHandler);
+
+        // -(instancetype _Nonnull)setPushOpenedHandler:(KSPushOpenedHandlerBlock)notificationHandler;
+        [Export("setPushOpenedHandler:")]
+        KSConfig SetPushOpenedHandler([NullAllowed] KSPushOpenedHandlerBlock notificationHandler);
+
+        // -(instancetype _Nonnull)setPushReceivedInForegroundHandler:(KSPushReceivedInForegroundHandlerBlock)receivedHandler __attribute__((availability(ios, introduced=10.0))) __attribute__((availability(macos, introduced=10.14)));
+        [Mac(10, 14), iOS(10, 0)]
+        [Export("setPushReceivedInForegroundHandler:")]
+        KSConfig SetPushReceivedInForegroundHandler([NullAllowed] KSPushReceivedInForegroundHandlerBlock receivedHandler);
 
         // -(instancetype _Nonnull)setSessionIdleTimeout:(NSUInteger)timeoutSeconds;
         [Export("setSessionIdleTimeout:")]
@@ -124,6 +171,36 @@ namespace Com.Kumulos.iOS
         KSAPIOperation CallMethod(string method, [NullAllowed] NSDictionary @params, [NullAllowed] KSAPIOperationDelegate @delegate);
     }
 
+    // @interface KSPushNotification : NSObject
+    [BaseType(typeof(NSObject))]
+    interface KSPushNotification
+    {
+        // +(instancetype _Nonnull)fromUserInfo:(NSDictionary * _Nonnull)userInfo;
+        [Static]
+        [Export("fromUserInfo:")]
+        KSPushNotification FromUserInfo(NSDictionary userInfo);
+
+        // @property (readonly, nonatomic) NSNumber * _Nonnull id;
+        [Export("id")]
+        NSNumber Id { get; }
+
+        // @property (readonly, nonatomic) NSDictionary * _Nonnull aps;
+        [Export("aps")]
+        NSDictionary Aps { get; }
+
+        // @property (readonly, nonatomic) NSDictionary * _Nonnull data;
+        [Export("data")]
+        NSDictionary Data { get; }
+
+        // @property (readonly, nonatomic) NSURL * _Nullable url;
+        [NullAllowed, Export("url")]
+        NSUrl Url { get; }
+
+        // @property (readonly, nonatomic) NSDictionary * _Nullable inAppDeepLink;
+        [NullAllowed, Export("inAppDeepLink")]
+        NSDictionary InAppDeepLink { get; }
+    }
+
     // @interface Push (Kumulos)
     [Category]
     [BaseType(typeof(Kumulos))]
@@ -141,9 +218,9 @@ namespace Com.Kumulos.iOS
         [Export("pushUnregister")]
         void PushUnregister();
 
-        // -(void)pushTrackOpenFromNotification:(NSDictionary * _Nullable)userInfo;
+        // -(void)pushTrackOpenFromNotification:(KSPushNotification * _Nullable)notification;
         [Export("pushTrackOpenFromNotification:")]
-        void PushTrackOpenFromNotification([NullAllowed] NSDictionary userInfo);
+        void PushTrackOpenFromNotification([NullAllowed] KSPushNotification notification);
     }
 
     // @interface KSPushChannel : NSObject
@@ -271,8 +348,57 @@ namespace Com.Kumulos.iOS
         string CurrentUserIdentifier { get; }
     }
 
+    // @interface KSInAppInboxItem : NSObject
+    [BaseType(typeof(NSObject))]
+    interface KSInAppInboxItem
+    {
+        // @property (readonly, nonatomic) NSNumber * _Nonnull id;
+        [Export("id")]
+        NSNumber Id { get; }
+
+        // @property (readonly, nonatomic) NSString * _Nonnull title;
+        [Export("title")]
+        string Title { get; }
+
+        // @property (readonly, nonatomic) NSString * _Nonnull subtitle;
+        [Export("subtitle")]
+        string Subtitle { get; }
+
+        // @property (readonly, nonatomic) NSDate * _Nullable availableFrom;
+        [NullAllowed, Export("availableFrom")]
+        NSDate AvailableFrom { get; }
+
+        // @property (readonly, nonatomic) NSDate * _Nullable availableTo;
+        [NullAllowed, Export("availableTo")]
+        NSDate AvailableTo { get; }
+
+        // @property (readonly, nonatomic) NSDate * _Nullable dismissedAt;
+        [NullAllowed, Export("dismissedAt")]
+        NSDate DismissedAt { get; }
+    }
+
+    // @interface KumulosInApp : NSObject
+    [BaseType(typeof(NSObject))]
+    interface KumulosInApp
+    {
+        // +(void)updateConsentForUser:(BOOL)consentGiven;
+        [Static]
+        [Export("updateConsentForUser:")]
+        void UpdateConsentForUser(bool consentGiven);
+
+        // +(NSArray<KSInAppInboxItem *> * _Nonnull)getInboxItems;
+        [Static]
+        [Export("getInboxItems")]
+        KSInAppInboxItem[] InboxItems { get; }
+
+        // +(KSInAppMessagePresentationResult)presentInboxMessage:(KSInAppInboxItem * _Nonnull)item;
+        [Static]
+        [Export("presentInboxMessage:")]
+        KSInAppMessagePresentationResult PresentInboxMessage(KSInAppInboxItem item);
+    }
+
     // @protocol KSAPIOperationDelegate <NSObject>
-    [Protocol, Model]
+    [Protocol, Model(AutoGeneratedName = true)]
     [BaseType(typeof(NSObject))]
     interface KSAPIOperationDelegate
     {

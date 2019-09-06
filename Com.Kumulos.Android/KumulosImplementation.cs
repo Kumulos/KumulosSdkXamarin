@@ -1,32 +1,52 @@
 ﻿using System;
-using Com.Kumulos.Abstractions;
-using Android.App;
-using System.Net.Http.Headers;
-using System.Net.Http;
 using System.Collections.Generic;
-using Org.Json;
-using Android.Locations;
+using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Android.App;
+using Android.Content;
+using Android.Locations;
+using Com.Kumulos.Abstractions;
+
+using Java.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Diagnostics;
-using Android.Gms.Common;
+using Org.Json;
 
 namespace Com.Kumulos
 {
+    public class DeepLinkHandlerAbstraction : Java.Lang.Object, Android.IInAppDeepLinkHandlerInterface
+    {
+        private IInAppDeepLinkHandler handler;
+
+        public DeepLinkHandlerAbstraction(IInAppDeepLinkHandler handler)
+        {
+            this.handler = handler;
+        }
+
+        void Android.IInAppDeepLinkHandlerInterface.Handle(Context context, JSONObject data)
+        {
+            handler.Handle(JObject.Parse(data.ToString()));
+        }
+    }
+
     public class KumulosImplementation : IKumulos
     {
         public Build Build { get; private set; }
 
         public PushChannels PushChannels { get; private set; }
 
-        public Crash Crash => throw new NotImplementedException();
-
         public void Initialize(IKSConfig config)
         {
             var androidConfig = (KSConfigImplementation)config;
 
             Android.Kumulos.Initialize((Application)Application.Context.ApplicationContext, androidConfig.GetConfig());
+
+            if (androidConfig.InAppDeepLinkHandler != null)
+            {
+                Android.KumulosInApp.SetDeepLinkHandler(new DeepLinkHandlerAbstraction(androidConfig.InAppDeepLinkHandler));
+            }
 
             var httpClient = new HttpClient();
 
@@ -66,6 +86,86 @@ namespace Com.Kumulos
             }
         }
 
+        public void UpdateInAppConsentForUser(bool consentGiven)
+        {
+            Android.KumulosInApp.UpdateConsentForUser(consentGiven);
+        }
+
+        public InAppInboxItem[] InboxItems
+        {
+            get
+            {
+                var androidInboxItems = Android.KumulosInApp.GetInboxItems(Application.Context.ApplicationContext);
+                var inboxItems = new InAppInboxItem[androidInboxItems.Count];
+
+                for (var i = 0; i < androidInboxItems.Count; i++)
+                {
+                    var androidInboxItem = androidInboxItems[i];
+                    inboxItems[i] = new InAppInboxItem(
+                        (int)androidInboxItem.Id,
+                        androidInboxItem.Title,
+                        androidInboxItem.Subtitle,
+                        FromJavaDate(androidInboxItem.AvailableFrom),
+                        FromJavaDate(androidInboxItem.AvailableTo),
+                        FromJavaDate(androidInboxItem.DismissedAt)
+                    );
+                }
+
+                return inboxItems;
+            }
+        }
+
+        public DateTime? FromJavaDate(Date javaDate)
+        {
+            if (javaDate == null)
+            {
+                return null;
+            }
+
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddMilliseconds(javaDate.Time);
+        }
+
+        public InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item)
+        {
+            var nativeItem = FindInboxItemForDTO(item);
+            var r = Android.KumulosInApp.PresentInboxMessage(Application.Context.ApplicationContext, nativeItem);
+
+            return MapPresentationResult(r);
+        }
+
+        private Android.InAppInboxItem FindInboxItemForDTO(InAppInboxItem item)
+        {
+            var androidInboxItems = Android.KumulosInApp.GetInboxItems(Application.Context.ApplicationContext);
+            for (var i = 0; i < androidInboxItems.Count; i++)
+            {
+                if (androidInboxItems[i].Id == item.Id)
+                {
+                    return androidInboxItems[i];
+                }
+            }
+            throw new Exception("Failed to find inbox item for DTO");
+        }
+
+        private InAppMessagePresentationResult MapPresentationResult(Android.KumulosInApp.InboxMessagePresentationResult r)
+        {
+            if (r == Android.KumulosInApp.InboxMessagePresentationResult.Presented)
+            {
+                return InAppMessagePresentationResult.Presented;
+            }
+            if (r == Android.KumulosInApp.InboxMessagePresentationResult.FailedExpired)
+            {
+                return InAppMessagePresentationResult.Expired;
+            }
+
+            if (r == Android.KumulosInApp.InboxMessagePresentationResult.Failed)
+            {
+                return InAppMessagePresentationResult.Failed;
+            }
+
+            throw new Exception("Failed to map InAppMessagePresentationResult");
+        }
+        
         public void RegisterForRemoteNotifications()
         {
             Android.Kumulos.PushRegister(Application.Context.ApplicationContext);
@@ -199,27 +299,6 @@ namespace Com.Kumulos
             TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
 
             File.Delete(filename);
-        }
-
-        public bool IsGooglePlayServicesAvailable()
-        {
-            int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(Application.Context.ApplicationContext);
-            return resultCode == ConnectionResult.Success;
-        }
-
-        public void TrackNotificationOpen(string notificationId)
-        {
-            Android.Kumulos.PushTrackOpen(Application.Context.ApplicationContext, notificationId);
-        }
-
-        public void RegisterDeviceToken(object NSDataDeviceToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void TrackNotificationOpen(object NSDictionaryInfo)
-        {
-            throw new NotImplementedException();
         }
 
         public void TrackiBeaconProximity(object CLBeaconObject)

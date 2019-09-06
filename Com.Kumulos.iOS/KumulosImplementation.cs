@@ -67,6 +67,86 @@ namespace Com.Kumulos
             }
         }
 
+        public void UpdateInAppConsentForUser(bool consentGiven)
+        {
+            iOS.KumulosInApp.UpdateConsentForUser(consentGiven);
+        }
+
+        public InAppInboxItem[] InboxItems
+        {
+            get
+            {
+                var iosInboxItems = iOS.KumulosInApp.InboxItems;
+                var inboxItems = new InAppInboxItem[iosInboxItems.Length];
+
+                for (var i = 0; i < iosInboxItems.Length; i++)
+                {
+                    var iosInboxItem = iosInboxItems[i];
+
+                    inboxItems[i] = new InAppInboxItem(
+                        (int)iosInboxItem.Id,
+                        iosInboxItem.Title,
+                        iosInboxItem.Subtitle,
+                        GetDateTimeFromNSDate(iosInboxItem.AvailableFrom),
+                        GetDateTimeFromNSDate(iosInboxItem.AvailableTo),
+                        GetDateTimeFromNSDate(iosInboxItem.DismissedAt)
+                    );
+                }
+
+                return inboxItems;
+            }
+        }
+
+        private DateTime? GetDateTimeFromNSDate(NSDate d)
+        {
+            if (d == null)
+            {
+                return null;
+            }
+
+            return (DateTime)d;
+        }
+
+        public InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item)
+        {
+            var nativeItem = FindInboxItemForDTO(item);
+            var r = iOS.KumulosInApp.PresentInboxMessage(nativeItem);
+
+            return MapPresentationResult(r);
+        }
+
+        private iOS.KSInAppInboxItem FindInboxItemForDTO(InAppInboxItem item)
+        {
+            var iosInboxItems = iOS.KumulosInApp.InboxItems;
+            for (var i = 0; i < iosInboxItems.Length; i++)
+            {
+                if ((int)iosInboxItems[i].Id == item.Id)
+                {
+                    return iosInboxItems[i];
+                }
+            }
+            throw new Exception("Failed to find inbox item for DTO");
+        }
+
+        private InAppMessagePresentationResult MapPresentationResult(iOS.KSInAppMessagePresentationResult r)
+        {
+            if (r == iOS.KSInAppMessagePresentationResult.Presented)
+            {
+                return InAppMessagePresentationResult.Presented;
+            }
+            if (r == iOS.KSInAppMessagePresentationResult.Expired)
+            {
+                return InAppMessagePresentationResult.Expired;
+            }
+
+            if (r == iOS.KSInAppMessagePresentationResult.Failed)
+            {
+                return InAppMessagePresentationResult.Failed;
+            }
+
+            throw new Exception("Failed to map InAppMessagePresentationResult");
+        }
+
         public void RegisterForRemoteNotifications()
         {
             var center = UNUserNotificationCenter.Current;
@@ -82,19 +162,9 @@ namespace Com.Kumulos
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
         }
 
-        public void RegisterDeviceToken(object NSDataDeviceToken)
-        {
-            iOS.Kumulos_Push.PushRegisterWithDeviceToken(thisRef, (NSData)NSDataDeviceToken);
-        }
-
         public void UnregisterDeviceToken()
         {
             iOS.Kumulos_Push.PushUnregister(thisRef);
-        }
-
-        public void TrackNotificationOpen(object NSDictionaryUserInfo)
-        {
-            iOS.Kumulos_Push.PushTrackOpenFromNotification(thisRef, (NSDictionary)NSDictionaryUserInfo);
         }
 
         public void TrackEvent(string eventType, Dictionary<string, object> properties)
@@ -255,16 +325,6 @@ namespace Com.Kumulos
         }
 
         public void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, double distanceMetres)
-        {
-            throw new NotImplementedException("This method should not be called on iOS");
-        }
-
-        public bool IsGooglePlayServicesAvailable()
-        {
-            throw new NotImplementedException("This method should not be called on iOS");
-        }
-
-        public void TrackNotificationOpen(string notificationId)
         {
             throw new NotImplementedException("This method should not be called on iOS");
         }

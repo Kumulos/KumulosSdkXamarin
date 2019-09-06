@@ -11,6 +11,14 @@ namespace Com.Kumulos.iOS
     }
 
     [Native]
+    public enum KSInAppConsentStrategy : long
+    {
+        NotEnabled,
+        AutoEnroll,
+        ExplicitByUser
+    }
+
+    [Native]
     public enum KSErrorCode : long
     {
         NetworkError,
@@ -18,5 +26,13 @@ namespace Com.Kumulos.iOS
         UnknownError,
         ValidationError,
         HttpBadStatus
+    }
+
+    [Native]
+    public enum KSInAppMessagePresentationResult : long
+    {
+        Presented,
+        Expired,
+        Failed
     }
 }
