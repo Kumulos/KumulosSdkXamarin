@@ -24,15 +24,16 @@ namespace Com.Kumulos
             return this;
         }
 
-        public IKSConfig SetSessionIdleTimeout(int timeoutSeconds)
-        {
-            this.timeoutSeconds = timeoutSeconds;
-            return this;
-        }
-
         public IKSConfig EnableCrashReporting()
         {
             enableCrashReporting = true;
+            return this;
+        }
+
+
+        public IKSConfig SetSessionIdleTimeout(int timeoutSeconds)
+        {
+            this.timeoutSeconds = timeoutSeconds;
             return this;
         }
 
