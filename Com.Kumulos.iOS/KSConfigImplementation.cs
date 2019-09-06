@@ -9,6 +9,7 @@ namespace Com.Kumulos
     {
         private string apiKey, secretKey;
         private bool enableCrashReporting;
+        private int timeoutSeconds = -1;
         private InAppConsentStrategy consentStrategy = InAppConsentStrategy.NotEnabled;
         private iOS.KSPushOpenedHandlerBlock pushOpenedHandlerBlock;
         private iOS.KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandlerBlock;
@@ -20,6 +21,12 @@ namespace Com.Kumulos
             this.apiKey = apiKey;
             this.secretKey = secretKey;
 
+            return this;
+        }
+
+        public IKSConfig SetSessionIdleTimeout(int timeoutSeconds)
+        {
+            this.timeoutSeconds = timeoutSeconds;
             return this;
         }
 
@@ -60,6 +67,11 @@ namespace Com.Kumulos
             if (enableCrashReporting)
             {
                 specificConfig.EnableCrashReporting();
+            }
+
+            if (timeoutSeconds > -1)
+            {
+                specificConfig.SetSessionIdleTimeout((nuint)timeoutSeconds);
             }
 
             if (consentStrategy != InAppConsentStrategy.NotEnabled)
@@ -130,7 +142,5 @@ namespace Com.Kumulos
         {
             return secretKey;
         }
-
-
     }
 }

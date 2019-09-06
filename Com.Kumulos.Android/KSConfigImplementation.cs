@@ -7,6 +7,7 @@ namespace Com.Kumulos
     public class KSConfigImplementation : Abstractions.IKSConfig
     {
         private string apiKey, secretKey;
+        private int timeoutSeconds = -1;
         private Abstractions.InAppConsentStrategy consentStrategy = Abstractions.InAppConsentStrategy.NotEnabled;
 
         public Abstractions.IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
@@ -24,6 +25,12 @@ namespace Com.Kumulos
             throw new NotImplementedException("Native crash reporting is not available on Android - please refer to the integration guide.");
         }
 
+        public Abstractions.IKSConfig SetSessionIdleTimeout(int timeoutSeconds)
+        {
+            this.timeoutSeconds = timeoutSeconds;
+            return this;
+        }
+
         public Abstractions.IKSConfig EnableInAppMessaging(Abstractions.InAppConsentStrategy consentStrategy)
         {
             this.consentStrategy = consentStrategy;
@@ -39,6 +46,11 @@ namespace Com.Kumulos
         public Android.KumulosConfig GetConfig()
         {
             var specificConfig = new Android.KumulosConfig.Builder(apiKey, secretKey);
+
+            if (timeoutSeconds > -1)
+            {
+                specificConfig.SetSessionIdleTimeoutSeconds(timeoutSeconds);
+            }
 
             if (consentStrategy != Abstractions.InAppConsentStrategy.NotEnabled)
             {
