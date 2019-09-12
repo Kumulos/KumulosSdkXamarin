@@ -224,5 +224,29 @@ namespace Com.Kumulos
         {
             throw new NotImplementedException("This method should not be called on iOS");
         }
+
+        public override void TrackCrashEvent(JObject report)
+        {
+            var dict = new Dictionary<string, object>
+            {
+                { "format", (string)report["format"] },
+                { "uncaught", (bool)report["uncaught"] }
+            };
+
+            var nestedReport = (JContainer)report["report"];
+
+            var reportDict = new Dictionary<string, object>
+            {
+                { "stackTrace", (string)nestedReport["stackTrace"] },
+                { "message", (string)nestedReport["message"] },
+                { "type", (string)nestedReport["type"] },
+                { "source", (string)nestedReport["source"] },
+                { "lineNumber", (int)nestedReport["lineNumber"] }
+            };
+
+            dict.Add("report", reportDict);
+
+            TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
+        }
     }
 }

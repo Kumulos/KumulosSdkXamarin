@@ -158,26 +158,7 @@ namespace Com.Kumulos.Abstractions
 
         private void TrackCrash(JObject jsonObj)
         {
-            var dict = new Dictionary<string, object>
-            {
-                { "format", (string)jsonObj["format"] },
-                { "uncaught", (bool)jsonObj["uncaught"] }
-            };
-
-            var jsonReportObj = (JContainer)jsonObj["report"];
-
-            var report = new Dictionary<string, object>
-            {
-                { "stackTrace", (string)jsonReportObj["stackTrace"] },
-                { "message", (string)jsonReportObj["message"] },
-                { "type", (string)jsonReportObj["type"] },
-                { "source", (string)jsonReportObj["source"] },
-                { "lineNumber", (int)jsonReportObj["lineNumber"] }
-            };
-
-            dict.Add("report", report);
-
-            TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
+            TrackCrashEvent(jsonObj);
         }
 
         private string GetCrashFilePath()
@@ -188,6 +169,8 @@ namespace Com.Kumulos.Abstractions
 
         public abstract void TrackEvent(string eventType, Dictionary<string, object> properties);
 
+        public abstract void TrackCrashEvent(JObject report);
+        
         public abstract string InstallId { get; }
     }
 }

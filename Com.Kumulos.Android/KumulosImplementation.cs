@@ -201,5 +201,12 @@ namespace Com.Kumulos
         {
             throw new NotImplementedException("This method should not be called on Android");
         }
+
+        public override void TrackCrashEvent(JObject report)
+        {
+            JSONObject javaJson = new JSONObject(JsonConvert.SerializeObject(report, Formatting.None));
+
+            Android.Kumulos.TrackEvent(Application.Context.ApplicationContext, Consts.CRASH_REPORT_EVENT_TYPE, javaJson);
+        }
     }
 }
