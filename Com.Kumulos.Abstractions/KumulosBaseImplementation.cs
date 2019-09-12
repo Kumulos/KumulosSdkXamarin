@@ -31,7 +31,7 @@ namespace Com.Kumulos.Abstractions
             
             try
             {
-                LogPreviousCrash();
+                LogPreviousCrashes();
             }
             catch (Exception e)
             {
@@ -54,8 +54,13 @@ namespace Com.Kumulos.Abstractions
         {
             try
             {
-                var dict = GetDictionaryForException(e, uncaught);
-                WriteCrashToDisk(dict);
+                var newCrash = GetJsonObjectForException(e, uncaught);
+
+                var log = GetCrashLog();
+
+                log.Add(newCrash);
+
+                WriteCrashLogToDisk(log);
             }
             catch (Exception ex)
             {
@@ -63,27 +68,50 @@ namespace Com.Kumulos.Abstractions
             }
         }
 
-        private Dictionary<string, object> GetDictionaryForException(Exception e, bool uncaught)
+        private JObject GetJsonObjectForException(Exception e, bool uncaught)
         {
             var st = new StackTrace(e, true);
             var frame = st.GetFrame(0);
             var line = frame.GetFileLineNumber();
 
-            var dict = GetDictionaryForExceptionTracking(e, uncaught);
+            Dictionary<string, object> dict = new Dictionary<string, object>();
 
-            var report = (Dictionary<string, object>)dict["report"];
+            dict.Add("format", Consts.CRASH_REPORT_FORMAT);
+            dict.Add("uncaught", uncaught);
+
+            Dictionary<string, object> report = new Dictionary<string, object>();
+            report.Add("stackTrace", e.StackTrace);
+            report.Add("message", e.Message);
+            report.Add("type", e.GetType().ToString());
+            report.Add("source", e.Source);
             report.Add("lineNumber", line);
 
-            return dict;
-        }
+            dict.Add("report", report);
+          
 
-        private void WriteCrashToDisk(Dictionary<string, object> crash)
+            return JObject.FromObject(dict);
+        }
+              
+        private JArray GetCrashLog()
         {
-            var documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            var filename = Path.Combine(documents, "CrashLog.json");
-            File.WriteAllText(filename, JsonConvert.SerializeObject(crash, Formatting.None));
+            var filename = GetCrashFilePath();
+
+            if (!File.Exists(filename))
+            {
+                return new JArray();
+            }
+
+            var text = File.ReadAllText(filename);
+
+            return (JArray)JsonConvert.DeserializeObject(text);
         }
 
+        private void WriteCrashLogToDisk(JArray log)
+        {
+            var filename = GetCrashFilePath();
+
+            File.WriteAllText(filename, JsonConvert.SerializeObject(log, Formatting.None));
+        }
 
         public Dictionary<string, object> GetDictionaryForExceptionTracking(Exception e, bool uncaught)
         {
@@ -103,41 +131,57 @@ namespace Com.Kumulos.Abstractions
             return dict;
         }
 
-        protected void LogPreviousCrash()
+        protected void LogPreviousCrashes()
         {
-            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var filename = Path.Combine(documents, "CrashLog.json");
-
+            string filename = GetCrashFilePath();
+            
             if (!File.Exists(filename))
             {
                 return;
             }
 
-            var text = File.ReadAllText(filename);
-            var jsonObj = (JContainer)JsonConvert.DeserializeObject(text);
+            var log = GetCrashLog();
+            if (log.Count == 0)
+            {
+                return;
+            }
 
+            foreach(JObject crash in log)
+            {
+                TrackCrash(crash);
+            }           
+
+            File.Delete(filename);
+        }
+
+        private void TrackCrash(JObject jsonObj)
+        {
             var dict = new Dictionary<string, object>
-                {
-                    { "format", (string)jsonObj["format"] },
-                    { "uncaught", (bool)jsonObj["uncaught"] }
-                };
+            {
+                { "format", (string)jsonObj["format"] },
+                { "uncaught", (bool)jsonObj["uncaught"] }
+            };
 
-            var reportObj = (JContainer)jsonObj["report"];
+            var jsonReportObj = (JContainer)jsonObj["report"];
 
             var report = new Dictionary<string, object>
             {
-                { "stackTrace", (string)reportObj["stackTrace"] },
-                { "message", (string)reportObj["message"] },
-                { "type", (string)reportObj["type"] },
-                { "source", (string)reportObj["source"] },
-                { "lineNumber", (int)reportObj["lineNumber"] }
+                { "stackTrace", (string)jsonReportObj["stackTrace"] },
+                { "message", (string)jsonReportObj["message"] },
+                { "type", (string)jsonReportObj["type"] },
+                { "source", (string)jsonReportObj["source"] },
+                { "lineNumber", (int)jsonReportObj["lineNumber"] }
             };
 
             dict.Add("report", report);
 
             TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
+        }
 
-            File.Delete(filename);
+        private string GetCrashFilePath()
+        {
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            return Path.Combine(documents, "CrashLog.json");
         }
 
         public abstract void TrackEvent(string eventType, Dictionary<string, object> properties);
