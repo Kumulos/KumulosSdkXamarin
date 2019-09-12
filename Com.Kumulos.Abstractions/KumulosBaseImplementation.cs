@@ -28,17 +28,9 @@ namespace Com.Kumulos.Abstractions
 
             Build = new Build(InstallId, httpClient, config.GetApiKey());
             PushChannels = new PushChannels(InstallId, httpClient);
-            
-            try
-            {
-                LogPreviousCrashes();
-            }
-            catch (Exception e)
-            {
-                //- Don't cause further exceptions trying to log exceptions.
-            }
-        }
 
+            LogPreviousCrashes();
+        }
 
         public void LogException(Exception e)
         {
@@ -87,11 +79,11 @@ namespace Com.Kumulos.Abstractions
             report.Add("lineNumber", line);
 
             dict.Add("report", report);
-          
+
 
             return JObject.FromObject(dict);
         }
-              
+
         private JArray GetCrashLog()
         {
             var filename = GetCrashFilePath();
@@ -134,24 +126,34 @@ namespace Com.Kumulos.Abstractions
         protected void LogPreviousCrashes()
         {
             string filename = GetCrashFilePath();
-            
+
             if (!File.Exists(filename))
             {
                 return;
             }
 
-            var log = GetCrashLog();
-            if (log.Count == 0)
+            try
             {
-                return;
+                var log = GetCrashLog();
+                if (log.Count == 0)
+                {
+                    return;
+                }
+
+                foreach (JObject crash in log)
+                {
+                    TrackCrash(crash);
+                }
             }
-
-            foreach(JObject crash in log)
+            catch (Exception e)
             {
-                TrackCrash(crash);
-            }           
-
-            File.Delete(filename);
+                // Don't cause more crashes trying to log crashes.
+            }
+            finally
+            {
+                // Ensure if the file exists that its cleaned out for next session.
+                File.Delete(filename);
+            }
         }
 
         private void TrackCrash(JObject jsonObj)
