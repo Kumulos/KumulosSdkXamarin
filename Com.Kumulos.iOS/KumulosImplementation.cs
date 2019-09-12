@@ -167,7 +167,7 @@ namespace Com.Kumulos
             iOS.Kumulos_Push.PushUnregister(thisRef);
         }
 
-        public void TrackEvent(string eventType, Dictionary<string, object> properties)
+        public override void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
             var nsDict = ConvertDictionaryToNSDictionary(properties);
 
@@ -253,42 +253,7 @@ namespace Com.Kumulos
             File.WriteAllText(filename, JsonConvert.SerializeObject(crash, Formatting.None));
         }
 
-        private void LogPreviousCrash()
-        {
-            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var filename = Path.Combine(documents, "CrashLog.json");
-
-            if (!File.Exists(filename))
-            {
-                return;
-            }
-
-            var text = File.ReadAllText(filename);
-            var jsonObj = (JContainer)JsonConvert.DeserializeObject(text);
-
-            var dict = new Dictionary<string, object>
-                {
-                    { "format", (string)jsonObj["format"] },
-                    { "uncaught", (bool)jsonObj["uncaught"] }
-                };
-
-            var reportObj = (JContainer)jsonObj["report"];
-
-            var report = new Dictionary<string, object>
-            {
-                { "stackTrace", (string)reportObj["stackTrace"] },
-                { "message", (string)reportObj["message"] },
-                { "type", (string)reportObj["type"] },
-                { "source", (string)reportObj["source"] },
-                { "lineNumber", (int)reportObj["lineNumber"] }
-            };
-
-            dict.Add("report", report);
-
-            TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
-
-            File.Delete(filename);
-        }
+        
 
         private NSDictionary ConvertDictionaryToNSDictionary(Dictionary<string, object> dict)
         {
