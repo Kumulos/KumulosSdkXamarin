@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -9,6 +11,35 @@ namespace Com.Kumulos.Abstractions
 {
     abstract public class KumulosBaseImplementation
     {
+        public Build Build { get; private set; }
+
+        public PushChannels PushChannels { get; private set; }
+
+        public virtual void Initialize(IKSConfig config)
+        {
+            var httpClient = new HttpClient();
+
+            httpClient.MaxResponseContentBufferSize = 256000;
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
+                System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", config.GetApiKey(), config.GetSecretKey())
+            )));
+
+
+            Build = new Build(InstallId, httpClient, config.GetApiKey());
+            PushChannels = new PushChannels(InstallId, httpClient);
+            
+            try
+            {
+                LogPreviousCrash();
+            }
+            catch (Exception e)
+            {
+                //- Don't cause further exceptions trying to log exceptions.
+            }
+        }
+
+
         public void LogException(Exception e)
         {
             AttemptToLogException(e, false);
@@ -110,5 +141,7 @@ namespace Com.Kumulos.Abstractions
         }
 
         public abstract void TrackEvent(string eventType, Dictionary<string, object> properties);
+
+        public abstract string InstallId { get; }
     }
 }

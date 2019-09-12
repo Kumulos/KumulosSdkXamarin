@@ -33,11 +33,7 @@ namespace Com.Kumulos
 
     public class KumulosImplementation :  KumulosBaseImplementation, IKumulos
     {
-        public Build Build { get; private set; }
-
-        public PushChannels PushChannels { get; private set; }
-
-        public void Initialize(IKSConfig config)
+        public override void Initialize(IKSConfig config)
         {
             var androidConfig = (KSConfigImplementation)config;
 
@@ -48,29 +44,10 @@ namespace Com.Kumulos
                 Android.KumulosInApp.SetDeepLinkHandler(new DeepLinkHandlerAbstraction(androidConfig.InAppDeepLinkHandler));
             }
 
-            var httpClient = new HttpClient();
-
-            httpClient.MaxResponseContentBufferSize = 256000;
-
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
-                System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", config.GetApiKey(), config.GetSecretKey())
-            )));
-
-
-            Build = new Build(InstallId, httpClient, config.GetApiKey());
-            PushChannels = new PushChannels(InstallId, httpClient);
-
-            try
-            {
-                LogPreviousCrash();
-            }
-            catch (Exception e)
-            {
-                //- Don't cause further exceptions trying to log exceptions.
-            }
+            base.Initialize(config);
         }
 
-        public string InstallId
+        public override string InstallId
         {
             get
             {
@@ -205,8 +182,6 @@ namespace Com.Kumulos
             Android.Kumulos.ClearUserAssociation(Application.Context.ApplicationContext);
         }
 
-      
-
         public void SendLocationUpdate(double lat, double lng)
         {
             Location location = new Location("provider");
@@ -221,10 +196,7 @@ namespace Com.Kumulos
             Java.Lang.Double dblDistance = new Java.Lang.Double(distanceMetres);
             Android.Kumulos.TrackEddystoneBeaconProximity(Application.Context.ApplicationContext, namespaceHex, instanceHex, dblDistance);
         }
-
-      
-       
-
+        
         public void TrackiBeaconProximity(object CLBeaconObject)
         {
             throw new NotImplementedException("This method should not be called on Android");

@@ -19,39 +19,16 @@ namespace Com.Kumulos
     {
         private iOS.Kumulos thisRef;
 
-        public Build Build { get; private set; }
-
-        public PushChannels PushChannels { get; private set; }
-
-        public void Initialize(IKSConfig config)
+        public override void Initialize(IKSConfig config)
         {
             var iosKSConfig = (KSConfigImplementation)config;
 
             thisRef = iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
 
-            var httpClient = new HttpClient();
-
-            httpClient.MaxResponseContentBufferSize = 256000;
-
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
-                System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", config.GetApiKey(), config.GetSecretKey())
-            )));
-
-
-            Build = new Build(InstallId, httpClient, config.GetApiKey());
-            PushChannels = new PushChannels(InstallId, httpClient);
-
-            try
-            {
-                LogPreviousCrash();
-            }
-            catch (Exception e)
-            {
-                //- Don't cause further exceptions trying to log exceptions.
-            }
+            base.Initialize(config);
         }
 
-        public string InstallId
+        public override string InstallId
         {
             get
             {
@@ -208,10 +185,7 @@ namespace Com.Kumulos
         {
             iOS.Kumulos_Location.SendiBeaconProximity(thisRef, (CLBeacon)CLBeaconObject);
         }
-
         
-        
-
         private NSDictionary ConvertDictionaryToNSDictionary(Dictionary<string, object> dict)
         {
             var complexPairs = new List<KeyValuePair<NSObject, NSObject>>();
