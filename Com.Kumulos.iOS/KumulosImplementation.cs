@@ -179,17 +179,7 @@ namespace Com.Kumulos
 
             iOS.Kumulos_Analytics.TrackEventImmediately(thisRef, eventType, ConvertDictionaryToNSDictionary(properties));
         }
-
-        public void LogException(Exception e)
-        {
-            AttemptToLogException(e, false);
-        }
-
-        public void LogUncaughtException(Exception e)
-        {
-            AttemptToLogException(e, true);
-        }
-
+               
         public void SendLocationUpdate(double lat, double lng)
         {
             CLLocation cl = new CLLocation(lat, lng);
@@ -219,40 +209,7 @@ namespace Com.Kumulos
             iOS.Kumulos_Location.SendiBeaconProximity(thisRef, (CLBeacon)CLBeaconObject);
         }
 
-        private void AttemptToLogException(Exception e, bool uncaught)
-        {
-            try
-            {
-                var dict = GetDictionaryForException(e, uncaught);
-                WriteCrashToDisk(dict);
-            }
-            catch (Exception ex)
-            {
-                // Dont cause
-            }
-        }
-
-        private Dictionary<string, object> GetDictionaryForException(Exception e, bool uncaught)
-        {
-            var st = new StackTrace(e, true);
-            var frame = st.GetFrame(0);
-            var line = frame.GetFileLineNumber();
-
-            var dict = GetDictionaryForExceptionTracking(e, uncaught);
-
-            var report = (Dictionary<string, object>)dict["report"];
-            report.Add("lineNumber", line);
-
-            return dict;
-        }
-
-        private void WriteCrashToDisk(Dictionary<string, object> crash)
-        {
-            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var filename = Path.Combine(documents, "CrashLog.json");
-            File.WriteAllText(filename, JsonConvert.SerializeObject(crash, Formatting.None));
-        }
-
+        
         
 
         private NSDictionary ConvertDictionaryToNSDictionary(Dictionary<string, object> dict)

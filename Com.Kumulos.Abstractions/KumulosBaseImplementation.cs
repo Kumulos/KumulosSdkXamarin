@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,6 +9,51 @@ namespace Com.Kumulos.Abstractions
 {
     abstract public class KumulosBaseImplementation
     {
+        public void LogException(Exception e)
+        {
+            AttemptToLogException(e, false);
+        }
+
+        public void LogUncaughtException(Exception e)
+        {
+            AttemptToLogException(e, true);
+        }
+
+        private void AttemptToLogException(Exception e, bool uncaught)
+        {
+            try
+            {
+                var dict = GetDictionaryForException(e, uncaught);
+                WriteCrashToDisk(dict);
+            }
+            catch (Exception ex)
+            {
+                //- Don't cause further exceptions trying to log exceptions.
+            }
+        }
+
+        private Dictionary<string, object> GetDictionaryForException(Exception e, bool uncaught)
+        {
+            var st = new StackTrace(e, true);
+            var frame = st.GetFrame(0);
+            var line = frame.GetFileLineNumber();
+
+            var dict = GetDictionaryForExceptionTracking(e, uncaught);
+
+            var report = (Dictionary<string, object>)dict["report"];
+            report.Add("lineNumber", line);
+
+            return dict;
+        }
+
+        private void WriteCrashToDisk(Dictionary<string, object> crash)
+        {
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            var filename = Path.Combine(documents, "CrashLog.json");
+            File.WriteAllText(filename, JsonConvert.SerializeObject(crash, Formatting.None));
+        }
+
+
         public Dictionary<string, object> GetDictionaryForExceptionTracking(Exception e, bool uncaught)
         {
             Dictionary<string, object> dict = new Dictionary<string, object>();
