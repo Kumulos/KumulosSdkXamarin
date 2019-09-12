@@ -15,7 +15,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Com.Kumulos
 {
-    public class KumulosImplementation : IKumulos
+    public class KumulosImplementation : KumulosBaseImplementation, IKumulos
     {
         private iOS.Kumulos thisRef;
 
@@ -238,7 +238,7 @@ namespace Com.Kumulos
             var frame = st.GetFrame(0);
             var line = frame.GetFileLineNumber();
 
-            var dict = Crash.GetDictionaryForExceptionTracking(e, uncaught);
+            var dict = GetDictionaryForExceptionTracking(e, uncaught);
 
             var report = (Dictionary<string, object>)dict["report"];
             report.Add("lineNumber", line);

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Com.Kumulos.Abstractions
 {
-    public class Crash
+    abstract public class KumulosBaseImplementation
     {
-        public static Dictionary<string, object> GetDictionaryForExceptionTracking(Exception e, bool uncaught)
+        public Dictionary<string, object> GetDictionaryForExceptionTracking(Exception e, bool uncaught)
         {
             Dictionary<string, object> dict = new Dictionary<string, object>();
 
