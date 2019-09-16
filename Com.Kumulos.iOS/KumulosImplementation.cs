@@ -15,43 +15,20 @@ using Newtonsoft.Json.Linq;
 
 namespace Com.Kumulos
 {
-    public class KumulosImplementation : IKumulos
+    public class KumulosImplementation : KumulosBaseImplementation, IKumulos
     {
         private iOS.Kumulos thisRef;
 
-        public Build Build { get; private set; }
-
-        public PushChannels PushChannels { get; private set; }
-
-        public void Initialize(IKSConfig config)
+        public override void Initialize(IKSConfig config)
         {
             var iosKSConfig = (KSConfigImplementation)config;
 
             thisRef = iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
 
-            var httpClient = new HttpClient();
-
-            httpClient.MaxResponseContentBufferSize = 256000;
-
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
-                System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", config.GetApiKey(), config.GetSecretKey())
-            )));
-
-
-            Build = new Build(InstallId, httpClient, config.GetApiKey());
-            PushChannels = new PushChannels(InstallId, httpClient);
-
-            try
-            {
-                LogPreviousCrash();
-            }
-            catch (Exception e)
-            {
-                //- Don't cause further exceptions trying to log exceptions.
-            }
+            base.Initialize(config);
         }
 
-        public string InstallId
+        public override string InstallId
         {
             get
             {
@@ -167,7 +144,7 @@ namespace Com.Kumulos
             iOS.Kumulos_Push.PushUnregister(thisRef);
         }
 
-        public void TrackEvent(string eventType, Dictionary<string, object> properties)
+        public override void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
             var nsDict = ConvertDictionaryToNSDictionary(properties);
 
@@ -179,17 +156,7 @@ namespace Com.Kumulos
 
             iOS.Kumulos_Analytics.TrackEventImmediately(thisRef, eventType, ConvertDictionaryToNSDictionary(properties));
         }
-
-        public void LogException(Exception e)
-        {
-            AttemptToLogException(e, false);
-        }
-
-        public void LogUncaughtException(Exception e)
-        {
-            AttemptToLogException(e, true);
-        }
-
+               
         public void SendLocationUpdate(double lat, double lng)
         {
             CLLocation cl = new CLLocation(lat, lng);
@@ -218,78 +185,7 @@ namespace Com.Kumulos
         {
             iOS.Kumulos_Location.SendiBeaconProximity(thisRef, (CLBeacon)CLBeaconObject);
         }
-
-        private void AttemptToLogException(Exception e, bool uncaught)
-        {
-            try
-            {
-                var dict = GetDictionaryForException(e, uncaught);
-                WriteCrashToDisk(dict);
-            }
-            catch (Exception ex)
-            {
-                // Dont cause
-            }
-        }
-
-        private Dictionary<string, object> GetDictionaryForException(Exception e, bool uncaught)
-        {
-            var st = new StackTrace(e, true);
-            var frame = st.GetFrame(0);
-            var line = frame.GetFileLineNumber();
-
-            var dict = Crash.GetDictionaryForExceptionTracking(e, uncaught);
-
-            var report = (Dictionary<string, object>)dict["report"];
-            report.Add("lineNumber", line);
-
-            return dict;
-        }
-
-        private void WriteCrashToDisk(Dictionary<string, object> crash)
-        {
-            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var filename = Path.Combine(documents, "CrashLog.json");
-            File.WriteAllText(filename, JsonConvert.SerializeObject(crash, Formatting.None));
-        }
-
-        private void LogPreviousCrash()
-        {
-            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var filename = Path.Combine(documents, "CrashLog.json");
-
-            if (!File.Exists(filename))
-            {
-                return;
-            }
-
-            var text = File.ReadAllText(filename);
-            var jsonObj = (JContainer)JsonConvert.DeserializeObject(text);
-
-            var dict = new Dictionary<string, object>
-                {
-                    { "format", (string)jsonObj["format"] },
-                    { "uncaught", (bool)jsonObj["uncaught"] }
-                };
-
-            var reportObj = (JContainer)jsonObj["report"];
-
-            var report = new Dictionary<string, object>
-            {
-                { "stackTrace", (string)reportObj["stackTrace"] },
-                { "message", (string)reportObj["message"] },
-                { "type", (string)reportObj["type"] },
-                { "source", (string)reportObj["source"] },
-                { "lineNumber", (int)reportObj["lineNumber"] }
-            };
-
-            dict.Add("report", report);
-
-            TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
-
-            File.Delete(filename);
-        }
-
+        
         private NSDictionary ConvertDictionaryToNSDictionary(Dictionary<string, object> dict)
         {
             var complexPairs = new List<KeyValuePair<NSObject, NSObject>>();
@@ -327,6 +223,30 @@ namespace Com.Kumulos
         public void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, double distanceMetres)
         {
             throw new NotImplementedException("This method should not be called on iOS");
+        }
+
+        public override void TrackCrashEvent(JObject report)
+        {
+            var dict = new Dictionary<string, object>
+            {
+                { "format", (string)report["format"] },
+                { "uncaught", (bool)report["uncaught"] }
+            };
+
+            var nestedReport = (JContainer)report["report"];
+
+            var reportDict = new Dictionary<string, object>
+            {
+                { "stackTrace", (string)nestedReport["stackTrace"] },
+                { "message", (string)nestedReport["message"] },
+                { "type", (string)nestedReport["type"] },
+                { "source", (string)nestedReport["source"] },
+                { "lineNumber", (int)nestedReport["lineNumber"] }
+            };
+
+            dict.Add("report", reportDict);
+
+            TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
         }
     }
 }
