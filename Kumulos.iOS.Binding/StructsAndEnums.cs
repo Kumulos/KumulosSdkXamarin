@@ -31,7 +31,7 @@ namespace Com.Kumulos.iOS
 	[Native]
 	public enum KSInAppMessagePresentationResult : long
 	{
-		Presented,
+        Presented,
 		Expired,
 		Failed
 	}
