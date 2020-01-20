@@ -21,8 +21,8 @@ namespace Com.Kumulos.iOS
     // typedef void (^ _Nonnull)(UNNotificationPresentationOptions) KSPushReceivedInForegroundCompletionHandler;
     delegate void KSPushReceivedInForegroundCompletionHandler(UNNotificationPresentationOptions arg0);
 
-    // typedef void (^ _Nullable)(KSPushNotification * _Nonnull) KSPushReceivedInForegroundHandlerBlock;
-    delegate void KSPushReceivedInForegroundHandlerBlock(KSPushNotification arg0);
+    // typedef void (^ _Nullable)(KSPushNotification * _Nonnull, KSPushReceivedInForegroundCompletionHandler) KSPushReceivedInForegroundHandlerBlock;
+    delegate void KSPushReceivedInForegroundHandlerBlock(KSPushNotification arg0, KSPushReceivedInForegroundCompletionHandler arg1);
 
     // @interface KSConfig : NSObject
     [BaseType(typeof(NSObject))]
@@ -56,11 +56,6 @@ namespace Com.Kumulos.iOS
         // @property (readonly, nonatomic) KSTargetType targetType;
         [Export("targetType")]
         KSTargetType TargetType { get; }
-
-        // @property (readonly, nonatomic) UNNotificationPresentationOptions foregroundPushPresentationOptions __attribute__((availability(ios, introduced=10.0))) __attribute__((availability(macos, introduced=10.14)));
-        [Mac(10, 14), iOS(10, 0)]
-        [Export("foregroundPushPresentationOptions")]
-        UNNotificationPresentationOptions ForegroundPushPresentationOptions { get; }
 
         // @property (readonly, nonatomic) KSInAppConsentStrategy inAppConsentStrategy;
         [Export("inAppConsentStrategy")]
@@ -105,11 +100,6 @@ namespace Com.Kumulos.iOS
         [Mac(10, 14), iOS(10, 0)]
         [Export("setPushReceivedInForegroundHandler:")]
         KSConfig SetPushReceivedInForegroundHandler([NullAllowed] KSPushReceivedInForegroundHandlerBlock receivedHandler);
-
-        // -(instancetype _Nonnull)setForegroundPushPresentationOptions:(UNNotificationPresentationOptions)notificationPresentationOptions __attribute__((availability(ios, introduced=10.0))) __attribute__((availability(macos, introduced=10.14)));
-        [Mac(10, 14), iOS(10, 0)]
-        [Export("setForegroundPushPresentationOptions:")]
-        KSConfig SetForegroundPushPresentationOptions(UNNotificationPresentationOptions notificationPresentationOptions);
 
         // -(instancetype _Nonnull)setSessionIdleTimeout:(NSUInteger)timeoutSeconds;
         [Export("setSessionIdleTimeout:")]
@@ -185,10 +175,11 @@ namespace Com.Kumulos.iOS
     [BaseType(typeof(NSObject))]
     interface KSPushNotification
     {
-        // +(instancetype _Nonnull)fromUserInfo:(NSDictionary * _Nonnull)userInfo;
+        // +(instancetype _Nullable)fromUserInfo:(NSDictionary * _Nullable)userInfo;
         [Static]
         [Export("fromUserInfo:")]
-        KSPushNotification FromUserInfo(NSDictionary userInfo);
+        [return: NullAllowed]
+        KSPushNotification FromUserInfo([NullAllowed] NSDictionary userInfo);
 
         // @property (readonly, nonatomic) NSNumber * _Nonnull id;
         [Export("id")]
