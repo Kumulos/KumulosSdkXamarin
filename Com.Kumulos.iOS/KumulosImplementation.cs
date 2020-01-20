@@ -156,7 +156,7 @@ namespace Com.Kumulos
 
             iOS.Kumulos_Analytics.TrackEventImmediately(thisRef, eventType, ConvertDictionaryToNSDictionary(properties));
         }
-               
+
         public void SendLocationUpdate(double lat, double lng)
         {
             CLLocation cl = new CLLocation(lat, lng);
@@ -185,7 +185,7 @@ namespace Com.Kumulos
         {
             iOS.Kumulos_Location.SendiBeaconProximity(thisRef, (CLBeacon)CLBeaconObject);
         }
-        
+
         private NSDictionary ConvertDictionaryToNSDictionary(Dictionary<string, object> dict)
         {
             var complexPairs = new List<KeyValuePair<NSObject, NSObject>>();
@@ -247,6 +247,11 @@ namespace Com.Kumulos
             dict.Add("report", reportDict);
 
             TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
+        }
+
+        public void DidReceiveNotificationExtensionRequest(UNNotificationRequest request, Action<UNNotificationContent> contentHandler)
+        {
+            iOS.KumulosNotificationService.DidReceiveNotificationRequest(request, contentHandler);   
         }
     }
 }

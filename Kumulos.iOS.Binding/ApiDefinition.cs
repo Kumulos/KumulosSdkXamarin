@@ -138,7 +138,6 @@ namespace Com.Kumulos.iOS
         // +(NSString * _Nonnull)installId;
         [Static]
         [Export("installId")]
-
         string InstallId { get; }
 
         // +(instancetype _Nullable)initializeWithConfig:(KSConfig * _Nonnull)config;
