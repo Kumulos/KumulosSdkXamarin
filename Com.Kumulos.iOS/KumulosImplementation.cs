@@ -249,7 +249,7 @@ namespace Com.Kumulos
             TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
         }
 
-        public void DidReceiveNotificationExtensionRequest(UNNotificationRequest request, Action<UNNotificationContent> contentHandler)
+        public void DidReceiveNotificationRequest(UNNotificationRequest request, Action<UNNotificationContent> contentHandler)
         {
             iOS.KumulosNotificationService.DidReceiveNotificationRequest(request, contentHandler);   
         }
