@@ -54,7 +54,6 @@
       <Link>Kumulos.cs</Link>
     </Compile>
     <Compile Include="Resources\Resource.designer.cs" />
-    <Compile Include="PushActionHandler.cs" />
   </ItemGroup>
     <ItemGroup>
     <ProjectReference Include="..\Com.Kumulos.Abstractions\Com.Kumulos.Abstractions.csproj">
