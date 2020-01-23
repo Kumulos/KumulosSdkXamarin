@@ -14,6 +14,7 @@ namespace Com.Kumulos
         private InAppConsentStrategy consentStrategy = InAppConsentStrategy.NotEnabled;
         private iOS.KSPushOpenedHandlerBlock pushOpenedHandlerBlock;
         private iOS.KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandlerBlock;
+        private UNNotificationPresentationOptions notificationPresentationOptions;
 
         protected IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
 
@@ -55,6 +56,12 @@ namespace Com.Kumulos
             return this;
         }
 
+        public IKSConfig SetForegroundPushPresentationOptions(UNNotificationPresentationOptions notificationPresentationOptions)
+        {
+            this.notificationPresentationOptions = notificationPresentationOptions;
+            return this;
+        }
+
         public IKSConfig SetPushReceivedInForegroundHandler(iOS.KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandlerBlock)
         {
             this.pushReceivedInForegroundHandlerBlock = pushReceivedInForegroundHandlerBlock;
@@ -84,6 +91,8 @@ namespace Com.Kumulos
             {
                 specificConfig.SetPushOpenedHandler(pushOpenedHandlerBlock);
             }
+
+            specificConfig.SetForegroundPushPresentationOptions(notificationPresentationOptions);
 
             if (pushReceivedInForegroundHandlerBlock != null)
             {

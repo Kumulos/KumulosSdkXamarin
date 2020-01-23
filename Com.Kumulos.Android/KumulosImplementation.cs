@@ -208,5 +208,10 @@ namespace Com.Kumulos
 
             Android.Kumulos.TrackEvent(Application.Context.ApplicationContext, Consts.CRASH_REPORT_EVENT_TYPE, javaJson);
         }
+
+        public void SetPushActionHandler(Android.IPushActionHandlerInterface pushActionHandler)
+        {
+            Android.Kumulos.SetPushActionHandler(pushActionHandler);
+        }
     }
 }
