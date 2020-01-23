@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Com.Kumulos</id>
-        <version>4.0.0.5</version>
+        <version>4.0.0.6</version>
         <title>Kumulos SDK for Xamarin</title>
         <authors>Kumulos Ltd</authors>
         <owners>Kumulos Ltd</owners>
