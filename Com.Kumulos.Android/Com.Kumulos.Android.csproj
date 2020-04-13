@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Com.Kumulos</RootNamespace>
     <AssemblyName>Com.Kumulos</AssemblyName>
-    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidTlsProvider>
