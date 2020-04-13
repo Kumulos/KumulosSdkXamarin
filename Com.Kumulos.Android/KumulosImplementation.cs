@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using Android.App;
 using Android.Content;
 using Android.Locations;
 using Com.Kumulos.Abstractions;
-
 using Java.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
