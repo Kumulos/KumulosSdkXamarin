@@ -9,12 +9,13 @@
         <license type="expression">MIT</license>
         <projectUrl>https://github.com/Kumulos/KumulosSdkXamarin</projectUrl>
         <iconUrl>https://github.com/Kumulos/KumulosSdkXamarin/blob/master/nuget_icon.png?raw=true</iconUrl>
+        <icon>nuget_icon.png</icon>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Xamarin SDK For Kumulos</description>
         <summary>The Kumulos SDK provides audience and engagement analytics; marketing automation and geo-targeted push notifications; backend storage and API management; and crash reporting for your Xamarin apps.</summary>
         <tags>xamarin, monodroid, C#, Kumulos, push, analytics, crash reporting</tags>
         <dependencies>
-            <group targetFramework="MonoAndroid">
+            <group targetFramework="MonoAndroid10">
                 <dependency id="Newtonsoft.Json" version="12.0.3" />
                 <dependency id="Square.OkHttp3" version="3.14.4" />
                 <dependency id="Xamarin.Android.Support.v4" version="28.0.0.3" />
@@ -28,9 +29,12 @@
                 <dependency id="NETStandard.Library" version="2.0.3" />
                 <dependency id="Newtonsoft.Json" version="12.0.2" />
             </group>
+            <group targetFramework="Xamarin.iOS10" />
         </dependencies>
     </metadata>
     <files>
+        <file src="nuget_icon.png" target="\nuget_icon.png" />
+
         <!--Core-->
         <file src="Com.Kumulos\bin\Release\netstandard2.0\Com.Kumulos.pdb" target="lib\netstandard2.0" />
         <file src="Com.Kumulos\bin\Release\netstandard2.0\Com.Kumulos.dll" target="lib\netstandard2.0" />
