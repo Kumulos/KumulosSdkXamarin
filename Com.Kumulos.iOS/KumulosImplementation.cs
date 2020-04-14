@@ -1,17 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Com.Kumulos.Abstractions;
+using CoreLocation;
 using Foundation;
+using Newtonsoft.Json.Linq;
 using UIKit;
 using UserNotifications;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using CoreLocation;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
-using Newtonsoft.Json;
-using System.IO;
-using Newtonsoft.Json.Linq;
 
 namespace Com.Kumulos
 {
@@ -22,7 +18,7 @@ namespace Com.Kumulos
         public override void Initialize(IKSConfig config)
         {
             var iosKSConfig = (KSConfigImplementation)config;
-
+            
             thisRef = iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
 
             base.Initialize(config);

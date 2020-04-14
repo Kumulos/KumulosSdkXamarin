@@ -48,17 +48,13 @@
     <Compile Include="KumulosExtension.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Com.Kumulos.Abstractions\Com.Kumulos.Abstractions.csproj">
-      <Project>{4284B520-2352-48F8-A87D-BC071FD8085B}</Project>
-      <Name>Com.Kumulos.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kumulos.iOSExtension.Binding\Kumulos.iOSExtension.Binding.csproj">
-      <Project>{9A14FB7E-70D5-49CA-8A06-BBC017724C7D}</Project>
-      <Name>Kumulos.iOSExtension.Binding</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Kumulos.iOSExtension.Binding\Kumulos.iOSExtension.Binding.csproj">
+      <Project>{4DEFD17F-4887-48D2-B4D2-0E9CC83F6F92}</Project>
+      <Name>Kumulos.iOSExtension.Binding</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

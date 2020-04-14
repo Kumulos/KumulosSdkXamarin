@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Com.Kumulos</id>
-        <version>4.0.0.6</version>
+        <version>4.0.0.10</version>
         <title>Kumulos SDK for Xamarin</title>
         <authors>Kumulos Ltd</authors>
         <owners>Kumulos Ltd</owners>
@@ -29,7 +29,9 @@
                 <dependency id="NETStandard.Library" version="2.0.3" />
                 <dependency id="Newtonsoft.Json" version="12.0.2" />
             </group>
-            <group targetFramework="Xamarin.iOS10" />
+            <group targetFramework="Xamarin.iOS">
+                <dependency id="Newtonsoft.Json" version="12.0.3" />
+            </group>
         </dependencies>
     </metadata>
     <files>
@@ -45,6 +47,6 @@
         <file src="Com.Kumulos.Android\bin\Release\*Kumulos.*" target="lib\MonoAndroid10" />
 
         <!--Xamarin.iOS Unified-->
-        <file src="Com.Kumulos.iOS\bin\Release\*Kumulos.*" target="lib\Xamarin.iOS10" />
+        <file src="Com.Kumulos.iOS\bin\Release\*Kumulos.*" target="lib\Xamarin.iOS" />
     </files>
 </package>
