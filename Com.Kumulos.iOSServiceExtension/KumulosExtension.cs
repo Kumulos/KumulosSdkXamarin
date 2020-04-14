@@ -8,7 +8,8 @@ namespace Com.Kumulos
     {
         public void DidReceiveNotificationRequest(UNNotificationRequest request, Action<UNNotificationContent> contentHandler)
         {
-            iOS.DidReceiveNotificationRequest(request, contentHandler);
+            iOS.KumulosNotificationService.DidReceiveNotificationRequest(request, contentHandler);
+           
         }
     }
 }
