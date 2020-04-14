@@ -4,7 +4,7 @@ using UserNotifications;
 
 namespace Com.Kumulos
 {
-    public class KumulosExtension
+    public class NotificationServiceExtension
     {
         public void DidReceiveNotificationRequest(UNNotificationRequest request, Action<UNNotificationContent> contentHandler)
         {

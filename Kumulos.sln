@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kumulos.Android.Binding", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Kumulos.Android", "Com.Kumulos.Android\Com.Kumulos.Android.csproj", "{454DF95C-2D14-4EA3-82AE-7599494C809F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Kumulos.iOSServiceExtension", "Com.Kumulos.iOSServiceExtension\Com.Kumulos.iOSServiceExtension.csproj", "{208DEE5F-C2F8-4D4B-BC97-6E5F200EBE80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Kumulos.iOS.Extension", "Com.Kumulos.iOSServiceExtension\Com.Kumulos.iOS.Extension.csproj", "{208DEE5F-C2F8-4D4B-BC97-6E5F200EBE80}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Kumulos.iOS", "Com.Kumulos.iOS\Com.Kumulos.iOS.csproj", "{D3E420D6-E9B1-4CC4-817A-339834AB8D9E}"
 EndProject
