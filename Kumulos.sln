@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Kumulos.iOS.Extension",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Kumulos.iOS", "Com.Kumulos.iOS\Com.Kumulos.iOS.csproj", "{D3E420D6-E9B1-4CC4-817A-339834AB8D9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kumulos.iOSExtension.Binding", "Kumulos.iOSExtension.Binding\Kumulos.iOSExtension.Binding.csproj", "{4DEFD17F-4887-48D2-B4D2-0E9CC83F6F92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kumulos.iOS.Extension.Binding", "Kumulos.iOS.Extension.Binding\Kumulos.iOS.Extension.Binding.csproj", "{4DEFD17F-4887-48D2-B4D2-0E9CC83F6F92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
