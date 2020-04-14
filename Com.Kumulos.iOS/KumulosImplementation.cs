@@ -88,6 +88,12 @@ namespace Com.Kumulos
             return MapPresentationResult(r);
         }
 
+        public bool DeleteMessageFromInbox(InAppInboxItem item)
+        {
+            var nativeItem = FindInboxItemForDTO(item);
+            return iOS.KumulosInApp.DeleteMessageFromInbox(nativeItem);
+        }
+
         private iOS.KSInAppInboxItem FindInboxItemForDTO(InAppInboxItem item)
         {
             var iosInboxItems = iOS.KumulosInApp.InboxItems;

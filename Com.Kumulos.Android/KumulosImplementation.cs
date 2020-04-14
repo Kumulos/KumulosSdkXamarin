@@ -106,6 +106,12 @@ namespace Com.Kumulos
             return MapPresentationResult(r);
         }
 
+        public bool DeleteMessageFromInbox(InAppInboxItem item)
+        {
+            var nativeItem = FindInboxItemForDTO(item);
+            return Android.KumulosInApp.DeleteMessageFromInbox(Application.Context.ApplicationContext, nativeItem);   
+        }
+
         private Android.InAppInboxItem FindInboxItemForDTO(InAppInboxItem item)
         {
             var androidInboxItems = Android.KumulosInApp.GetInboxItems(Application.Context.ApplicationContext);

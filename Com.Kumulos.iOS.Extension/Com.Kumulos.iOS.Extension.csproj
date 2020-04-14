@@ -51,9 +51,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kumulos.iOSExtension.Binding\Kumulos.iOSExtension.Binding.csproj">
+    <ProjectReference Include="..\Kumulos.iOS.Extension.Binding\Kumulos.iOS.Extension.Binding.csproj">
       <Project>{4DEFD17F-4887-48D2-B4D2-0E9CC83F6F92}</Project>
-      <Name>Kumulos.iOSExtension.Binding</Name>
+      <Name>Kumulos.iOS.Extension.Binding</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
