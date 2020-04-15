@@ -18,7 +18,7 @@ namespace Com.Kumulos
         public override void Initialize(IKSConfig config)
         {
             var iosKSConfig = (KSConfigImplementation)config;
-            
+
             thisRef = iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
 
             base.Initialize(config);
