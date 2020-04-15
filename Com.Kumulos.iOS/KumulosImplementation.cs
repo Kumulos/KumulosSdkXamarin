@@ -1,17 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Com.Kumulos.Abstractions;
+using CoreLocation;
 using Foundation;
+using Newtonsoft.Json.Linq;
 using UIKit;
 using UserNotifications;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using CoreLocation;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
-using Newtonsoft.Json;
-using System.IO;
-using Newtonsoft.Json.Linq;
 
 namespace Com.Kumulos
 {
@@ -90,6 +86,12 @@ namespace Com.Kumulos
             var r = iOS.KumulosInApp.PresentInboxMessage(nativeItem);
 
             return MapPresentationResult(r);
+        }
+
+        public bool DeleteMessageFromInbox(InAppInboxItem item)
+        {
+            var nativeItem = FindInboxItemForDTO(item);
+            return iOS.KumulosInApp.DeleteMessageFromInbox(nativeItem);
         }
 
         private iOS.KSInAppInboxItem FindInboxItemForDTO(InAppInboxItem item)
@@ -247,11 +249,6 @@ namespace Com.Kumulos
             dict.Add("report", reportDict);
 
             TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
-        }
-
-        public void DidReceiveNotificationRequest(UNNotificationRequest request, Action<UNNotificationContent> contentHandler)
-        {
-            iOS.KumulosNotificationService.DidReceiveNotificationRequest(request, contentHandler);   
         }
     }
 }

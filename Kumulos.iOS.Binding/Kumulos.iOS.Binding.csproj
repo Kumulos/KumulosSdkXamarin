@@ -37,7 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <ObjcBindingApiDefinition Include="ApiDefinition.cs" />
-    <ObjcBindingApiDefinition Include="ExtensionApiDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
     <ObjcBindingCoreSource Include="StructsAndEnums.cs" />
@@ -48,13 +47,6 @@
       <LinkerFlags>-ObjC</LinkerFlags>
       <IsCxx>True</IsCxx>
       <ForceLoad>True</ForceLoad>
-      <Frameworks>SystemConfiguration UserNotifications</Frameworks>
-    </NativeReference>
-    <NativeReference Include="KumulosExtension.a">
-      <Kind>Static</Kind>
-      <IsCxx>True</IsCxx>
-      <ForceLoad>True</ForceLoad>
-      <LinkerFlags>-ObjC</LinkerFlags>
       <Frameworks>SystemConfiguration UserNotifications</Frameworks>
     </NativeReference>
   </ItemGroup>

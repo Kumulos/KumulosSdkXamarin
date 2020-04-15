@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using Android.App;
 using Android.Content;
 using Android.Locations;
 using Com.Kumulos.Abstractions;
-
 using Java.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -109,6 +104,12 @@ namespace Com.Kumulos
             var r = Android.KumulosInApp.PresentInboxMessage(Application.Context.ApplicationContext, nativeItem);
 
             return MapPresentationResult(r);
+        }
+
+        public bool DeleteMessageFromInbox(InAppInboxItem item)
+        {
+            var nativeItem = FindInboxItemForDTO(item);
+            return Android.KumulosInApp.DeleteMessageFromInbox(Application.Context.ApplicationContext, nativeItem);   
         }
 
         private Android.InAppInboxItem FindInboxItemForDTO(InAppInboxItem item)

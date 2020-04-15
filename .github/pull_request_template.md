@@ -17,6 +17,7 @@ Prepare:
 Bump versions in:
 
 - [ ] `Com.Kumulos.nuspec`
+- [ ] `Com.Kumulos.Extension.nuspec`
 - [ ] `Com.Kumulos.Abstractions\Consts.cs`
 
 Release:

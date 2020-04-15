@@ -11,6 +11,9 @@ Com.Kumulos.Android/bin
 Com.Kumulos.Android/obj
 Kumulos.Android.Binding/bin
 Kumulos.Android.Binding/obj
-MyAndroidTestApp/bin
 packages/
 *.nupkg
+Com.Kumulos.iOS.Extension/bin
+Com.Kumulos.iOS.Extension/obj
+Kumulos.iOS.Extension.Binding/obj
+Kumulos.iOS.Extension.Binding/bin

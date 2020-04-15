@@ -181,6 +181,9 @@ namespace Com.Kumulos.iOS
         KSAPIOperation CallMethod(string method, [NullAllowed] NSDictionary @params, [NullAllowed] KSAPIOperationDelegate @delegate);
     }
 
+    // typedef void (^ _Nullable)(UNAuthorizationStatus, NSError * _Nullable) KSUNAuthorizationCheckedHandler;
+    delegate void KSUNAuthorizationCheckedHandler(UNAuthorizationStatus arg0, [NullAllowed] NSError arg1);
+
     // @interface KSPushNotification : NSObject
     [BaseType(typeof(NSObject))]
     interface KSPushNotification
@@ -231,6 +234,11 @@ namespace Com.Kumulos.iOS
         // -(void)pushRequestDeviceToken;
         [Export("pushRequestDeviceToken")]
         void PushRequestDeviceToken();
+
+        // -(void)pushRequestDeviceToken:(KSUNAuthorizationCheckedHandler)onAuthorizationStatus __attribute__((availability(ios, introduced=10.0)));
+        [iOS(10, 0)]
+        [Export("pushRequestDeviceToken:")]
+        void PushRequestDeviceToken([NullAllowed] KSUNAuthorizationCheckedHandler onAuthorizationStatus);
 
         // -(void)pushRegisterWithDeviceToken:(NSData * _Nonnull)deviceToken;
         [Export("pushRegisterWithDeviceToken:")]
@@ -417,6 +425,11 @@ namespace Com.Kumulos.iOS
         [Static]
         [Export("presentInboxMessage:")]
         KSInAppMessagePresentationResult PresentInboxMessage(KSInAppInboxItem item);
+
+        // +(BOOL)deleteMessageFromInbox:(KSInAppInboxItem * _Nonnull)item;
+        [Static]
+        [Export("deleteMessageFromInbox:")]
+        bool DeleteMessageFromInbox(KSInAppInboxItem item);
     }
 
     // @protocol KSAPIOperationDelegate <NSObject>
