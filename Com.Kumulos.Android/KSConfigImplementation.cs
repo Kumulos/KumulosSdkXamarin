@@ -9,6 +9,7 @@ namespace Com.Kumulos
         private string apiKey, secretKey;
         private int timeoutSeconds = -1;
         private Abstractions.InAppConsentStrategy consentStrategy = Abstractions.InAppConsentStrategy.NotEnabled;
+        private int? notificationSmallIconId;
 
         public Abstractions.IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
 
@@ -43,6 +44,12 @@ namespace Com.Kumulos
             return this;
         }
 
+        public Abstractions.IKSConfig SetPushSmallIconId(int id)
+        {
+            notificationSmallIconId = id;
+            return this;
+        }
+
         public Android.KumulosConfig GetConfig()
         {
             var specificConfig = new Android.KumulosConfig.Builder(apiKey, secretKey);
@@ -69,6 +76,11 @@ namespace Com.Kumulos
 
             specificConfig.SetRuntimeInfo(runtimeInfo);
 
+            if(notificationSmallIconId.HasValue)
+            {
+                specificConfig.SetPushSmallIconId(notificationSmallIconId.Value);
+            }
+            
             return specificConfig.Build();
         }
 
