@@ -26,7 +26,7 @@ namespace Com.Kumulos.Abstractions
             )));
 
 
-            Build = new Build(InstallId, httpClient, config.GetApiKey());
+            Build = new Build(httpClient, config.GetApiKey());
             PushChannels = new PushChannels(InstallId, httpClient);
 
             LogPreviousCrashes();
@@ -170,7 +170,7 @@ namespace Com.Kumulos.Abstractions
         public abstract void TrackEvent(string eventType, Dictionary<string, object> properties);
 
         public abstract void TrackCrashEvent(JObject report);
-        
+
         public abstract string InstallId { get; }
     }
 }

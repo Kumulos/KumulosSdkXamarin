@@ -12,14 +12,12 @@ namespace Com.Kumulos.Abstractions
     {
         private readonly HttpClient httpClient = new HttpClient();
 
-        private readonly string installId;
         private readonly string apiKey;
 
         private string sessionToken = Guid.NewGuid().ToString();
 
-        public Build(string installId, HttpClient httpClient, string apiKey)
+        public Build(HttpClient httpClient, string apiKey)
         {
-            this.installId = installId;
             this.httpClient = httpClient;
             this.apiKey = apiKey;
         }
@@ -59,11 +57,20 @@ namespace Com.Kumulos.Abstractions
 
         HttpContent BuildRequestContent(List<KeyValuePair<string, string>> parameters)
         {
-            var completeParams = new List<KeyValuePair<string, object>>();
-            completeParams.Add(new KeyValuePair<string, object>("sessionToken", sessionToken));
-            completeParams.Add(new KeyValuePair<string, object>("params", parameters));
+            var completeParams = new Dictionary<string, object>();
+            completeParams.Add("sessionToken", sessionToken);
+
+            var parsedParams = new Dictionary<string, string>();
+
+            foreach (KeyValuePair<string, string> pair in parameters)
+            {
+                parsedParams.Add(pair.Key, pair.Value);
+            }
+
+            completeParams.Add("params", parsedParams);
 
             string json = JsonConvert.SerializeObject(completeParams);
+
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
