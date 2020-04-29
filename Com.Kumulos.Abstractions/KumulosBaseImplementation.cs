@@ -25,8 +25,7 @@ namespace Com.Kumulos.Abstractions
                 System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", config.GetApiKey(), config.GetSecretKey())
             )));
 
-
-            Build = new Build(httpClient, config.GetApiKey());
+            Build = new Build(InstallId, httpClient, config.GetApiKey());
             PushChannels = new PushChannels(InstallId, httpClient);
 
             LogPreviousCrashes();

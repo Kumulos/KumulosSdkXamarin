@@ -12,12 +12,14 @@ namespace Com.Kumulos.Abstractions
     {
         private readonly HttpClient httpClient = new HttpClient();
 
+        private readonly string installId;
         private readonly string apiKey;
 
         private string sessionToken = Guid.NewGuid().ToString();
 
-        public Build(HttpClient httpClient, string apiKey)
+        public Build(string installId, HttpClient httpClient, string apiKey)
         {
+            this.installId = installId;
             this.httpClient = httpClient;
             this.apiKey = apiKey;
         }
@@ -59,6 +61,8 @@ namespace Com.Kumulos.Abstractions
         {
             var completeParams = new Dictionary<string, object>();
             completeParams.Add("sessionToken", sessionToken);
+            completeParams.Add("deviceID", installId);
+            completeParams.Add("installId", installId);
 
             var parsedParams = new Dictionary<string, string>();
 
