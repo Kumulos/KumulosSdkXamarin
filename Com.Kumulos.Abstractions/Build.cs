@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace Com.Kumulos.Abstractions
 {
@@ -41,7 +42,7 @@ namespace Com.Kumulos.Abstractions
         {
             var uri = new Uri(string.Format("{0}/b2.2/{1}/{2}.json", Consts.BUILD_SERVICE_BASE_URI, apiKey, methodName));
 
-            var postContent = BuildRequestParameters(parameters);
+            var postContent = BuildRequestContent(parameters);
 
             HttpResponseMessage request = await httpClient.PostAsync(uri, postContent);
 
@@ -56,24 +57,10 @@ namespace Com.Kumulos.Abstractions
             return null;
         }
 
-        FormUrlEncodedContent BuildRequestParameters(List<KeyValuePair<string, string>> parameters)
+        HttpContent BuildRequestContent(List<KeyValuePair<string, string>> parameters)
         {
-            var postParams = new List<KeyValuePair<string, string>> { };
-
-            foreach (KeyValuePair<string, string> parameter in parameters)
-            {
-                postParams.Add(new KeyValuePair<string, string>("params[" + parameter.Key + "]", parameter.Value));
-            }
-
-            postParams.Add(new KeyValuePair<string, string>("deviceID", installId));
-            postParams.Add(new KeyValuePair<string, string>("installId", installId));
-
-            if (sessionToken != null)
-            {
-                postParams.Add(new KeyValuePair<string, string>("sessionToken", sessionToken));
-            }
-
-            return new FormUrlEncodedContent(postParams);
+            string json = JsonConvert.SerializeObject(parameters);
+            return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
         private void updateSessionToken(JObject response)
