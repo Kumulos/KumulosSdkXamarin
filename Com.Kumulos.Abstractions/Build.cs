@@ -59,7 +59,11 @@ namespace Com.Kumulos.Abstractions
 
         HttpContent BuildRequestContent(List<KeyValuePair<string, string>> parameters)
         {
-            string json = JsonConvert.SerializeObject(parameters);
+            var completeParams = new List<KeyValuePair<string, object>>();
+            completeParams.Add(new KeyValuePair<string, object>("sessionToken", sessionToken));
+            completeParams.Add(new KeyValuePair<string, object>("params", parameters));
+
+            string json = JsonConvert.SerializeObject(completeParams);
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
