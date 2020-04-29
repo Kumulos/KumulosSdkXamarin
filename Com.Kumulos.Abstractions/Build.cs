@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace Com.Kumulos.Abstractions
 {
@@ -41,7 +42,7 @@ namespace Com.Kumulos.Abstractions
         {
             var uri = new Uri(string.Format("{0}/b2.2/{1}/{2}.json", Consts.BUILD_SERVICE_BASE_URI, apiKey, methodName));
 
-            var postContent = BuildRequestParameters(parameters);
+            var postContent = BuildRequestContent(parameters);
 
             HttpResponseMessage request = await httpClient.PostAsync(uri, postContent);
 
@@ -56,24 +57,25 @@ namespace Com.Kumulos.Abstractions
             return null;
         }
 
-        FormUrlEncodedContent BuildRequestParameters(List<KeyValuePair<string, string>> parameters)
+        HttpContent BuildRequestContent(List<KeyValuePair<string, string>> parameters)
         {
-            var postParams = new List<KeyValuePair<string, string>> { };
+            var completeParams = new Dictionary<string, object>();
+            completeParams.Add("sessionToken", sessionToken);
+            completeParams.Add("deviceID", installId);
+            completeParams.Add("installId", installId);
 
-            foreach (KeyValuePair<string, string> parameter in parameters)
+            var parsedParams = new Dictionary<string, string>();
+
+            foreach (KeyValuePair<string, string> pair in parameters)
             {
-                postParams.Add(new KeyValuePair<string, string>("params[" + parameter.Key + "]", parameter.Value));
+                parsedParams.Add(pair.Key, pair.Value);
             }
 
-            postParams.Add(new KeyValuePair<string, string>("deviceID", installId));
-            postParams.Add(new KeyValuePair<string, string>("installId", installId));
+            completeParams.Add("params", parsedParams);
 
-            if (sessionToken != null)
-            {
-                postParams.Add(new KeyValuePair<string, string>("sessionToken", sessionToken));
-            }
+            string json = JsonConvert.SerializeObject(completeParams);
 
-            return new FormUrlEncodedContent(postParams);
+            return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
         private void updateSessionToken(JObject response)

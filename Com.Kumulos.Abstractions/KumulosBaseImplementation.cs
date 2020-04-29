@@ -25,7 +25,6 @@ namespace Com.Kumulos.Abstractions
                 System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", config.GetApiKey(), config.GetSecretKey())
             )));
 
-
             Build = new Build(InstallId, httpClient, config.GetApiKey());
             PushChannels = new PushChannels(InstallId, httpClient);
 
@@ -170,7 +169,7 @@ namespace Com.Kumulos.Abstractions
         public abstract void TrackEvent(string eventType, Dictionary<string, object> properties);
 
         public abstract void TrackCrashEvent(JObject report);
-        
+
         public abstract string InstallId { get; }
     }
 }
