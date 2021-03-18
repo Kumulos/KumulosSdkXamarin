@@ -17,18 +17,26 @@ namespace Com.Kumulos.Abstractions
 
         public virtual void Initialize(IKSConfig config)
         {
+            // 3MB buffer for build
+            Build = new Build(InstallId, configureHttpClient(config, 3145728), config.GetApiKey());
+
+            // 256k for push
+            PushChannels = new PushChannels(InstallId, configureHttpClient(config, 256000));
+
+            LogPreviousCrashes();
+        }
+
+        private HttpClient configureHttpClient(IKSConfig config, long bufferSize)
+        {
             var httpClient = new HttpClient();
 
-            httpClient.MaxResponseContentBufferSize = 256000;
+            httpClient.MaxResponseContentBufferSize = bufferSize;
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
                 System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", config.GetApiKey(), config.GetSecretKey())
             )));
 
-            Build = new Build(InstallId, httpClient, config.GetApiKey());
-            PushChannels = new PushChannels(InstallId, httpClient);
-
-            LogPreviousCrashes();
+            return httpClient;
         }
 
         public void LogException(Exception e)
