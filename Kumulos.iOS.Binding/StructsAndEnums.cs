@@ -3,6 +3,16 @@ using ObjCRuntime;
 namespace Com.Kumulos.iOS
 {
     [Native]
+    public enum KSDeepLinkResolution : long
+    {
+        ookupFailed,
+        inkNotFound,
+        inkExpired,
+        inkLimitExceeded,
+        inkMatched
+    }
+
+    [Native]
     public enum KSTargetType : long
     {
         NotOverridden,
@@ -16,16 +26,6 @@ namespace Com.Kumulos.iOS
         NotEnabled,
         AutoEnroll,
         ExplicitByUser
-    }
-
-    [Native]
-    public enum KSErrorCode : long
-    {
-        NetworkError,
-        RpcError,
-        UnknownError,
-        ValidationError,
-        HttpBadStatus
     }
 
     [Native]
