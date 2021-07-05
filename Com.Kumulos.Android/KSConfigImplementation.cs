@@ -12,6 +12,7 @@ namespace Com.Kumulos
         private int? notificationSmallIconId;
 
         public Abstractions.IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
+        public Abstractions.IInboxUpdatedHandler InboxUpdatedHandler { get; private set; }
 
         public Abstractions.IKSConfig AddKeys(string apiKey, string secretKey)
         {
@@ -41,6 +42,12 @@ namespace Com.Kumulos
         public Abstractions.IKSConfig SetInAppDeepLinkHandler(Abstractions.IInAppDeepLinkHandler inAppDeepLinkHandler)
         {
             InAppDeepLinkHandler = inAppDeepLinkHandler;
+            return this;
+        }
+
+        public Abstractions.IKSConfig SetInboxUpdatedHandler(Abstractions.IInboxUpdatedHandler inboxUpdatedHandler)
+        {
+            InboxUpdatedHandler = inboxUpdatedHandler;
             return this;
         }
 
@@ -108,5 +115,7 @@ namespace Com.Kumulos
         {
             return secretKey;
         }
+
+       
     }
 }

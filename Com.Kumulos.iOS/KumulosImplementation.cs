@@ -98,6 +98,22 @@ namespace Com.Kumulos
             return iOS.KumulosInApp.DeleteMessageFromInbox(nativeItem);
         }
 
+        public Task<InAppInboxSummary> GetInboxSummary()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool MarkInboxItemAsRead(InAppInboxItem item)
+        {
+            var nativeItem = FindInboxItemForDTO(item);
+            return iOS.KumulosInApp.MarkAsRead(nativeItem);
+        }
+
+        public bool MarkAllInboxItemsAsRead()
+        {
+            return iOS.KumulosInApp.MarkAllInboxItemsAsRead;
+        }
+
         private iOS.KSInAppInboxItem FindInboxItemForDTO(InAppInboxItem item)
         {
             var iosInboxItems = iOS.KumulosInApp.InboxItems;
@@ -255,9 +271,8 @@ namespace Com.Kumulos
             TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
         }
 
-        public Task<InAppInboxSummary> GetInboxSummaryAsync()
-        {
-            throw new NotImplementedException();
-        }
+      
+
+      
     }
 }

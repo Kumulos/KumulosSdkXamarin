@@ -5,6 +5,7 @@ using Android.App;
 using Android.Content;
 using Android.Locations;
 using Com.Kumulos.Abstractions;
+using Java.Lang;
 using Java.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -27,6 +28,23 @@ namespace Com.Kumulos
         }
     }
 
+    public class InboxUpdatedHandlerAbstraction : Java.Lang.Object, IRunnable, Android.KumulosInApp.IInAppInboxUpdatedHandler
+    {
+        private IInboxUpdatedHandler handler;
+
+        public InboxUpdatedHandlerAbstraction(IInboxUpdatedHandler handler)
+        {
+            this.handler = handler;
+        }
+
+        public void Run()
+        {
+            handler.Handle();
+        }
+
+        
+    }
+
     public class KumulosImplementation :  KumulosBaseImplementation, IKumulos
     {
         public override void Initialize(IKSConfig config)
@@ -38,6 +56,11 @@ namespace Com.Kumulos
             if (androidConfig.InAppDeepLinkHandler != null)
             {
                 Android.KumulosInApp.SetDeepLinkHandler(new DeepLinkHandlerAbstraction(androidConfig.InAppDeepLinkHandler));
+            }
+
+            if (androidConfig.InboxUpdatedHandler != null)
+            {
+                Android.KumulosInApp.SetOnInboxUpdated(new InboxUpdatedHandlerAbstraction(androidConfig.InboxUpdatedHandler));
             }
 
             base.Initialize(config);
@@ -123,6 +146,15 @@ namespace Com.Kumulos
             return Android.KumulosInApp.MarkAsRead(Application.Context.ApplicationContext, nativeItem);
         }
 
+        public bool MarkAllInboxItemsAsRead()
+        {
+            return Android.KumulosInApp.MarkAllInboxItemsAsRead(Application.Context.ApplicationContext);
+        }
+
+        public Task<InAppInboxSummary> GetInboxSummary()
+        {
+            throw new NotImplementedException();
+        }
 
         public bool DeleteMessageFromInbox(InAppInboxItem item)
         {
@@ -140,7 +172,7 @@ namespace Com.Kumulos
                     return androidInboxItems[i];
                 }
             }
-            throw new Exception("Failed to find inbox item for DTO");
+            throw new System.Exception("Failed to find inbox item for DTO");
         }
 
         private InAppMessagePresentationResult MapPresentationResult(Android.KumulosInApp.InboxMessagePresentationResult r)
@@ -159,7 +191,7 @@ namespace Com.Kumulos
                 return InAppMessagePresentationResult.Failed;
             }
 
-            throw new Exception("Failed to map InAppMessagePresentationResult");
+            throw new System.Exception("Failed to map InAppMessagePresentationResult");
         }
         
         public void RegisterForRemoteNotifications()
@@ -232,5 +264,7 @@ namespace Com.Kumulos
         {
             Android.Kumulos.SetPushActionHandler(pushActionHandler);
         }
+
+      
     }
 }

@@ -414,6 +414,31 @@ namespace Com.Kumulos.iOS
         NSUrl GetImageUrl(int width);
     }
 
+
+    // @interface InAppInboxSummary : NSObject
+    [BaseType(typeof(NSObject))]
+    interface InAppInboxSummary
+    {
+        // @property (readonly, nonatomic) int totalCount;
+        [Export("totalCount")]
+        int TotalCount { get; }
+
+        // @property (readonly, nonatomic) int unreadCount;
+        [Export("unreadCount")]
+        int UnreadCount { get; }
+
+        // +(instancetype _Nonnull)init:(int)totalCount unreadCount:(int)unreadCount;
+        [Static]
+        [Export("init:unreadCount:")]
+        InAppInboxSummary Init(int totalCount, int unreadCount);
+    }
+
+    // typedef void (^ _Nullable)(void) InboxUpdatedHandlerBlock;
+    delegate void InboxUpdatedHandlerBlock();
+
+    // typedef void (^ _Nullable)(InAppInboxSummary * _Nullable) InboxSummaryBlock;
+    delegate void InboxSummaryBlock([NullAllowed] InAppInboxSummary arg0);
+
     // @interface KumulosInApp : NSObject
     [BaseType(typeof(NSObject))]
     interface KumulosInApp
@@ -426,7 +451,6 @@ namespace Com.Kumulos.iOS
         // +(NSArray<KSInAppInboxItem *> * _Nonnull)getInboxItems;
         [Static]
         [Export("getInboxItems")]
-        
         KSInAppInboxItem[] InboxItems { get; }
 
         // +(KSInAppMessagePresentationResult)presentInboxMessage:(KSInAppInboxItem * _Nonnull)item;
@@ -438,6 +462,26 @@ namespace Com.Kumulos.iOS
         [Static]
         [Export("deleteMessageFromInbox:")]
         bool DeleteMessageFromInbox(KSInAppInboxItem item);
+
+        // +(BOOL)markAsRead:(KSInAppInboxItem * _Nonnull)item;
+        [Static]
+        [Export("markAsRead:")]
+        bool MarkAsRead(KSInAppInboxItem item);
+
+        // +(BOOL)markAllInboxItemsAsRead;
+        [Static]
+        [Export("markAllInboxItemsAsRead")]
+        bool MarkAllInboxItemsAsRead { get; }
+
+        // +(void)setOnInboxUpdated:(InboxUpdatedHandlerBlock)inboxUpdatedHandlerBlock;
+        [Static]
+        [Export("setOnInboxUpdated:")]
+        void SetOnInboxUpdated([NullAllowed] InboxUpdatedHandlerBlock inboxUpdatedHandlerBlock);
+
+        // +(void)getInboxSummaryAsync:(InboxSummaryBlock)inboxSummaryBlock;
+        [Static]
+        [Export("getInboxSummaryAsync:")]
+        void GetInboxSummaryAsync([NullAllowed] InboxSummaryBlock inboxSummaryBlock);
     }
 
    
