@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Com.Kumulos.Abstractions;
 using CoreLocation;
 using Foundation;
@@ -60,10 +61,11 @@ namespace Com.Kumulos
                         (int)iosInboxItem.Id,
                         iosInboxItem.Title,
                         iosInboxItem.Subtitle,
+                        GetDateTimeFromNSDate(iosInboxItem.SentAt),
                         GetDateTimeFromNSDate(iosInboxItem.AvailableFrom),
                         GetDateTimeFromNSDate(iosInboxItem.AvailableTo),
                         GetDateTimeFromNSDate(iosInboxItem.DismissedAt),
-                        new JObject()
+                        new JObject(iosInboxItem.Data)
                     );
                 }
 
@@ -250,6 +252,11 @@ namespace Com.Kumulos
             dict.Add("report", reportDict);
 
             TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
+        }
+
+        public Task<InAppInboxSummary> GetInboxSummaryAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

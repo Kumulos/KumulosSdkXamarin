@@ -21,7 +21,7 @@ namespace Com.Kumulos.Abstractions
             Build = new Build(InstallId, configureHttpClient(config, 3145728), config.GetApiKey());
 
             // 256k for push
-            PushChannels = new PushChannels(InstallId, configureHttpClient(config, 256000));
+            PushChannels = new PushChannels((IKumulos)this, configureHttpClient(config, 256000));
 
             LogPreviousCrashes();
         }

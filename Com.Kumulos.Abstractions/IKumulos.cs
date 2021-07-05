@@ -22,7 +22,7 @@ namespace Com.Kumulos.Abstractions
         InAppInboxItem[] InboxItems { get; }
         InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item);
         bool DeleteMessageFromInbox(InAppInboxItem item);
-         Task<InAppInboxSummary> GetInboxSummaryAsync();
+        Task<InAppInboxSummary> GetInboxSummaryAsync();
         
         void TrackEvent(string eventType, Dictionary<string, object> properties);
         void TrackEventImmediately(string eventType, Dictionary<string, object> properties);

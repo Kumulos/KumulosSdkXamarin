@@ -92,15 +92,9 @@ namespace Com.Kumulos
 
         public async Task<InAppInboxSummary> GetInboxSummaryAsync()
         {
-            
+            throw new NotImplementedException(); 
 
-            await Android.KumulosInApp.GetInboxSummaryAsync(Application.Context.ApplicationContext, ((Android.InAppInboxSummary summary) -> {
-                //if (summary != null)
-                //{
-                //    summary.getTotalCount();
-                //    summary.getUnreadCount();
-                //}
-            });
+           
         }
 
         private DateTime? FromJavaDate(Date javaDate)
