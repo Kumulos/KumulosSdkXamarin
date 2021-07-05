@@ -114,13 +114,6 @@ namespace Com.Kumulos
             }
         }
 
-        public async Task<InAppInboxSummary> GetInboxSummaryAsync()
-        {
-            throw new NotImplementedException(); 
-
-           
-        }
-
         private DateTime? FromJavaDate(Date javaDate)
         {
             if (javaDate == null)

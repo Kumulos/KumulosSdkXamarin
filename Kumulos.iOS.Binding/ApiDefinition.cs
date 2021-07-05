@@ -54,7 +54,6 @@ namespace Com.Kumulos.iOS
         KSTargetType TargetType { get; }
 
         // @property (readonly, nonatomic) UNNotificationPresentationOptions foregroundPushPresentationOptions __attribute__((availability(ios, introduced=10.0))) __attribute__((availability(macos, introduced=10.14)));
-        [Mac(10, 14), iOS(10, 0)]
         [Export("foregroundPushPresentationOptions")]
         UNNotificationPresentationOptions ForegroundPushPresentationOptions { get; }
 
@@ -71,7 +70,6 @@ namespace Com.Kumulos.iOS
         KSPushOpenedHandlerBlock PushOpenedHandler { get; }
 
         // @property (readonly, nonatomic) KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandler __attribute__((availability(ios, introduced=10.0))) __attribute__((availability(macos, introduced=10.14)));
-        [Mac(10, 14), iOS(10, 0)]
         [NullAllowed, Export("pushReceivedInForegroundHandler")]
         KSPushReceivedInForegroundHandlerBlock PushReceivedInForegroundHandler { get; }
 
