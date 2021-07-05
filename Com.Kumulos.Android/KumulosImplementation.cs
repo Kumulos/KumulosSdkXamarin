@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Locations;
@@ -77,9 +78,11 @@ namespace Com.Kumulos
                         (int)androidInboxItem.Id,
                         androidInboxItem.Title,
                         androidInboxItem.Subtitle,
+                        FromJavaDate(androidInboxItem.SentAt),
                         FromJavaDate(androidInboxItem.AvailableFrom),
                         FromJavaDate(androidInboxItem.AvailableTo),
-                        FromJavaDate(androidInboxItem.DismissedAt)
+                        FromJavaDate(androidInboxItem.DismissedAt),
+                        JObject.Parse(androidInboxItem.Data.ToString())
                     );
                 }
 
@@ -87,7 +90,20 @@ namespace Com.Kumulos
             }
         }
 
-        public DateTime? FromJavaDate(Date javaDate)
+        public async Task<InAppInboxSummary> GetInboxSummaryAsync()
+        {
+            
+
+            await Android.KumulosInApp.GetInboxSummaryAsync(Application.Context.ApplicationContext, ((Android.InAppInboxSummary summary) -> {
+                //if (summary != null)
+                //{
+                //    summary.getTotalCount();
+                //    summary.getUnreadCount();
+                //}
+            });
+        }
+
+        private DateTime? FromJavaDate(Date javaDate)
         {
             if (javaDate == null)
             {
@@ -105,6 +121,13 @@ namespace Com.Kumulos
 
             return MapPresentationResult(r);
         }
+
+        public bool MarkInboxItemAsRead(InAppInboxItem item)
+        {
+            var nativeItem = FindInboxItemForDTO(item);
+            return Android.KumulosInApp.MarkAsRead(Application.Context.ApplicationContext, nativeItem);
+        }
+
 
         public bool DeleteMessageFromInbox(InAppInboxItem item)
         {

@@ -1,16 +1,20 @@
 ﻿using System;
+using Newtonsoft.Json.Linq;
+
 namespace Com.Kumulos.Abstractions
 {
     public class InAppInboxItem
     {
-        public InAppInboxItem(int id, string title, string subtitle, DateTime? availableFrom, DateTime? availableTo, DateTime? dismissedAt)
+        public InAppInboxItem(int id, string title, string subtitle, DateTime? sentAt, DateTime? availableFrom, DateTime? availableTo, DateTime? dismissedAt, JObject data)
         {
             Id = id;
             Title = title;
             Subtitle = subtitle;
+            SentAt = sentAt;
             AvailableFrom = availableFrom;
             AvailableTo = availableTo;
             DismissedAt = dismissedAt;
+            Data = data;
         }
 
         public int Id { get; }
@@ -19,10 +23,14 @@ namespace Com.Kumulos.Abstractions
 
         public string Subtitle { get; }
 
+        public DateTime? SentAt { get; }
+
         public DateTime? AvailableFrom { get; }
 
         public DateTime? AvailableTo { get; }
 
         public DateTime? DismissedAt { get; }
+
+        public JObject Data { get; }
     }
 }

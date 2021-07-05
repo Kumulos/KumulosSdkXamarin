@@ -62,7 +62,8 @@ namespace Com.Kumulos
                         iosInboxItem.Subtitle,
                         GetDateTimeFromNSDate(iosInboxItem.AvailableFrom),
                         GetDateTimeFromNSDate(iosInboxItem.AvailableTo),
-                        GetDateTimeFromNSDate(iosInboxItem.DismissedAt)
+                        GetDateTimeFromNSDate(iosInboxItem.DismissedAt),
+                        new JObject()
                     );
                 }
 
