@@ -65,6 +65,7 @@ namespace Com.Kumulos
                         GetDateTimeFromNSDate(iosInboxItem.AvailableFrom),
                         GetDateTimeFromNSDate(iosInboxItem.AvailableTo),
                         GetDateTimeFromNSDate(iosInboxItem.DismissedAt),
+                        iosInboxItem.GetImageUrl(200).ToString(),
                         new JObject(iosInboxItem.Data)
                     );
                 }

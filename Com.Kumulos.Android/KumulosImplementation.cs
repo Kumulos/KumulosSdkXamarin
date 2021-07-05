@@ -82,6 +82,7 @@ namespace Com.Kumulos
                         FromJavaDate(androidInboxItem.AvailableFrom),
                         FromJavaDate(androidInboxItem.AvailableTo),
                         FromJavaDate(androidInboxItem.DismissedAt),
+                        androidInboxItem.GetImageUrl(200).ToString(),
                         JObject.Parse(androidInboxItem.Data.ToString())
                     );
                 }
