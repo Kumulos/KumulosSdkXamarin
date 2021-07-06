@@ -21,7 +21,7 @@ namespace Com.Kumulos.Abstractions
 
 		public async Task<object> ListChannels()
 		{
-			var uri = new Uri(string.Format("{0}/v1/users/{1}/channels", Consts.STATS_SERVICE_BASE_URI, this.kumulos.UserIdentifier));
+			var uri = new Uri(string.Format("{0}/users/{1}/channels", Consts.STATS_SERVICE_BASE_URI, this.kumulos.UserIdentifier));
 
 			HttpResponseMessage request = await httpClient.GetAsync(uri);
 
@@ -37,18 +37,17 @@ namespace Com.Kumulos.Abstractions
 
 		public async Task<object> CreateChannel(string uuid, bool subscribe, string name, bool showInPortal, Dictionary<string, object> meta)
 		{
-			var uri = new Uri(string.Format("{0}/v1/channels", Consts.STATS_SERVICE_BASE_URI));
+			var uri = new Uri(string.Format("{0}/channels", Consts.STATS_SERVICE_BASE_URI));
 
 			JObject payload = new JObject();
 			payload.Add("uuid", uuid);
 			payload.Add("name", name);
 			payload.Add("showInPortal", showInPortal);
 
-			JObject payloadMeta = new JObject();
-			foreach(var metaKey in meta)
+			if (meta.Count > 0)
             {
-
-            }
+				payload.Add("meta", JObject.FromObject(meta));
+			}
 
 			if (subscribe == true)
 			{
@@ -99,7 +98,7 @@ namespace Com.Kumulos.Abstractions
 
 		private async Task<object> MakeSubscriptionNetworkRequest(HttpMethod method, string payload)
 		{
-			var uri = new Uri(string.Format("{0}/v1/users/{1}/channels/subscriptions", Consts.STATS_SERVICE_BASE_URI, kumulos.UserIdentifier));
+			var uri = new Uri(string.Format("{0}/users/{1}/channels/subscriptions", Consts.STATS_SERVICE_BASE_URI, kumulos.UserIdentifier));
 			var requestMessage = new HttpRequestMessage(method, uri);
 
 			requestMessage.Headers.Add("Accept", "application/json");
