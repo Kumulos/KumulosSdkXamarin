@@ -5,9 +5,10 @@ namespace Com.Kumulos.Abstractions
 {
     public class InAppInboxItem
     {
-        public InAppInboxItem(int id, string title, string subtitle, DateTime? sentAt, DateTime? availableFrom, DateTime? availableTo, DateTime? dismissedAt, string imageUrl, JObject data)
+        public InAppInboxItem(int id, bool isRead, string title, string subtitle, DateTime? sentAt, DateTime? availableFrom, DateTime? availableTo, DateTime? dismissedAt, string imageUrl, JObject data)
         {
             Id = id;
+            IsRead = isRead;
             Title = title;
             Subtitle = subtitle;
             SentAt = sentAt;
@@ -19,6 +20,8 @@ namespace Com.Kumulos.Abstractions
         }
 
         public int Id { get; }
+
+        public bool IsRead { get; }
                 
         public string Title { get; }
 

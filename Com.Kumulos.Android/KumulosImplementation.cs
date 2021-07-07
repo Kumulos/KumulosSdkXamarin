@@ -97,16 +97,19 @@ namespace Com.Kumulos
                 for (var i = 0; i < androidInboxItems.Count; i++)
                 {
                     var androidInboxItem = androidInboxItems[i];
+                    var imageUrl = androidInboxItem.GetImageUrl(200);
+
                     inboxItems[i] = new InAppInboxItem(
                         (int)androidInboxItem.Id,
+                        androidInboxItem.IsRead,
                         androidInboxItem.Title,
                         androidInboxItem.Subtitle,
                         FromJavaDate(androidInboxItem.SentAt),
                         FromJavaDate(androidInboxItem.AvailableFrom),
                         FromJavaDate(androidInboxItem.AvailableTo),
                         FromJavaDate(androidInboxItem.DismissedAt),
-                        androidInboxItem.GetImageUrl(200).ToString(),
-                        JObject.Parse(androidInboxItem.Data.ToString())
+                        imageUrl != null ? imageUrl.ToString() : null,
+                        androidInboxItem.Data != null ? JObject.Parse(androidInboxItem.Data.ToString()) : new JObject()
                     );
                 }
 
