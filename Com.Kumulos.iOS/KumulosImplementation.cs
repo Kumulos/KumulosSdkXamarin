@@ -56,17 +56,28 @@ namespace Com.Kumulos
                 for (var i = 0; i < iosInboxItems.Length; i++)
                 {
                     var iosInboxItem = iosInboxItems[i];
+                    var imageUrl = iosInboxItem.GetImageUrl(200);
+                    var dataPayload = new JObject();
+
+                    if (iosInboxItem.Data != null)
+                    {
+                        NSError error;
+                        var dataJson = NSJsonSerialization.Serialize(iosInboxItem.Data, NSJsonWritingOptions.PrettyPrinted, out error);
+
+                        dataPayload = JObject.Parse(dataJson.ToString());
+                    }
 
                     inboxItems[i] = new InAppInboxItem(
                         (int)iosInboxItem.Id,
+                        iosInboxItem.IsRead,
                         iosInboxItem.Title,
                         iosInboxItem.Subtitle,
                         GetDateTimeFromNSDate(iosInboxItem.SentAt),
                         GetDateTimeFromNSDate(iosInboxItem.AvailableFrom),
                         GetDateTimeFromNSDate(iosInboxItem.AvailableTo),
                         GetDateTimeFromNSDate(iosInboxItem.DismissedAt),
-                        iosInboxItem.GetImageUrl(200).ToString(),
-                        new JObject(iosInboxItem.Data)
+                        imageUrl != null ? imageUrl.ToString() : null,
+                        dataPayload
                     );
                 }
 
@@ -270,9 +281,5 @@ namespace Com.Kumulos
 
             TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
         }
-
-      
-
-      
     }
 }
