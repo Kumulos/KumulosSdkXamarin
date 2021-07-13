@@ -22,6 +22,14 @@ namespace Com.Kumulos
 
             thisRef = iOS.Kumulos.InitializeWithConfig(iosKSConfig.Build());
 
+            if (iosKSConfig.InboxUpdatedHandler != null)
+            {
+                iOS.KumulosInApp.SetOnInboxUpdated(() =>
+                {
+                    iosKSConfig.InboxUpdatedHandler.Handle();
+                });
+            }
+
             base.Initialize(config);
         }
 
@@ -111,7 +119,15 @@ namespace Com.Kumulos
 
         public Task<InAppInboxSummary> GetInboxSummary()
         {
-            throw new NotImplementedException();
+            var promise = new TaskCompletionSource<InAppInboxSummary>();
+
+            iOS.KumulosInApp.GetInboxSummaryAsync((iOS.InAppInboxSummary nativeSummary) => {
+                var abstractSummary = new InAppInboxSummary(nativeSummary.UnreadCount, nativeSummary.TotalCount);
+
+                promise.TrySetResult(abstractSummary);
+            });
+
+            return promise.Task; 
         }
 
         public bool MarkInboxItemAsRead(InAppInboxItem item)

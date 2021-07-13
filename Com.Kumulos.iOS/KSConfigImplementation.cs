@@ -51,7 +51,7 @@ namespace Com.Kumulos
             return this;
         }
 
-        public Abstractions.IKSConfig SetInboxUpdatedHandler(Abstractions.IInboxUpdatedHandler inboxUpdatedHandler)
+        public IKSConfig SetInboxUpdatedHandler(IInboxUpdatedHandler inboxUpdatedHandler)
         {
             InboxUpdatedHandler = inboxUpdatedHandler;
             return this;

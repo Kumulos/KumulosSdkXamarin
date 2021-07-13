@@ -41,8 +41,28 @@ namespace Com.Kumulos
         {
             handler.Handle();
         }
-
+    }
+    
+    public class InboxSummaryHandlerAbstraction :  Java.Lang.Object, IRunnable, Android.KumulosInApp.IInAppInboxSummaryHandler
+    {
+        private TaskCompletionSource<InAppInboxSummary> promise;
         
+        public InboxSummaryHandlerAbstraction(TaskCompletionSource<InAppInboxSummary> promise)
+        {
+            this.promise = promise;
+        }
+
+        public void Run()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Run(Android.InAppInboxSummary inAppInboxSummary)
+        {
+            var abstractSummary = new InAppInboxSummary(inAppInboxSummary.UnreadCount, inAppInboxSummary.TotalCount);
+            promise.TrySetResult(abstractSummary);
+            
+        }
     }
 
     public class KumulosImplementation :  KumulosBaseImplementation, IKumulos
@@ -149,7 +169,13 @@ namespace Com.Kumulos
 
         public Task<InAppInboxSummary> GetInboxSummary()
         {
-            throw new NotImplementedException();
+            var promise = new TaskCompletionSource<InAppInboxSummary>();
+
+            var handlerAbstraction = new InboxSummaryHandlerAbstraction(promise);
+
+            Android.KumulosInApp.GetInboxSummaryAsync(Application.Context.ApplicationContext, handlerAbstraction);
+
+            return promise.Task;
         }
 
         public bool DeleteMessageFromInbox(InAppInboxItem item)
@@ -260,7 +286,5 @@ namespace Com.Kumulos
         {
             Android.Kumulos.SetPushActionHandler(pushActionHandler);
         }
-
-      
     }
 }
