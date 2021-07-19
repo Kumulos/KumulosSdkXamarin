@@ -15,7 +15,7 @@
         <summary>The Kumulos SDK provides audience and engagement analytics; marketing automation and geo-targeted push notifications; backend storage and API management; and crash reporting for your Xamarin apps.</summary>
         <tags>xamarin, monodroid, C#, Kumulos, push, analytics, crash reporting</tags>
         <dependencies>
-            <group targetFramework="MonoAndroid10">
+            <group targetFramework="monoandroid">
                 <dependency id="Newtonsoft.Json" version="12.0.3" />
                 <dependency id="Square.OkHttp3" version="3.14.4" />
                 <dependency id="Xamarin.Android.Support.v4" version="28.0.0.3" />
@@ -29,7 +29,7 @@
                 <dependency id="NETStandard.Library" version="2.0.3" />
                 <dependency id="Newtonsoft.Json" version="12.0.2" />
             </group>
-            <group targetFramework="Xamarin.iOS">
+            <group targetFramework="xamarinios">
                 <dependency id="Newtonsoft.Json" version="12.0.3" />
             </group>
         </dependencies>
@@ -44,9 +44,9 @@
         <file src="Com.Kumulos.Abstractions\bin\Release\netstandard2.0\Com.Kumulos.Abstractions.dll" target="lib\netstandard2.0" />
 
         <!--Xamarin.Android-->
-        <file src="Com.Kumulos.Android\bin\Release\*Kumulos.*" target="lib\MonoAndroid10" />
+        <file src="Com.Kumulos.Android\bin\Release\*Kumulos.*" target="lib\monoandroid" />
 
         <!--Xamarin.iOS Unified-->
-        <file src="Com.Kumulos.iOS\bin\Release\*Kumulos.*" target="lib\Xamarin.iOS" />
+        <file src="Com.Kumulos.iOS\bin\Release\*Kumulos.*" target="lib\xamarinios" />
     </files>
 </package>
