@@ -64,7 +64,7 @@ namespace Com.Kumulos
                 for (var i = 0; i < iosInboxItems.Length; i++)
                 {
                     var iosInboxItem = iosInboxItems[i];
-                    var imageUrl = iosInboxItem.GetImageUrl(200);
+                    var imageUrl = iosInboxItem.GetImageUrl(300);
                     var dataPayload = new JObject();
 
                     if (iosInboxItem.Data != null)

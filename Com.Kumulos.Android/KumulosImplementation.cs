@@ -117,7 +117,7 @@ namespace Com.Kumulos
                 for (var i = 0; i < androidInboxItems.Count; i++)
                 {
                     var androidInboxItem = androidInboxItems[i];
-                    var imageUrl = androidInboxItem.GetImageUrl(200);
+                    var imageUrl = androidInboxItem.GetImageUrl(300);
 
                     inboxItems[i] = new InAppInboxItem(
                         (int)androidInboxItem.Id,
