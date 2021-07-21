@@ -16,7 +16,6 @@
         public const string CRASH_REPORT_FORMAT = "xamarin-csharp";
         public const string CRASH_REPORT_EVENT_TYPE = "k.crash.loggedException";
 
-        public const string PUSH_SERVICE_BASE_URI = "https://push.kumulos.com/v1";
         public const string STATS_SERVICE_BASE_URI = "https://stats.kumulos.com/v1";
     }
 } 
