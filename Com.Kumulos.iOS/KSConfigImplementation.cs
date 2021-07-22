@@ -17,8 +17,7 @@ namespace Com.Kumulos
         private UNNotificationPresentationOptions notificationPresentationOptions;
 
         public IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
-        public IInboxUpdatedHandler InboxUpdatedHandler { get; private set; }
-
+        
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
             this.apiKey = apiKey;
@@ -48,12 +47,6 @@ namespace Com.Kumulos
         public IKSConfig SetInAppDeepLinkHandler(IInAppDeepLinkHandler inAppDeepLinkHandler)
         {
             InAppDeepLinkHandler = inAppDeepLinkHandler;
-            return this;
-        }
-
-        public IKSConfig SetInboxUpdatedHandler(IInboxUpdatedHandler inboxUpdatedHandler)
-        {
-            InboxUpdatedHandler = inboxUpdatedHandler;
             return this;
         }
 

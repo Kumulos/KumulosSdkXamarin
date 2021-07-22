@@ -8,8 +8,7 @@
         IKSConfig EnableInAppMessaging(InAppConsentStrategy consentStrategy);
 
         IKSConfig SetInAppDeepLinkHandler(IInAppDeepLinkHandler inAppDeepLinkHandler);
-        IKSConfig SetInboxUpdatedHandler(IInboxUpdatedHandler inboxUpdatedHandler);
-        
+
         string GetApiKey();
         string GetSecretKey();
     }
