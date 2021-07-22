@@ -8,7 +8,7 @@
         IKSConfig EnableInAppMessaging(InAppConsentStrategy consentStrategy);
 
         IKSConfig SetInAppDeepLinkHandler(IInAppDeepLinkHandler inAppDeepLinkHandler);
-        
+
         string GetApiKey();
         string GetSecretKey();
     }

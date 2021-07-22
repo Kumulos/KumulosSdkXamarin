@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Locations;
 using Com.Kumulos.Abstractions;
+using Java.Lang;
 using Java.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -26,7 +28,44 @@ namespace Com.Kumulos
         }
     }
 
-    public class KumulosImplementation :  KumulosBaseImplementation, IKumulos
+    public class InboxUpdatedHandlerAbstraction : Java.Lang.Object, IRunnable, Android.KumulosInApp.IInAppInboxUpdatedHandler
+    {
+        private IInboxUpdatedHandler handler;
+
+        public InboxUpdatedHandlerAbstraction(IInboxUpdatedHandler handler)
+        {
+            this.handler = handler;
+        }
+
+        public void Run()
+        {
+            handler.Handle();
+        }
+    }
+
+    public class InboxSummaryHandlerAbstraction : Java.Lang.Object, IRunnable, Android.KumulosInApp.IInAppInboxSummaryHandler
+    {
+        private TaskCompletionSource<InAppInboxSummary> promise;
+
+        public InboxSummaryHandlerAbstraction(TaskCompletionSource<InAppInboxSummary> promise)
+        {
+            this.promise = promise;
+        }
+
+        public void Run()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Run(Android.InAppInboxSummary inAppInboxSummary)
+        {
+            var abstractSummary = new InAppInboxSummary(inAppInboxSummary.UnreadCount, inAppInboxSummary.TotalCount);
+            promise.TrySetResult(abstractSummary);
+
+        }
+    }
+
+    public class KumulosImplementation : KumulosBaseImplementation, IKumulos
     {
         public override void Initialize(IKSConfig config)
         {
@@ -73,13 +112,19 @@ namespace Com.Kumulos
                 for (var i = 0; i < androidInboxItems.Count; i++)
                 {
                     var androidInboxItem = androidInboxItems[i];
+                    var imageUrl = androidInboxItem.GetImageUrl(300);
+
                     inboxItems[i] = new InAppInboxItem(
                         (int)androidInboxItem.Id,
+                        androidInboxItem.IsRead,
                         androidInboxItem.Title,
                         androidInboxItem.Subtitle,
+                        FromJavaDate(androidInboxItem.SentAt),
                         FromJavaDate(androidInboxItem.AvailableFrom),
                         FromJavaDate(androidInboxItem.AvailableTo),
-                        FromJavaDate(androidInboxItem.DismissedAt)
+                        FromJavaDate(androidInboxItem.DismissedAt),
+                        imageUrl != null ? imageUrl.ToString() : null,
+                        androidInboxItem.Data != null ? JObject.Parse(androidInboxItem.Data.ToString()) : new JObject()
                     );
                 }
 
@@ -87,7 +132,7 @@ namespace Com.Kumulos
             }
         }
 
-        public DateTime? FromJavaDate(Date javaDate)
+        private DateTime? FromJavaDate(Date javaDate)
         {
             if (javaDate == null)
             {
@@ -106,10 +151,32 @@ namespace Com.Kumulos
             return MapPresentationResult(r);
         }
 
+        public bool MarkInboxItemAsRead(InAppInboxItem item)
+        {
+            var nativeItem = FindInboxItemForDTO(item);
+            return Android.KumulosInApp.MarkAsRead(Application.Context.ApplicationContext, nativeItem);
+        }
+
+        public bool MarkAllInboxItemsAsRead()
+        {
+            return Android.KumulosInApp.MarkAllInboxItemsAsRead(Application.Context.ApplicationContext);
+        }
+
+        public Task<InAppInboxSummary> GetInboxSummary()
+        {
+            var promise = new TaskCompletionSource<InAppInboxSummary>();
+
+            var handlerAbstraction = new InboxSummaryHandlerAbstraction(promise);
+
+            Android.KumulosInApp.GetInboxSummaryAsync(Application.Context.ApplicationContext, handlerAbstraction);
+
+            return promise.Task;
+        }
+
         public bool DeleteMessageFromInbox(InAppInboxItem item)
         {
             var nativeItem = FindInboxItemForDTO(item);
-            return Android.KumulosInApp.DeleteMessageFromInbox(Application.Context.ApplicationContext, nativeItem);   
+            return Android.KumulosInApp.DeleteMessageFromInbox(Application.Context.ApplicationContext, nativeItem);
         }
 
         private Android.InAppInboxItem FindInboxItemForDTO(InAppInboxItem item)
@@ -122,7 +189,7 @@ namespace Com.Kumulos
                     return androidInboxItems[i];
                 }
             }
-            throw new Exception("Failed to find inbox item for DTO");
+            throw new System.Exception("Failed to find inbox item for DTO");
         }
 
         private InAppMessagePresentationResult MapPresentationResult(Android.KumulosInApp.InboxMessagePresentationResult r)
@@ -141,9 +208,9 @@ namespace Com.Kumulos
                 return InAppMessagePresentationResult.Failed;
             }
 
-            throw new Exception("Failed to map InAppMessagePresentationResult");
+            throw new System.Exception("Failed to map InAppMessagePresentationResult");
         }
-        
+
         public void RegisterForRemoteNotifications()
         {
             Android.Kumulos.PushRegister(Application.Context.ApplicationContext);
@@ -197,7 +264,7 @@ namespace Com.Kumulos
             Java.Lang.Double dblDistance = new Java.Lang.Double(distanceMetres);
             Android.Kumulos.TrackEddystoneBeaconProximity(Application.Context.ApplicationContext, namespaceHex, instanceHex, dblDistance);
         }
-        
+
         public void TrackiBeaconProximity(object CLBeaconObject)
         {
             throw new NotImplementedException("This method should not be called on Android");
@@ -213,6 +280,16 @@ namespace Com.Kumulos
         public void SetPushActionHandler(Android.IPushActionHandlerInterface pushActionHandler)
         {
             Android.Kumulos.SetPushActionHandler(pushActionHandler);
+        }
+
+        public void SetInboxUpdatedHandler(IInboxUpdatedHandler inboxUpdatedHandler)
+        {
+            Android.KumulosInApp.SetOnInboxUpdated(new InboxUpdatedHandlerAbstraction(inboxUpdatedHandler));
+        }
+
+        public void ClearInboxUpdatedHandler()
+        {
+            Android.KumulosInApp.SetOnInboxUpdated(null);
         }
     }
 }

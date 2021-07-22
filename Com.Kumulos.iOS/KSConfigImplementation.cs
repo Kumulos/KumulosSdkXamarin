@@ -16,8 +16,8 @@ namespace Com.Kumulos
         private iOS.KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandlerBlock;
         private UNNotificationPresentationOptions notificationPresentationOptions;
 
-        protected IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
-
+        public IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
+        
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
             this.apiKey = apiKey;

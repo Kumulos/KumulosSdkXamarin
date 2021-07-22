@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Com.Kumulos.Abstractions
 {
@@ -21,6 +22,9 @@ namespace Com.Kumulos.Abstractions
         InAppInboxItem[] InboxItems { get; }
         InAppMessagePresentationResult PresentInboxMessage(InAppInboxItem item);
         bool DeleteMessageFromInbox(InAppInboxItem item);
+        Task<InAppInboxSummary> GetInboxSummary();
+        bool MarkInboxItemAsRead(InAppInboxItem item);
+        bool MarkAllInboxItemsAsRead();
 
         void TrackEvent(string eventType, Dictionary<string, object> properties);
         void TrackEventImmediately(string eventType, Dictionary<string, object> properties);
@@ -36,5 +40,8 @@ namespace Com.Kumulos.Abstractions
 
         void TrackEddystoneBeaconProximity(string namespaceHex, string instanceHex, double distanceMetres);
         void TrackiBeaconProximity(object CLBeaconObject);
+
+        void SetInboxUpdatedHandler(IInboxUpdatedHandler inboxUpdatedHandler);
+        void ClearInboxUpdatedHandler();
     }
 }

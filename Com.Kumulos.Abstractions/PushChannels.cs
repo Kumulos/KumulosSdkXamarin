@@ -11,17 +11,17 @@ namespace Com.Kumulos.Abstractions
 	public class PushChannels
 	{
 		private readonly HttpClient httpClient;
-		private readonly string installId;
+		private readonly IKumulos kumulos;
 
-		public PushChannels(string installId, HttpClient httpClient)
+		public PushChannels(IKumulos kumulos, HttpClient httpClient)
 		{
-			this.installId = installId;
+			this.kumulos = kumulos;
 			this.httpClient = httpClient;
 		}
 
 		public async Task<object> ListChannels()
 		{
-			var uri = new Uri(string.Format("{0}/app-installs/{1}/channels", Consts.PUSH_SERVICE_BASE_URI, installId));
+			var uri = new Uri(string.Format("{0}/users/{1}/channels", Consts.STATS_SERVICE_BASE_URI, this.kumulos.UserIdentifier));
 
 			HttpResponseMessage request = await httpClient.GetAsync(uri);
 
@@ -37,18 +37,21 @@ namespace Com.Kumulos.Abstractions
 
 		public async Task<object> CreateChannel(string uuid, bool subscribe, string name, bool showInPortal, Dictionary<string, object> meta)
 		{
-			var uri = new Uri(string.Format("{0}/channels", Consts.PUSH_SERVICE_BASE_URI));
+			var uri = new Uri(string.Format("{0}/channels", Consts.STATS_SERVICE_BASE_URI));
 
 			JObject payload = new JObject();
 			payload.Add("uuid", uuid);
+			payload.Add("name", name);
 			payload.Add("showInPortal", showInPortal);
 
-			payload.Add("name", name);
-
+			if (meta.Count > 0)
+            {
+				payload.Add("meta", JObject.FromObject(meta));
+			}
 
 			if (subscribe == true)
 			{
-				payload.Add("installId", installId);
+				payload.Add("userIdentifier", kumulos.UserIdentifier);
 			}
 
 			var content = new StringContent(payload.ToString(), Encoding.UTF8, "application/json");
@@ -95,7 +98,7 @@ namespace Com.Kumulos.Abstractions
 
 		private async Task<object> MakeSubscriptionNetworkRequest(HttpMethod method, string payload)
 		{
-			var uri = new Uri(string.Format("{0}/app-installs/{1}/channels/subscriptions", Consts.PUSH_SERVICE_BASE_URI, installId));
+			var uri = new Uri(string.Format("{0}/users/{1}/channels/subscriptions", Consts.STATS_SERVICE_BASE_URI, kumulos.UserIdentifier));
 			var requestMessage = new HttpRequestMessage(method, uri);
 
 			requestMessage.Headers.Add("Accept", "application/json");

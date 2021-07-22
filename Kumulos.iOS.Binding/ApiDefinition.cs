@@ -6,11 +6,7 @@ using UserNotifications;
 
 namespace Com.Kumulos.iOS
 {
-    // typedef void (^ _Nullable)(KSAPIResponse * _Nonnull, KSAPIOperation * _Nonnull) KSAPIOperationSuccessBlock;
-    delegate void KSAPIOperationSuccessBlock(KSAPIResponse arg0, KSAPIOperation arg1);
-
-    // typedef void (^ _Nullable)(NSError * _Nonnull, KSAPIOperation * _Nonnull) KSAPIOperationFailureBlock;
-    delegate void KSAPIOperationFailureBlock(NSError arg0, KSAPIOperation arg1);
+  
 
     // typedef void (^ _Nullable)(NSDictionary * _Nonnull) KSInAppDeepLinkHandlerBlock;
     delegate void KSInAppDeepLinkHandlerBlock(NSDictionary arg0);
@@ -58,7 +54,6 @@ namespace Com.Kumulos.iOS
         KSTargetType TargetType { get; }
 
         // @property (readonly, nonatomic) UNNotificationPresentationOptions foregroundPushPresentationOptions __attribute__((availability(ios, introduced=10.0))) __attribute__((availability(macos, introduced=10.14)));
-        [Mac(10, 14), iOS(10, 0)]
         [Export("foregroundPushPresentationOptions")]
         UNNotificationPresentationOptions ForegroundPushPresentationOptions { get; }
 
@@ -75,7 +70,6 @@ namespace Com.Kumulos.iOS
         KSPushOpenedHandlerBlock PushOpenedHandler { get; }
 
         // @property (readonly, nonatomic) KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandler __attribute__((availability(ios, introduced=10.0))) __attribute__((availability(macos, introduced=10.14)));
-        [Mac(10, 14), iOS(10, 0)]
         [NullAllowed, Export("pushReceivedInForegroundHandler")]
         KSPushReceivedInForegroundHandlerBlock PushReceivedInForegroundHandler { get; }
 
@@ -164,21 +158,7 @@ namespace Com.Kumulos.iOS
         [Export("initWithAPIKey:andSecretKey:")]
         IntPtr Constructor(string APIKey, string secretKey);
 
-        // -(KSAPIOperation * _Nonnull)callMethod:(NSString * _Nonnull)method withSuccess:(KSAPIOperationSuccessBlock)success andFailure:(KSAPIOperationFailureBlock)failure;
-        [Export("callMethod:withSuccess:andFailure:")]
-        KSAPIOperation CallMethod(string method, [NullAllowed] KSAPIOperationSuccessBlock success, [NullAllowed] KSAPIOperationFailureBlock failure);
-
-        // -(KSAPIOperation * _Nonnull)callMethod:(NSString * _Nonnull)method withParams:(NSDictionary * _Nullable)params success:(KSAPIOperationSuccessBlock)success andFailure:(KSAPIOperationFailureBlock)failure;
-        [Export("callMethod:withParams:success:andFailure:")]
-        KSAPIOperation CallMethod(string method, [NullAllowed] NSDictionary @params, [NullAllowed] KSAPIOperationSuccessBlock success, [NullAllowed] KSAPIOperationFailureBlock failure);
-
-        // -(KSAPIOperation * _Nonnull)callMethod:(NSString * _Nonnull)method withDelegate:(id<KSAPIOperationDelegate> _Nullable)delegate;
-        [Export("callMethod:withDelegate:")]
-        KSAPIOperation CallMethod(string method, [NullAllowed] KSAPIOperationDelegate @delegate);
-
-        // -(KSAPIOperation * _Nonnull)callMethod:(NSString * _Nonnull)method withParams:(NSDictionary * _Nullable)params andDelegate:(id<KSAPIOperationDelegate> _Nullable)delegate;
-        [Export("callMethod:withParams:andDelegate:")]
-        KSAPIOperation CallMethod(string method, [NullAllowed] NSDictionary @params, [NullAllowed] KSAPIOperationDelegate @delegate);
+        
     }
 
     // typedef void (^ _Nullable)(UNAuthorizationStatus, NSError * _Nullable) KSUNAuthorizationCheckedHandler;
@@ -375,8 +355,10 @@ namespace Com.Kumulos.iOS
         // +(NSString * _Nonnull)currentUserIdentifier;
         [Static]
         [Export("currentUserIdentifier")]
+        
         string CurrentUserIdentifier { get; }
     }
+
 
     // @interface KSInAppInboxItem : NSObject
     [BaseType(typeof(NSObject))]
@@ -405,7 +387,55 @@ namespace Com.Kumulos.iOS
         // @property (readonly, nonatomic) NSDate * _Nullable dismissedAt;
         [NullAllowed, Export("dismissedAt")]
         NSDate DismissedAt { get; }
+
+        // @property (readonly, nonatomic) NSDate * _Nonnull sentAt;
+        [Export("sentAt")]
+        NSDate SentAt { get; }
+
+        // @property (readonly, nonatomic) NSDictionary * _Nullable data;
+        [NullAllowed, Export("data")]
+        NSDictionary Data { get; }
+
+        // -(BOOL)isRead;
+        [Export("isRead")]
+        
+        bool IsRead { get; }
+
+        // -(NSURL * _Nullable)getImageUrl;
+        [Export("getImageUrl")]
+        [return: NullAllowed]
+        NSUrl GetImageUrl();
+
+        // -(NSURL * _Nullable)getImageUrl:(int)width;
+        [Export("getImageUrl:")]
+        [return: NullAllowed]
+        NSUrl GetImageUrl(int width);
     }
+
+
+    // @interface InAppInboxSummary : NSObject
+    [BaseType(typeof(NSObject))]
+    interface InAppInboxSummary
+    {
+        // @property (readonly, nonatomic) int totalCount;
+        [Export("totalCount")]
+        int TotalCount { get; }
+
+        // @property (readonly, nonatomic) int unreadCount;
+        [Export("unreadCount")]
+        int UnreadCount { get; }
+
+        // +(instancetype _Nonnull)init:(int)totalCount unreadCount:(int)unreadCount;
+        [Static]
+        [Export("init:unreadCount:")]
+        InAppInboxSummary Init(int totalCount, int unreadCount);
+    }
+
+    // typedef void (^ _Nullable)(void) InboxUpdatedHandlerBlock;
+    delegate void InboxUpdatedHandlerBlock();
+
+    // typedef void (^ _Nullable)(InAppInboxSummary * _Nullable) InboxSummaryBlock;
+    delegate void InboxSummaryBlock([NullAllowed] InAppInboxSummary arg0);
 
     // @interface KumulosInApp : NSObject
     [BaseType(typeof(NSObject))]
@@ -430,88 +460,33 @@ namespace Com.Kumulos.iOS
         [Static]
         [Export("deleteMessageFromInbox:")]
         bool DeleteMessageFromInbox(KSInAppInboxItem item);
+
+        // +(BOOL)markAsRead:(KSInAppInboxItem * _Nonnull)item;
+        [Static]
+        [Export("markAsRead:")]
+        bool MarkAsRead(KSInAppInboxItem item);
+
+        // +(BOOL)markAllInboxItemsAsRead;
+        [Static]
+        [Export("markAllInboxItemsAsRead")]
+        bool MarkAllInboxItemsAsRead { get; }
+
+        // +(void)setOnInboxUpdated:(InboxUpdatedHandlerBlock)inboxUpdatedHandlerBlock;
+        [Static]
+        [Export("setOnInboxUpdated:")]
+        void SetOnInboxUpdated([NullAllowed] InboxUpdatedHandlerBlock inboxUpdatedHandlerBlock);
+
+        // +(void)getInboxSummaryAsync:(InboxSummaryBlock)inboxSummaryBlock;
+        [Static]
+        [Export("getInboxSummaryAsync:")]
+        void GetInboxSummaryAsync([NullAllowed] InboxSummaryBlock inboxSummaryBlock);
     }
 
-    // @protocol KSAPIOperationDelegate <NSObject>
-    [Protocol, Model(AutoGeneratedName = true)]
-    [BaseType(typeof(NSObject))]
-    interface KSAPIOperationDelegate
-    {
-        // @required -(void)operation:(KSAPIOperation * _Nonnull)operation didCompleteWithResponse:(KSAPIResponse * _Nonnull)response;
-        [Abstract]
-        [Export("operation:didCompleteWithResponse:")]
-        void DidCompleteWithResponse(KSAPIOperation operation, KSAPIResponse response);
+   
 
-        // @optional -(void)operation:(KSAPIOperation * _Nonnull)operation didFailWithError:(NSError * _Nonnull)error;
-        [Export("operation:didFailWithError:")]
-        void DidFailWithError(KSAPIOperation operation, NSError error);
-    }
+   
 
-    // @interface KSAPIOperation : NSOperation
-    [BaseType(typeof(NSOperation))]
-    interface KSAPIOperation
-    {
-        // @property (readonly, nonatomic) NSString * _Nonnull method;
-        [Export("method")]
-        string Method { get; }
-
-        // @property (readonly, nonatomic) NSDictionary * _Nullable params;
-        [NullAllowed, Export("params")]
-        NSDictionary Params { get; }
-
-        [Wrap("WeakDelegate")]
-        [NullAllowed]
-        KSAPIOperationDelegate Delegate { get; set; }
-
-        // @property (nonatomic, weak) id<KSAPIOperationDelegate> _Nullable delegate;
-        [NullAllowed, Export("delegate", ArgumentSemantic.Weak)]
-        NSObject WeakDelegate { get; set; }
-
-        // @property (readonly, copy, nonatomic) KSAPIOperationSuccessBlock _Nullable successBlock;
-        [NullAllowed, Export("successBlock", ArgumentSemantic.Copy)]
-        KSAPIOperationSuccessBlock SuccessBlock { get; }
-
-        // @property (readonly, copy, nonatomic) KSAPIOperationFailureBlock _Nullable failureBlock;
-        [NullAllowed, Export("failureBlock", ArgumentSemantic.Copy)]
-        KSAPIOperationFailureBlock FailureBlock { get; }
-
-        // -(instancetype _Nonnull)initWithKumulos:(Kumulos * _Nonnull)kumulos method:(NSString * _Nonnull)method params:(NSDictionary * _Nullable)params success:(KSAPIOperationSuccessBlock)successBlock failure:(KSAPIOperationFailureBlock)failureBlock andDelegate:(id<KSAPIOperationDelegate> _Nullable)delegate;
-        [Export("initWithKumulos:method:params:success:failure:andDelegate:")]
-        IntPtr Constructor(Kumulos kumulos, string method, [NullAllowed] NSDictionary @params, [NullAllowed] KSAPIOperationSuccessBlock successBlock, [NullAllowed] KSAPIOperationFailureBlock failureBlock, [NullAllowed] KSAPIOperationDelegate @delegate);
-    }
-
-    // @interface KSAPIResponse : NSObject
-    [BaseType(typeof(NSObject))]
-    interface KSAPIResponse
-    {
-        // @property (readonly, nonatomic) id payload;
-        [Export("payload")]
-        NSObject Payload { get; }
-
-        // @property (readonly, nonatomic) NSNumber * requestProcessingTime;
-        [Export("requestProcessingTime")]
-        NSNumber RequestProcessingTime { get; }
-
-        // @property (readonly, nonatomic) NSNumber * requestReceivedTime;
-        [Export("requestReceivedTime")]
-        NSNumber RequestReceivedTime { get; }
-
-        // @property (readonly, nonatomic) NSNumber * responseCode;
-        [Export("responseCode")]
-        NSNumber ResponseCode { get; }
-
-        // @property (readonly, nonatomic) NSString * responseMessage;
-        [Export("responseMessage")]
-        string ResponseMessage { get; }
-
-        // @property (readonly, nonatomic) NSNumber * timestamp;
-        [Export("timestamp")]
-        NSNumber Timestamp { get; }
-
-        // @property (readonly, nonatomic) NSNumber * maxProcessingTime;
-        [Export("maxProcessingTime")]
-        NSNumber MaxProcessingTime { get; }
-    }
+    
 
     // @interface Crash (Kumulos)
     [Category]

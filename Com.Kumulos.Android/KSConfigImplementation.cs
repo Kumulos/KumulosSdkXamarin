@@ -13,6 +13,7 @@ namespace Com.Kumulos
 
         public Abstractions.IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
 
+
         public Abstractions.IKSConfig AddKeys(string apiKey, string secretKey)
         {
             this.apiKey = apiKey;
@@ -76,11 +77,11 @@ namespace Com.Kumulos
 
             specificConfig.SetRuntimeInfo(runtimeInfo);
 
-            if(notificationSmallIconId.HasValue)
+            if (notificationSmallIconId.HasValue)
             {
                 specificConfig.SetPushSmallIconId(notificationSmallIconId.Value);
             }
-            
+
             return specificConfig.Build();
         }
 

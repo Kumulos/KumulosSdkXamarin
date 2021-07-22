@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Com.Kumulos.Abstractions;
 using CoreLocation;
 using Foundation;
@@ -55,14 +56,28 @@ namespace Com.Kumulos
                 for (var i = 0; i < iosInboxItems.Length; i++)
                 {
                     var iosInboxItem = iosInboxItems[i];
+                    var imageUrl = iosInboxItem.GetImageUrl(300);
+                    var dataPayload = new JObject();
+
+                    if (iosInboxItem.Data != null)
+                    {
+                        NSError error;
+                        var dataJson = NSJsonSerialization.Serialize(iosInboxItem.Data, NSJsonWritingOptions.PrettyPrinted, out error);
+
+                        dataPayload = JObject.Parse(dataJson.ToString());
+                    }
 
                     inboxItems[i] = new InAppInboxItem(
                         (int)iosInboxItem.Id,
+                        iosInboxItem.IsRead,
                         iosInboxItem.Title,
                         iosInboxItem.Subtitle,
+                        GetDateTimeFromNSDate(iosInboxItem.SentAt),
                         GetDateTimeFromNSDate(iosInboxItem.AvailableFrom),
                         GetDateTimeFromNSDate(iosInboxItem.AvailableTo),
-                        GetDateTimeFromNSDate(iosInboxItem.DismissedAt)
+                        GetDateTimeFromNSDate(iosInboxItem.DismissedAt),
+                        imageUrl != null ? imageUrl.ToString() : null,
+                        dataPayload
                     );
                 }
 
@@ -92,6 +107,31 @@ namespace Com.Kumulos
         {
             var nativeItem = FindInboxItemForDTO(item);
             return iOS.KumulosInApp.DeleteMessageFromInbox(nativeItem);
+        }
+
+        public Task<InAppInboxSummary> GetInboxSummary()
+        {
+            var promise = new TaskCompletionSource<InAppInboxSummary>();
+
+            iOS.KumulosInApp.GetInboxSummaryAsync((iOS.InAppInboxSummary nativeSummary) =>
+            {
+                var abstractSummary = new InAppInboxSummary(nativeSummary.UnreadCount, nativeSummary.TotalCount);
+
+                promise.TrySetResult(abstractSummary);
+            });
+
+            return promise.Task;
+        }
+
+        public bool MarkInboxItemAsRead(InAppInboxItem item)
+        {
+            var nativeItem = FindInboxItemForDTO(item);
+            return iOS.KumulosInApp.MarkAsRead(nativeItem);
+        }
+
+        public bool MarkAllInboxItemsAsRead()
+        {
+            return iOS.KumulosInApp.MarkAllInboxItemsAsRead;
         }
 
         private iOS.KSInAppInboxItem FindInboxItemForDTO(InAppInboxItem item)
@@ -249,6 +289,19 @@ namespace Com.Kumulos
             dict.Add("report", reportDict);
 
             TrackEvent(Consts.CRASH_REPORT_EVENT_TYPE, dict);
+        }
+
+        public void SetInboxUpdatedHandler(IInboxUpdatedHandler inboxUpdatedHandler)
+        {
+            iOS.KumulosInApp.SetOnInboxUpdated(() =>
+            {
+                inboxUpdatedHandler.Handle();
+            });
+        }
+
+        public void ClearInboxUpdatedHandler()
+        {
+            iOS.KumulosInApp.SetOnInboxUpdated(null);
         }
     }
 }
