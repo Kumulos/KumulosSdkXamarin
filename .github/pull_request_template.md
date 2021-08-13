@@ -26,3 +26,8 @@ Release:
 - [ ] Delete branch once merged
 - [ ] Create release/tag from master matching chosen version
 - [ ] Upload the output Com.Kumulos.[version].nupkg to nuget.org
+
+Update changelog:
+
+- [ ] https://docs.kumulos.com/developer-guide/sdk-reference/xamarin/#changelog
+
