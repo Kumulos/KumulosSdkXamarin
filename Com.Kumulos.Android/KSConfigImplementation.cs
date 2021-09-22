@@ -12,6 +12,7 @@ namespace Com.Kumulos
         private int? notificationSmallIconId;
 
         public Abstractions.IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
+        public Abstractions.IDeepLinkHandler DeepLinkHandler { get; private set; }
 
 
         public Abstractions.IKSConfig AddKeys(string apiKey, string secretKey)
@@ -51,6 +52,14 @@ namespace Com.Kumulos
             return this;
         }
 
+        public Abstractions.IKSConfig EnableDeepLinking(Abstractions.IDeepLinkHandler deepLinkHandler)
+        {
+            DeepLinkHandler = deepLinkHandler;
+
+            
+            return this;
+        }
+
         public Android.KumulosConfig GetConfig()
         {
             var specificConfig = new Android.KumulosConfig.Builder(apiKey, secretKey);
@@ -64,6 +73,12 @@ namespace Com.Kumulos
             {
                 specificConfig.EnableInAppMessaging(GetInAppConsentStrategy());
             }
+
+            if (DeepLinkHandler != null)
+            {
+                specificConfig.EnableDeepLinking(new DeferredDeepLinkHandlerAbstraction(DeepLinkHandler));
+            }
+
 
             JSONObject sdkInfo = new JSONObject();
             sdkInfo.Put("id", Abstractions.Consts.SDK_TYPE);

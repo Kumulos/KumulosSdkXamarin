@@ -13,16 +13,31 @@ using Org.Json;
 
 namespace Com.Kumulos
 {
-    public class DeepLinkHandlerAbstraction : Java.Lang.Object, Android.IInAppDeepLinkHandlerInterface
+    public class InAppDeepLinkHandlerAbstraction : Java.Lang.Object, Android.IInAppDeepLinkHandlerInterface
     {
         private IInAppDeepLinkHandler handler;
 
-        public DeepLinkHandlerAbstraction(IInAppDeepLinkHandler handler)
+        public InAppDeepLinkHandlerAbstraction(IInAppDeepLinkHandler handler)
         {
             this.handler = handler;
         }
 
         void Android.IInAppDeepLinkHandlerInterface.Handle(Context context, JSONObject data)
+        {
+            handler.Handle(JObject.Parse(data.ToString()));
+        }
+    }
+
+    public class DeferredDeepLinkHandlerAbstraction : Java.Lang.Object, Android.IDeferredDeepLinkHandlerInterface
+    {
+        private IDeepLinkHandler handler;
+
+        public DeferredDeepLinkHandlerAbstraction(IDeepLinkHandler handler)
+        {
+            this.handler = handler;
+        }
+
+        void Android.IDeferredDeepLinkHandlerInterface.Handle(Context context, Android.DeferredDeepLinkHelper.DeepLinkResolution resolution, string link, Android.DeferredDeepLinkHelper.DeepLink data)
         {
             handler.Handle(JObject.Parse(data.ToString()));
         }
@@ -75,7 +90,7 @@ namespace Com.Kumulos
 
             if (androidConfig.InAppDeepLinkHandler != null)
             {
-                Android.KumulosInApp.SetDeepLinkHandler(new DeepLinkHandlerAbstraction(androidConfig.InAppDeepLinkHandler));
+                Android.KumulosInApp.SetDeepLinkHandler(new InAppDeepLinkHandlerAbstraction(androidConfig.InAppDeepLinkHandler));
             }
 
             base.Initialize(config);

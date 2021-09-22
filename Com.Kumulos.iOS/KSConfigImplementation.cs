@@ -17,7 +17,8 @@ namespace Com.Kumulos
         private UNNotificationPresentationOptions notificationPresentationOptions;
 
         public IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
-        
+        public IDeepLinkHandler DeepLinkHandler { get; private set; }
+
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
             this.apiKey = apiKey;
@@ -65,6 +66,12 @@ namespace Com.Kumulos
         public IKSConfig SetPushReceivedInForegroundHandler(iOS.KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandlerBlock)
         {
             this.pushReceivedInForegroundHandlerBlock = pushReceivedInForegroundHandlerBlock;
+            return this;
+        }
+
+        public IKSConfig EnableDeepLinking(IDeepLinkHandler deepLinkHandler)
+        {
+            DeepLinkHandler = deepLinkHandler;
             return this;
         }
 
