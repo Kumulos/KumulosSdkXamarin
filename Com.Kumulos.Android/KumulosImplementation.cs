@@ -22,9 +22,15 @@ namespace Com.Kumulos
             this.handler = handler;
         }
 
-        void Android.IInAppDeepLinkHandlerInterface.Handle(Context context, JSONObject data)
+        void Android.IInAppDeepLinkHandlerInterface.Handle(Context context, Android.InAppDeepLinkHandlerInterfaceInAppButtonPress buttonPress)
         {
-            handler.Handle(JObject.Parse(data.ToString()));
+            var messageData = buttonPress.MessageData != null
+                ? JObject.Parse(buttonPress.MessageData.ToString())
+                : null;
+           
+            var deepLinkData = JObject.Parse(buttonPress.DeepLinkData.ToString());
+
+            handler.Handle(new InAppButtonPress(buttonPress.MessageId, messageData, deepLinkData));
         }
     }
 

@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace Com.Kumulos.Abstractions
+﻿namespace Com.Kumulos.Abstractions
 {
     public interface IInAppDeepLinkHandler
     {
-        void Handle(JObject data);
+        void Handle(InAppButtonPress buttonPress);
     }
 }

@@ -114,7 +114,11 @@ namespace Com.Kumulos
                     NSData d = NSJsonSerialization.Serialize(target, NSJsonWritingOptions.PrettyPrinted, out e);
                     JObject o = JObject.Parse(d.ToString());
 
-                    InAppDeepLinkHandler.Handle(o);
+                    var messageId = Convert.ToInt32(o.Property("MessageId"));
+                    var messageData = JObject.Parse(o.Property("MessageData").ToString());
+                    var deepLinkData = JObject.Parse(o.Property("DeepLinkData").ToString());
+
+                    InAppDeepLinkHandler.Handle(new InAppButtonPress(messageId, messageData, deepLinkData));
                 });
             }
 
