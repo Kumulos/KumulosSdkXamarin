@@ -2,17 +2,19 @@ using System;
 using CoreLocation;
 using Foundation;
 using ObjCRuntime;
+using UIKit;
 using UserNotifications;
 
 namespace Com.Kumulos.iOS
 {
-  
-
     // typedef void (^ _Nullable)(NSDictionary * _Nonnull) KSInAppDeepLinkHandlerBlock;
     delegate void KSInAppDeepLinkHandlerBlock(NSDictionary arg0);
 
     // typedef void (^ _Nullable)(KSPushNotification * _Nonnull) KSPushOpenedHandlerBlock;
     delegate void KSPushOpenedHandlerBlock(KSPushNotification arg0);
+
+    // typedef void (^ _Nullable)(KSDeepLinkResolution, NSUrl * _Nonnull, KSDeepLink * _Nullable) KSDeepLinkHandlerBlock;
+    delegate void KSDeepLinkHandlerBlock(KSDeepLinkResolution arg0, NSUrl arg1, [NullAllowed] KSDeepLink arg2);
 
     // typedef void (^ _Nonnull)(UNNotificationPresentationOptions) KSPushReceivedInForegroundCompletionHandler;
     delegate void KSPushReceivedInForegroundCompletionHandler(UNNotificationPresentationOptions arg0);
@@ -73,6 +75,14 @@ namespace Com.Kumulos.iOS
         [NullAllowed, Export("pushReceivedInForegroundHandler")]
         KSPushReceivedInForegroundHandlerBlock PushReceivedInForegroundHandler { get; }
 
+        // @property (readonly, nonatomic) KSDeepLinkHandlerBlock _Nullable deepLinkHandler;
+        [NullAllowed, Export("deepLinkHandler")]
+        KSDeepLinkHandlerBlock DeepLinkHandler { get; }
+
+        // @property (readonly, nonatomic) NSUrl * _Nullable deepLinkCname;
+        [NullAllowed, Export("deepLinkCname")]
+        NSUrl DeepLinkCname { get; }
+
         // +(instancetype _Nullable)configWithAPIKey:(NSString * _Nonnull)APIKey andSecretKey:(NSString * _Nonnull)secretKey;
         [Static]
         [Export("configWithAPIKey:andSecretKey:")]
@@ -104,6 +114,14 @@ namespace Com.Kumulos.iOS
         [Mac(10, 14), iOS(10, 0)]
         [Export("setForegroundPushPresentationOptions:")]
         KSConfig SetForegroundPushPresentationOptions(UNNotificationPresentationOptions notificationPresentationOptions);
+
+        // -(instancetype _Nonnull)enableDeepLinking:(NSString * _Nonnull)cname deepLinkHandler:(KSDeepLinkHandlerBlock)deepLinkHandler;
+        [Export("enableDeepLinking:deepLinkHandler:")]
+        KSConfig EnableDeepLinking(string cname, [NullAllowed] KSDeepLinkHandlerBlock deepLinkHandler);
+
+        // -(instancetype _Nonnull)enableDeepLinking:(KSDeepLinkHandlerBlock)deepLinkHandler;
+        [Export("enableDeepLinking:")]
+        KSConfig EnableDeepLinking([NullAllowed] KSDeepLinkHandlerBlock deepLinkHandler);
 
         // -(instancetype _Nonnull)setSessionIdleTimeout:(NSUInteger)timeoutSeconds;
         [Export("setSessionIdleTimeout:")]
@@ -157,8 +175,57 @@ namespace Com.Kumulos.iOS
         // -(instancetype _Nullable)initWithAPIKey:(NSString * _Nonnull)APIKey andSecretKey:(NSString * _Nonnull)secretKey;
         [Export("initWithAPIKey:andSecretKey:")]
         IntPtr Constructor(string APIKey, string secretKey);
+    }
 
-        
+    // @interface DeepLinking (Kumulos)
+    [Category]
+    [BaseType(typeof(Kumulos))]
+    interface Kumulos_DeepLinking
+    {
+        // +(void)scene:(UIScene * _Nonnull)scene continueUserActivity:(NSUserActivity * _Nonnull)userActivity __attribute__((availability(ios, introduced=13.0)));
+        [iOS(13, 0)]
+        [Static]
+        [Export("scene:continueUserActivity:")]
+        void Scene(UIScene scene, NSUserActivity userActivity);
+
+        // +(BOOL)application:(UIApplication * _Nonnull)application continueUserActivity:(NSUserActivity * _Nonnull)userActivity restorationHandler:(void (^ _Nonnull)(NSArray<id<UIUserActivityRestoring>> * _Nonnull))restorationHandler;
+        [Static]
+        [Export("application:continueUserActivity:restorationHandler:")]
+        bool Application(UIApplication application, NSUserActivity userActivity, Action<NSArray<IUIUserActivityRestoring>> restorationHandler);
+    }
+
+    // @interface KSDeepLinkContent : NSObject
+    [BaseType(typeof(NSObject))]
+    interface KSDeepLinkContent
+    {
+        // @property (nonatomic) NSString * _Nullable title;
+        [NullAllowed, Export("title")]
+        string Title { get; set; }
+
+        // @property (nonatomic) NSString * _Nullable description;
+        [NullAllowed, Export("description")]
+        string Description { get; set; }
+    }
+
+    // @interface KSDeepLink : NSObject
+    [BaseType(typeof(NSObject))]
+    interface KSDeepLink
+    {
+        // @property (nonatomic) NSUrl * _Nonnull url;
+        [Export("url", ArgumentSemantic.Assign)]
+        NSUrl Url { get; set; }
+
+        // @property (nonatomic) KSDeepLinkContent * _Nonnull content;
+        [Export("content", ArgumentSemantic.Assign)]
+        KSDeepLinkContent Content { get; set; }
+
+        // @property (nonatomic) NSDictionary * _Nonnull data;
+        [Export("data", ArgumentSemantic.Assign)]
+        NSDictionary Data { get; set; }
+
+        // -(instancetype _Nullable)init:(NSUrl * _Nonnull)url from:(NSDictionary * _Nullable)jsonData;
+        [Export("init:from:")]
+        IntPtr Constructor(NSUrl url, [NullAllowed] NSDictionary jsonData);
     }
 
     // typedef void (^ _Nullable)(UNAuthorizationStatus, NSError * _Nullable) KSUNAuthorizationCheckedHandler;
@@ -193,7 +260,7 @@ namespace Com.Kumulos.iOS
         [Export("data")]
         NSDictionary Data { get; }
 
-        // @property (readonly, nonatomic) NSURL * _Nullable url;
+        // @property (readonly, nonatomic) NSUrl * _Nullable url;
         [NullAllowed, Export("url")]
         NSUrl Url { get; }
 
@@ -355,10 +422,8 @@ namespace Com.Kumulos.iOS
         // +(NSString * _Nonnull)currentUserIdentifier;
         [Static]
         [Export("currentUserIdentifier")]
-        
         string CurrentUserIdentifier { get; }
     }
-
 
     // @interface KSInAppInboxItem : NSObject
     [BaseType(typeof(NSObject))]
@@ -398,7 +463,7 @@ namespace Com.Kumulos.iOS
 
         // -(BOOL)isRead;
         [Export("isRead")]
-        
+
         bool IsRead { get; }
 
         // -(NSURL * _Nullable)getImageUrl;
@@ -411,7 +476,6 @@ namespace Com.Kumulos.iOS
         [return: NullAllowed]
         NSUrl GetImageUrl(int width);
     }
-
 
     // @interface InAppInboxSummary : NSObject
     [BaseType(typeof(NSObject))]
@@ -481,12 +545,6 @@ namespace Com.Kumulos.iOS
         [Export("getInboxSummaryAsync:")]
         void GetInboxSummaryAsync([NullAllowed] InboxSummaryBlock inboxSummaryBlock);
     }
-
-   
-
-   
-
-    
 
     // @interface Crash (Kumulos)
     [Category]
