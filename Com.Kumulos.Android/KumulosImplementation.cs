@@ -34,21 +34,6 @@ namespace Com.Kumulos
         }
     }
 
-    public class DeferredDeepLinkHandlerAbstraction : Java.Lang.Object, Android.IDeferredDeepLinkHandlerInterface
-    {
-        private IDeepLinkHandler handler;
-
-        public DeferredDeepLinkHandlerAbstraction(IDeepLinkHandler handler)
-        {
-            this.handler = handler;
-        }
-
-        void Android.IDeferredDeepLinkHandlerInterface.Handle(Context context, Android.DeferredDeepLinkHelper.DeepLinkResolution resolution, string link, Android.DeferredDeepLinkHelper.DeepLink data)
-        {
-            handler.Handle(JObject.Parse(data.ToString()));
-        }
-    }
-
     public class InboxUpdatedHandlerAbstraction : Java.Lang.Object, IRunnable, Android.KumulosInApp.IInAppInboxUpdatedHandler
     {
         private IInboxUpdatedHandler handler;

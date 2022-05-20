@@ -55,8 +55,6 @@ namespace Com.Kumulos
         public Abstractions.IKSConfig EnableDeepLinking(Abstractions.IDeepLinkHandler deepLinkHandler)
         {
             DeepLinkHandler = deepLinkHandler;
-
-            
             return this;
         }
 
@@ -76,7 +74,7 @@ namespace Com.Kumulos
 
             if (DeepLinkHandler != null)
             {
-                specificConfig.EnableDeepLinking(new DeferredDeepLinkHandlerAbstraction(DeepLinkHandler));
+                specificConfig.EnableDeepLinking(new DeepLinkHandlerAbstraction(DeepLinkHandler));
             }
 
 

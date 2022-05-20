@@ -1,10 +1,9 @@
-﻿
-using Newtonsoft.Json.Linq;
+﻿using System;
 
 namespace Com.Kumulos.Abstractions
 {
     public interface IDeepLinkHandler
     {
-        void Handle(JObject data);
+        void Handle(DeepLinkResolution deepLinkResolution, Uri uri, DeepLink deepLink);
     }
 }
