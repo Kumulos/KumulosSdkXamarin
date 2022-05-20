@@ -10,10 +10,10 @@ namespace Com.Kumulos
         private int timeoutSeconds = -1;
         private Abstractions.InAppConsentStrategy consentStrategy = Abstractions.InAppConsentStrategy.NotEnabled;
         private int? notificationSmallIconId;
+        private string deepLinkCname;
 
         public Abstractions.IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
         public Abstractions.IDeepLinkHandler DeepLinkHandler { get; private set; }
-
 
         public Abstractions.IKSConfig AddKeys(string apiKey, string secretKey)
         {
@@ -58,6 +58,13 @@ namespace Com.Kumulos
             return this;
         }
 
+        public Abstractions.IKSConfig EnableDeepLinking(string cname, Abstractions.IDeepLinkHandler deepLinkHandler)
+        {
+            deepLinkCname = cname;
+            DeepLinkHandler = deepLinkHandler;
+            return this;
+        }
+
         public Android.KumulosConfig GetConfig()
         {
             var specificConfig = new Android.KumulosConfig.Builder(apiKey, secretKey);
@@ -74,7 +81,15 @@ namespace Com.Kumulos
 
             if (DeepLinkHandler != null)
             {
-                specificConfig.EnableDeepLinking(new DeepLinkHandlerAbstraction(DeepLinkHandler));
+                var abstraction = new DeepLinkHandlerAbstraction(DeepLinkHandler);
+                if (deepLinkCname != null)
+                {
+                    specificConfig.EnableDeepLinking(deepLinkCname, abstraction);
+                }
+                else
+                {
+                    specificConfig.EnableDeepLinking(abstraction);
+                }
             }
 
 

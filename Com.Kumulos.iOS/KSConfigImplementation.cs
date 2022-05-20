@@ -15,6 +15,7 @@ namespace Com.Kumulos
         private iOS.KSPushOpenedHandlerBlock pushOpenedHandlerBlock;
         private iOS.KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandlerBlock;
         private UNNotificationPresentationOptions notificationPresentationOptions;
+        private string deepLinkCname;
 
         public IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
         public IDeepLinkHandler DeepLinkHandler { get; private set; }
@@ -75,6 +76,13 @@ namespace Com.Kumulos
             return this;
         }
 
+        public IKSConfig EnableDeepLinking(string cname, IDeepLinkHandler deepLinkHandler)
+        {
+            deepLinkCname = cname;
+            DeepLinkHandler = deepLinkHandler;
+            return this;
+        }
+
         public iOS.KSConfig Build()
         {
             var specificConfig = iOS.KSConfig.ConfigWithAPIKey(apiKey, secretKey);
@@ -130,7 +138,14 @@ namespace Com.Kumulos
                     DeepLinkHandler.Handle(MapDeeplinkResolution(arg0), uri, MapDeeplinkObject(arg2));
                 });
 
-                specificConfig.EnableDeepLinking(handler);
+                if (deepLinkCname != null)
+                {
+                    specificConfig.EnableDeepLinking(deepLinkCname, handler);
+                }
+                else
+                {
+                    specificConfig.EnableDeepLinking(handler);
+                }
             }
 
             var sdkKeys = new object[] { "id", "version" };
