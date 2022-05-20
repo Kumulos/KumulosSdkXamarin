@@ -122,12 +122,16 @@ namespace Com.Kumulos
                 });
             }
 
-            //if (DeepLinkHandler != null)
-            //{
-            //    specificConfig.EnableDeepLinking((iOS.KSDeepLinkResolution resolution, NSUrl url, iOS.KSDeepLink? deepLink, AsyncCallback callback, object @object)) {
-            //        DeepLinkHandler.Handle()
-            //    });
-            //}
+            if (DeepLinkHandler != null)
+            {
+                var handler = new iOS.KSDeepLinkHandlerBlock((iOS.KSDeepLinkResolution arg0, NSUrl arg1, iOS.KSDeepLink arg2) =>
+                {
+                    var uri = new Uri(arg1.ToString());
+                    DeepLinkHandler.Handle(MapDeeplinkResolution(arg0), uri, MapDeeplinkObject(arg2));
+                });
+
+                specificConfig.EnableDeepLinking(handler);
+            }
 
             var sdkKeys = new object[] { "id", "version" };
             var sdkValues = new object[] { Consts.SDK_TYPE, Consts.SDK_VERSION };
@@ -170,6 +174,16 @@ namespace Com.Kumulos
             }
 
             throw new Exception("Failed to map DeepLinkResolution");
+        }
+
+        private DeepLink MapDeeplinkObject(iOS.KSDeepLink deepLink)
+        {
+            return new DeepLink(new Uri(deepLink.Url.ToString()), MapDeepLinkContent(deepLink.Content), new JObject());
+        }
+
+        private DeepLinkContent MapDeepLinkContent(iOS.KSDeepLinkContent deepLinkContent)
+        {
+            return new DeepLinkContent(deepLinkContent.Title, deepLinkContent.Description);
         }
 
         private iOS.KSInAppConsentStrategy GetInAppConsentStrategy()
