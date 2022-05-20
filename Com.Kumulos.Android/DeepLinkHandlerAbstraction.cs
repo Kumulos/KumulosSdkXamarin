@@ -2,7 +2,6 @@
 using Android.Content;
 using Com.Kumulos.Abstractions;
 using Newtonsoft.Json.Linq;
-using Org.Json;
 
 namespace Com.Kumulos
 {
@@ -47,7 +46,7 @@ namespace Com.Kumulos
                 return DeepLinkResolution.LookupFailed;
             }
 
-            throw new System.Exception("Failed to map DeepLinkResolution");
+            throw new Exception("Failed to map DeepLinkResolution");
         }
 
         private DeepLink MapDeepLink(Android.DeferredDeepLinkHelper.DeepLink d)
