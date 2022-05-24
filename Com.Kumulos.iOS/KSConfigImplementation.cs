@@ -132,19 +132,23 @@ namespace Com.Kumulos
 
             if (DeepLinkHandler != null)
             {
-                var handler = new iOS.KSDeepLinkHandlerBlock((iOS.KSDeepLinkResolution arg0, NSUrl arg1, iOS.KSDeepLink arg2) =>
-                {
-                    var uri = new Uri(arg1.ToString());
-                    DeepLinkHandler.Handle(MapDeeplinkResolution(arg0), uri, MapDeeplinkObject(arg2));
-                });
-
                 if (deepLinkCname != null)
                 {
-                    specificConfig.EnableDeepLinking(deepLinkCname, handler);
+                    specificConfig.EnableDeepLinking(deepLinkCname, (iOS.KSDeepLinkResolution arg0, NSUrl arg1, iOS.KSDeepLink arg2) =>
+                    {
+                        var uri = new Uri(arg1.ToString());
+                        var deeplink = arg2 != null ? MapDeeplinkObject(arg2) : null;
+                        DeepLinkHandler.Handle(MapDeeplinkResolution(arg0), uri, deeplink);
+                    });
                 }
                 else
                 {
-                    specificConfig.EnableDeepLinking(handler);
+                    specificConfig.EnableDeepLinking((iOS.KSDeepLinkResolution arg0, NSUrl arg1, iOS.KSDeepLink arg2) =>
+                    {
+                        var uri = new Uri(arg1.ToString());
+                        var deeplink = arg2 != null ? MapDeeplinkObject(arg2) : null;
+                        DeepLinkHandler.Handle(MapDeeplinkResolution(arg0), uri, deeplink);
+                    });
                 }
             }
 

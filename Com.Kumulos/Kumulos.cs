@@ -10,7 +10,7 @@ namespace Com.Kumulos
         static readonly Lazy<IKumulos> Sdk = new Lazy<IKumulos>(CreateKumulos);
 
         public static IKSConfig CurrentConfig
-        {
+        { 
             get
             {
                 if (Config.Value == null)

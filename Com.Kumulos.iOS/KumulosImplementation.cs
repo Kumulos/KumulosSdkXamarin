@@ -186,6 +186,16 @@ namespace Com.Kumulos
             iOS.Kumulos_Push.PushUnregister(thisRef);
         }
 
+        public bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler)
+        {
+            return iOS.Kumulos_DeepLinking.Application(thisRef, application, userActivity, (_) => {  });
+        }
+
+        public void Scene(UIScene scene, NSUserActivity userActivity)
+        {
+            iOS.Kumulos_DeepLinking.Scene(thisRef, scene, userActivity);
+        }
+
         public override void TrackEvent(string eventType, Dictionary<string, object> properties)
         {
             var nsDict = ConvertDictionaryToNSDictionary(properties);
