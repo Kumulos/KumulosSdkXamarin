@@ -197,7 +197,11 @@ namespace Com.Kumulos
 
         private DeepLink MapDeeplinkObject(iOS.KSDeepLink deepLink)
         {
-            return new DeepLink(new Uri(deepLink.Url.ToString()), MapDeepLinkContent(deepLink.Content), new JObject());
+            NSError e = new NSError();
+            NSData d = NSJsonSerialization.Serialize(deepLink.Data, NSJsonWritingOptions.PrettyPrinted, out e);
+            JObject o = JObject.Parse(d.ToString());
+
+            return new DeepLink(new Uri(deepLink.Url.ToString()), MapDeepLinkContent(deepLink.Content), o);
         }
 
         private DeepLinkContent MapDeepLinkContent(iOS.KSDeepLinkContent deepLinkContent)
