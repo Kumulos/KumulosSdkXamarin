@@ -2,7 +2,7 @@
 {
     public class Consts
     {
-        public const string SDK_VERSION = "6.2.0";
+        public const string SDK_VERSION = "7.2.0";
 
         public const int SDK_TYPE = 7;
 
