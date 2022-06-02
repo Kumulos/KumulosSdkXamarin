@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Info.plist" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kumulos.iOS.Extension.Binding\Kumulos.iOS.Extension.Binding.csproj">
