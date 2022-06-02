@@ -51,6 +51,10 @@ namespace Com.Kumulos
 
         private DeepLink MapDeepLink(Android.DeferredDeepLinkHelper.DeepLink d)
         {
+            if (d == null)
+            {
+                return null;
+            }
             return new DeepLink(new Uri(d.Url), MapDeepLinkContent(d.Content), JObject.Parse(d.Data.ToString()));
         }
 

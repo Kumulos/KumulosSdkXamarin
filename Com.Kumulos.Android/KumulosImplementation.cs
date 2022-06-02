@@ -297,5 +297,15 @@ namespace Com.Kumulos
         {
             Android.KumulosInApp.SetOnInboxUpdated(null);
         }
+
+        public void SeeIntent(Intent intent)
+        {
+            Android.Kumulos.SeeIntent(Application.Context.ApplicationContext, intent);
+        }
+
+        public void SeeInputFocus(bool hasFocus)
+        {
+            Android.Kumulos.SeeInputFocus(Application.Context.ApplicationContext, hasFocus);
+        }
     }
 }
