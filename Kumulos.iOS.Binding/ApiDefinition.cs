@@ -7,8 +7,8 @@ using UserNotifications;
 
 namespace Com.Kumulos.iOS
 {
-    // typedef void (^ _Nullable)(NSDictionary * _Nonnull) KSInAppDeepLinkHandlerBlock;
-    delegate void KSInAppDeepLinkHandlerBlock(NSDictionary arg0);
+    // typedef void (^ _Nullable)(KSInAppButtonPress * _Nonnull) KSInAppDeepLinkHandlerBlock;
+    delegate void KSInAppDeepLinkHandlerBlock(KSInAppButtonPress arg0);
 
     // typedef void (^ _Nullable)(KSPushNotification * _Nonnull) KSPushOpenedHandlerBlock;
     delegate void KSPushOpenedHandlerBlock(KSPushNotification arg0);
@@ -500,6 +500,23 @@ namespace Com.Kumulos.iOS
 
     // typedef void (^ _Nullable)(InAppInboxSummary * _Nullable) InboxSummaryBlock;
     delegate void InboxSummaryBlock([NullAllowed] InAppInboxSummary arg0);
+
+    // @interface KSInAppButtonPress : NSObject
+    [BaseType(typeof(NSObject))]
+    interface KSInAppButtonPress
+    {
+        // @property (readonly, nonatomic, strong) NSDictionary * _Nonnull deepLinkData;
+        [Export("deepLinkData", ArgumentSemantic.Strong)]
+        NSDictionary DeepLinkData { get; }
+
+        // @property (readonly, nonatomic, strong) NSNumber * _Nonnull messageId;
+        [Export("messageId", ArgumentSemantic.Strong)]
+        NSNumber MessageId { get; }
+
+        // @property (readonly, nonatomic, strong) NSDictionary * _Nullable messageData;
+        [NullAllowed, Export("messageData", ArgumentSemantic.Strong)]
+        NSDictionary MessageData { get; }
+    }
 
     // @interface KumulosInApp : NSObject
     [BaseType(typeof(NSObject))]

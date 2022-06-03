@@ -116,17 +116,17 @@ namespace Com.Kumulos
 
             if (InAppDeepLinkHandler != null)
             {
-                specificConfig.SetInAppDeepLinkHandler((NSDictionary target) =>
+                specificConfig.SetInAppDeepLinkHandler((iOS.KSInAppButtonPress buttonPress) =>
                 {
                     NSError e = new NSError();
-                    NSData d = NSJsonSerialization.Serialize(target, NSJsonWritingOptions.PrettyPrinted, out e);
-                    JObject o = JObject.Parse(d.ToString());
 
-                    var messageId = Convert.ToInt32(o.Property("MessageId"));
-                    var messageData = JObject.Parse(o.Property("MessageData").ToString());
-                    var deepLinkData = JObject.Parse(o.Property("DeepLinkData").ToString());
+                    NSData deepLinkData = NSJsonSerialization.Serialize(buttonPress.DeepLinkData, NSJsonWritingOptions.PrettyPrinted, out e);
+                    JObject deepLinkDataJObject = JObject.Parse(deepLinkData.ToString());
 
-                    InAppDeepLinkHandler.Handle(new InAppButtonPress(messageId, messageData, deepLinkData));
+                    NSData messageData = NSJsonSerialization.Serialize(buttonPress.MessageData, NSJsonWritingOptions.PrettyPrinted, out e);
+                    JObject messageDataJObject = JObject.Parse(messageData.ToString());
+
+                    InAppDeepLinkHandler.Handle(new InAppButtonPress(buttonPress.MessageId.Int32Value, messageDataJObject, deepLinkDataJObject));
                 });
             }
 
