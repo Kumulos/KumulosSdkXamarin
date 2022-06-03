@@ -134,20 +134,20 @@ namespace Com.Kumulos
             {
                 if (deepLinkCname != null)
                 {
-                    specificConfig.EnableDeepLinking(deepLinkCname, (iOS.KSDeepLinkResolution arg0, NSUrl arg1, iOS.KSDeepLink arg2) =>
+                    specificConfig.EnableDeepLinking(deepLinkCname, (iOS.KSDeepLinkResolution deepLinkResolution, NSUrl url, iOS.KSDeepLink deeplink) =>
                     {
-                        var uri = new Uri(arg1.ToString());
-                        var deeplink = arg2 != null ? MapDeeplinkObject(arg2) : null;
-                        DeepLinkHandler.Handle(MapDeeplinkResolution(arg0), uri, deeplink);
+                        var uri = new Uri(url.ToString());
+                        var deeplinkAbstraction = deeplink != null ? MapDeeplinkObject(deeplink) : null;
+                        DeepLinkHandler.Handle(MapDeeplinkResolution(deepLinkResolution), uri, deeplinkAbstraction);
                     });
                 }
                 else
                 {
-                    specificConfig.EnableDeepLinking((iOS.KSDeepLinkResolution arg0, NSUrl arg1, iOS.KSDeepLink arg2) =>
+                    specificConfig.EnableDeepLinking((iOS.KSDeepLinkResolution deepLinkResolution, NSUrl url, iOS.KSDeepLink deeplink) =>
                     {
-                        var uri = new Uri(arg1.ToString());
-                        var deeplink = arg2 != null ? MapDeeplinkObject(arg2) : null;
-                        DeepLinkHandler.Handle(MapDeeplinkResolution(arg0), uri, deeplink);
+                        var uri = new Uri(url.ToString());
+                        var deeplinkAbstraction = deeplink != null ? MapDeeplinkObject(deeplink) : null;
+                        DeepLinkHandler.Handle(MapDeeplinkResolution(deepLinkResolution), uri, deeplinkAbstraction);
                     });
                 }
             }
@@ -206,6 +206,10 @@ namespace Com.Kumulos
 
         private DeepLinkContent MapDeepLinkContent(iOS.KSDeepLinkContent deepLinkContent)
         {
+            if (deepLinkContent == null)
+            {
+                return null;
+            }
             return new DeepLinkContent(deepLinkContent.Title, deepLinkContent.Description);
         }
 

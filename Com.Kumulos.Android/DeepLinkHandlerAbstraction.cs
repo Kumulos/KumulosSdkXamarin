@@ -60,6 +60,10 @@ namespace Com.Kumulos
 
         private DeepLinkContent MapDeepLinkContent(Android.DeferredDeepLinkHelper.DeepLinkContent c)
         {
+            if (c == null)
+            {
+                return null;
+            }
             return new DeepLinkContent(c.Title, c.Description);
         }
     }
