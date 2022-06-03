@@ -74,7 +74,7 @@
   </ItemGroup>
     <ItemGroup>
     <ProjectReference Include="..\Com.Kumulos.Abstractions\Com.Kumulos.Abstractions.csproj">
-      <Project>{D250442E-750E-442F-BDEC-7A3CC7722674}</Project>
+      <Project>{4284B520-2352-48F8-A87D-BC071FD8085B}</Project>
       <Name>Com.Kumulos.Abstractions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kumulos.Android.Binding\Kumulos.Android.Binding.csproj">
