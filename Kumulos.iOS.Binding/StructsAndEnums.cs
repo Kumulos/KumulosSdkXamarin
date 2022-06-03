@@ -35,4 +35,15 @@ namespace Com.Kumulos.iOS
         Expired,
         Failed
     }
+
+    [Native]
+    public enum KSDeepLinkResolution : long
+    {
+        ookupFailed,
+        inkNotFound,
+        inkExpired,
+        inkLimitExceeded,
+        inkMatched
+    }
 }
+

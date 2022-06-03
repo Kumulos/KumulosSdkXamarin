@@ -15,9 +15,11 @@ namespace Com.Kumulos
         private iOS.KSPushOpenedHandlerBlock pushOpenedHandlerBlock;
         private iOS.KSPushReceivedInForegroundHandlerBlock pushReceivedInForegroundHandlerBlock;
         private UNNotificationPresentationOptions notificationPresentationOptions;
+        private string deepLinkCname;
 
         public IInAppDeepLinkHandler InAppDeepLinkHandler { get; private set; }
-        
+        public IDeepLinkHandler DeepLinkHandler { get; private set; }
+
         public IKSConfig AddKeys(string apiKey, string secretKey)
         {
             this.apiKey = apiKey;
@@ -68,6 +70,19 @@ namespace Com.Kumulos
             return this;
         }
 
+        public IKSConfig EnableDeepLinking(IDeepLinkHandler deepLinkHandler)
+        {
+            DeepLinkHandler = deepLinkHandler;
+            return this;
+        }
+
+        public IKSConfig EnableDeepLinking(string cname, IDeepLinkHandler deepLinkHandler)
+        {
+            deepLinkCname = cname;
+            DeepLinkHandler = deepLinkHandler;
+            return this;
+        }
+
         public iOS.KSConfig Build()
         {
             var specificConfig = iOS.KSConfig.ConfigWithAPIKey(apiKey, secretKey);
@@ -101,14 +116,40 @@ namespace Com.Kumulos
 
             if (InAppDeepLinkHandler != null)
             {
-                specificConfig.SetInAppDeepLinkHandler((NSDictionary target) =>
+                specificConfig.SetInAppDeepLinkHandler((iOS.KSInAppButtonPress buttonPress) =>
                 {
                     NSError e = new NSError();
-                    NSData d = NSJsonSerialization.Serialize(target, NSJsonWritingOptions.PrettyPrinted, out e);
-                    JObject o = JObject.Parse(d.ToString());
 
-                    InAppDeepLinkHandler.Handle(o);
+                    NSData deepLinkData = NSJsonSerialization.Serialize(buttonPress.DeepLinkData, NSJsonWritingOptions.PrettyPrinted, out e);
+                    JObject deepLinkDataJObject = JObject.Parse(deepLinkData.ToString());
+
+                    NSData messageData = NSJsonSerialization.Serialize(buttonPress.MessageData, NSJsonWritingOptions.PrettyPrinted, out e);
+                    JObject messageDataJObject = JObject.Parse(messageData.ToString());
+
+                    InAppDeepLinkHandler.Handle(new InAppButtonPress(buttonPress.MessageId.Int32Value, messageDataJObject, deepLinkDataJObject));
                 });
+            }
+
+            if (DeepLinkHandler != null)
+            {
+                if (deepLinkCname != null)
+                {
+                    specificConfig.EnableDeepLinking(deepLinkCname, (iOS.KSDeepLinkResolution deepLinkResolution, NSUrl url, iOS.KSDeepLink deeplink) =>
+                    {
+                        var uri = new Uri(url.ToString());
+                        var deeplinkAbstraction = deeplink != null ? MapDeeplinkObject(deeplink) : null;
+                        DeepLinkHandler.Handle(MapDeeplinkResolution(deepLinkResolution), uri, deeplinkAbstraction);
+                    });
+                }
+                else
+                {
+                    specificConfig.EnableDeepLinking((iOS.KSDeepLinkResolution deepLinkResolution, NSUrl url, iOS.KSDeepLink deeplink) =>
+                    {
+                        var uri = new Uri(url.ToString());
+                        var deeplinkAbstraction = deeplink != null ? MapDeeplinkObject(deeplink) : null;
+                        DeepLinkHandler.Handle(MapDeeplinkResolution(deepLinkResolution), uri, deeplinkAbstraction);
+                    });
+                }
             }
 
             var sdkKeys = new object[] { "id", "version" };
@@ -126,6 +167,50 @@ namespace Com.Kumulos
             specificConfig.SetRuntimeInfo(runtimeInfo);
 
             return specificConfig;
+        }
+
+        private DeepLinkResolution MapDeeplinkResolution(iOS.KSDeepLinkResolution deepLinkResolution)
+        {
+            if (deepLinkResolution == iOS.KSDeepLinkResolution.ookupFailed)
+            {
+                return DeepLinkResolution.LookupFailed;
+            }
+            else if (deepLinkResolution == iOS.KSDeepLinkResolution.inkNotFound)
+            {
+                return DeepLinkResolution.LinkNotFound;
+            }
+            else if (deepLinkResolution == iOS.KSDeepLinkResolution.inkExpired)
+            {
+                return DeepLinkResolution.LinkExpired;
+            }
+            else if (deepLinkResolution == iOS.KSDeepLinkResolution.inkLimitExceeded)
+            {
+                return DeepLinkResolution.LinkLimitExceeded;
+            }
+            else if (deepLinkResolution == iOS.KSDeepLinkResolution.inkMatched)
+            {
+                return DeepLinkResolution.LinkMatched;
+            }
+
+            throw new Exception("Failed to map DeepLinkResolution");
+        }
+
+        private DeepLink MapDeeplinkObject(iOS.KSDeepLink deepLink)
+        {
+            NSError e = new NSError();
+            NSData d = NSJsonSerialization.Serialize(deepLink.Data, NSJsonWritingOptions.PrettyPrinted, out e);
+            JObject o = JObject.Parse(d.ToString());
+
+            return new DeepLink(new Uri(deepLink.Url.ToString()), MapDeepLinkContent(deepLink.Content), o);
+        }
+
+        private DeepLinkContent MapDeepLinkContent(iOS.KSDeepLinkContent deepLinkContent)
+        {
+            if (deepLinkContent == null)
+            {
+                return null;
+            }
+            return new DeepLinkContent(deepLinkContent.Title, deepLinkContent.Description);
         }
 
         private iOS.KSInAppConsentStrategy GetInAppConsentStrategy()

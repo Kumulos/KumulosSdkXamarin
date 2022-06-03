@@ -6,6 +6,8 @@
         IKSConfig EnableCrashReporting();
         IKSConfig SetSessionIdleTimeout(int timeoutSeconds);
         IKSConfig EnableInAppMessaging(InAppConsentStrategy consentStrategy);
+        IKSConfig EnableDeepLinking(string cname, IDeepLinkHandler deepLinkHandler);
+        IKSConfig EnableDeepLinking(IDeepLinkHandler deepLinkHandler);
 
         IKSConfig SetInAppDeepLinkHandler(IInAppDeepLinkHandler inAppDeepLinkHandler);
 

@@ -13,18 +13,24 @@ using Org.Json;
 
 namespace Com.Kumulos
 {
-    public class DeepLinkHandlerAbstraction : Java.Lang.Object, Android.IInAppDeepLinkHandlerInterface
+    public class InAppDeepLinkHandlerAbstraction : Java.Lang.Object, Android.IInAppDeepLinkHandlerInterface
     {
         private IInAppDeepLinkHandler handler;
 
-        public DeepLinkHandlerAbstraction(IInAppDeepLinkHandler handler)
+        public InAppDeepLinkHandlerAbstraction(IInAppDeepLinkHandler handler)
         {
             this.handler = handler;
         }
 
-        void Android.IInAppDeepLinkHandlerInterface.Handle(Context context, JSONObject data)
+        void Android.IInAppDeepLinkHandlerInterface.Handle(Context context, Android.InAppDeepLinkHandlerInterfaceInAppButtonPress buttonPress)
         {
-            handler.Handle(JObject.Parse(data.ToString()));
+            var messageData = buttonPress.MessageData != null
+                ? JObject.Parse(buttonPress.MessageData.ToString())
+                : null;
+           
+            var deepLinkData = JObject.Parse(buttonPress.DeepLinkData.ToString());
+
+            handler.Handle(new InAppButtonPress(buttonPress.MessageId, messageData, deepLinkData));
         }
     }
 
@@ -75,7 +81,7 @@ namespace Com.Kumulos
 
             if (androidConfig.InAppDeepLinkHandler != null)
             {
-                Android.KumulosInApp.SetDeepLinkHandler(new DeepLinkHandlerAbstraction(androidConfig.InAppDeepLinkHandler));
+                Android.KumulosInApp.SetDeepLinkHandler(new InAppDeepLinkHandlerAbstraction(androidConfig.InAppDeepLinkHandler));
             }
 
             base.Initialize(config);
@@ -290,6 +296,16 @@ namespace Com.Kumulos
         public void ClearInboxUpdatedHandler()
         {
             Android.KumulosInApp.SetOnInboxUpdated(null);
+        }
+
+        public void SeeIntent(Intent intent)
+        {
+            Android.Kumulos.SeeIntent(Application.Context.ApplicationContext, intent);
+        }
+
+        public void SeeInputFocus(bool hasFocus)
+        {
+            Android.Kumulos.SeeInputFocus(Application.Context.ApplicationContext, hasFocus);
         }
     }
 }
