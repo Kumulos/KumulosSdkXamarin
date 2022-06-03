@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Com.Kumulos</id>
-        <version>7.0.0.0</version>
+        <version>7.0.1.0</version>
         <title>Kumulos SDK for Xamarin</title>
         <authors>Kumulos Ltd</authors>
         <owners>Kumulos Ltd</owners>
@@ -16,19 +16,19 @@
         <tags>xamarin, monodroid, C#, Kumulos, push, analytics, crash reporting</tags>
         <dependencies>
             <group targetFramework="monoandroid">
-                <dependency id="Newtonsoft.Json" version="12.0.3" />
-                <dependency id="Square.OkHttp3" version="4.9.1" />
+                <dependency id="Newtonsoft.Json" version="13.0.1" />
+                <dependency id="Square.OkHttp3" version="4.9.3" />
                 <dependency id="Xamarin.AndroidX.Core" version="1.6.0" />
-                <dependency id="Xamarin.AndroidX.Work.Runtime" version="2.5.0.2" />
+                <dependency id="Xamarin.AndroidX.Work.Runtime" version="2.7.0" />
                 <dependency id="Xamarin.Firebase.Messaging" version="71.1740.4" />
                 <dependency id="Xamarin.GooglePlayServices.Base" version="117.6.0" />
             </group>
             <group targetFramework="netstandard2.0">
                 <dependency id="NETStandard.Library" version="2.0.3" />
-                <dependency id="Newtonsoft.Json" version="12.0.2" />
+                <dependency id="Newtonsoft.Json" version="13.0.1" />
             </group>
             <group targetFramework="xamarinios">
-                <dependency id="Newtonsoft.Json" version="12.0.3" />
+                <dependency id="Newtonsoft.Json" version="13.0.1" />
             </group>
         </dependencies>
     </metadata>
