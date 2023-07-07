@@ -13,7 +13,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Xamarin SDK For Kumulos</description>
         <summary>The Kumulos SDK provides audience and engagement analytics; marketing automation and geo-targeted push notifications; backend storage and API management; and crash reporting for your Xamarin apps.</summary>
-        <tags>MAUI, .Net, C#, OneSignal, push</tags>
+        <tags>MAUI, .Net, C#, Kumulos, push, analytics, crash reporting</tags>
         <dependencies>
             <group targetFramework="net6.0">
                 <dependency id="Newtonsoft.Json" version="13.0.3" />

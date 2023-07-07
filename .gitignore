@@ -30,3 +30,6 @@ KumulosSDK.DotNet.iOS/obj
 KumulosSDK.DotNet/bin
 KumulosSDK.DotNet/obj
 KumulosSDK.DotNet.iOS.Extension.Binding/bin
+KumulosSDK.DotNet.iOS.Extension.Binding/obj
+KumulosSDK.DotNet.iOS.Extension/bin
+KumulosSDK.DotNet.iOS.Extension/obj
