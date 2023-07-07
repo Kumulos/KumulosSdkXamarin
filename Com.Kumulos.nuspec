@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Com.Kumulos</id>
-        <version>7.0.0.0</version>
+        <version>20.0.0.0</version>
         <title>Kumulos SDK for Xamarin</title>
         <authors>Kumulos Ltd</authors>
         <owners>Kumulos Ltd</owners>
@@ -13,38 +13,61 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Xamarin SDK For Kumulos</description>
         <summary>The Kumulos SDK provides audience and engagement analytics; marketing automation and geo-targeted push notifications; backend storage and API management; and crash reporting for your Xamarin apps.</summary>
-        <tags>xamarin, monodroid, C#, Kumulos, push, analytics, crash reporting</tags>
+        <tags>MAUI, .Net, C#, OneSignal, push</tags>
         <dependencies>
-            <group targetFramework="monoandroid">
-                <dependency id="Newtonsoft.Json" version="13.0.1" />
-                <dependency id="Square.OkHttp3" version="4.9.3" />
-                <dependency id="Xamarin.AndroidX.Core" version="1.6.0" />
-                <dependency id="Xamarin.AndroidX.Work.Runtime" version="2.7.0" />
-                <dependency id="Xamarin.Firebase.Messaging" version="71.1740.4" />
-                <dependency id="Xamarin.GooglePlayServices.Base" version="117.6.0" />
+            <group targetFramework="net6.0">
+                <dependency id="Newtonsoft.Json" version="13.0.3" />
             </group>
-            <group targetFramework="netstandard2.0">
-                <dependency id="NETStandard.Library" version="2.0.3" />
-                <dependency id="Newtonsoft.Json" version="13.0.1" />
+            <group targetFramework="net6.0-ios10.0">
+                <dependency id="Newtonsoft.Json" version="13.0.3" />
             </group>
-            <group targetFramework="xamarinios">
-                <dependency id="Newtonsoft.Json" version="13.0.1" />
+            <group targetFramework="net6.0-android21.0">
+                <dependency id="Xamarin.AndroidX.CardView" version="1.0.0.16" />
+                <dependency id="Xamarin.AndroidX.Legacy.Support.V4" version="1.0.0.14" />
+                <dependency id="Xamarin.AndroidX.Browser" version="1.4.0.2" />
+                <dependency id="Xamarin.AndroidX.AppCompat" version="1.4.2.1" />
+                <dependency id="Xamarin.AndroidX.Work.Runtime" version="2.7.1.4" />
+
+                <dependency id="Xamarin.Firebase.Messaging" version="123.0.8" />
+                <!-- Dagger is required for FCM, should be a "transitive dependency" but is not due to this bug:
+                     https://github.com/xamarin/XamarinComponents/issues/1069 -->
+                <dependency id="Xamarin.Google.Dagger" version="2.41.0.2" />
+                <dependency id="Xamarin.GooglePlayServices.Base" version="118.1.0" />
+                <dependency id="Square.OkHttp3" version="4.11.0.1" />
+		        <dependency id="Newtonsoft.Json" version="13.0.3" />
             </group>
         </dependencies>
     </metadata>
     <files>
         <file src="nuget_icon.png" target="\nuget_icon.png" />
+        <file src="LICENSE.md" />
 
         <!--Core-->
-        <file src="Com.Kumulos\bin\Release\netstandard2.0\Com.Kumulos.pdb" target="lib\netstandard2.0" />
-        <file src="Com.Kumulos\bin\Release\netstandard2.0\Com.Kumulos.dll" target="lib\netstandard2.0" />
-        <file src="Com.Kumulos.Abstractions\bin\Release\netstandard2.0\Com.Kumulos.Abstractions.pdb" target="lib\netstandard2.0" />
-        <file src="Com.Kumulos.Abstractions\bin\Release\netstandard2.0\Com.Kumulos.Abstractions.dll" target="lib\netstandard2.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0\KumulosSDK.DotNet.pdb" target="lib\net6.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0\KumulosSDK.DotNet.dll" target="lib\net6.0" />
+        <file src="KumulosSDK.DotNet.Abstractions\bin\Release\net6.0\KumulosSDK.DotNet.Abstractions.pdb" target="lib\net6.0" />
+        <file src="KumulosSDK.DotNet.Abstractions\bin\Release\net6.0\KumulosSDK.DotNet.Abstractions.dll" target="lib\net6.0" />
 
-        <!--Xamarin.Android-->
-        <file src="Com.Kumulos.Android\bin\Release\*Kumulos.*" target="lib\monoandroid" />
+        <!--Android-->
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-android\KumulosSDK.DotNet.pdb"  target="lib\net6.0-android21.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-android\KumulosSDK.DotNet.dll"  target="lib\net6.0-android21.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-android\KumulosSDK.DotNet.Abstractions.pdb"  target="lib\net6.0-android21.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-android\KumulosSDK.DotNet.Abstractions.dll"  target="lib\net6.0-android21.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-android\KumulosSDK.DotNet.Android.pdb"  target="lib\net6.0-android21.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-android\KumulosSDK.DotNet.Android.dll"  target="lib\net6.0-android21.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-android\KumulosSDK.DotNet.Android.Binding.pdb"  target="lib\net6.0-android21.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-android\KumulosSDK.DotNet.Android.Binding.dll"  target="lib\net6.0-android21.0" />
 
-        <!--Xamarin.iOS Unified-->
-        <file src="Com.Kumulos.iOS\bin\Release\*Kumulos.*" target="lib\xamarinios" />
+        <file src="KumulosSDK.DotNet.Android\bin\Release\net6.0-android\Kumulos.aar" target="lib\net6.0-android21.0" />
+        
+        <!--iOS-->
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-ios\KumulosSDK.DotNet.pdb" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-ios\KumulosSDK.DotNet.dll" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-ios\KumulosSDK.DotNet.Abstractions.pdb" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-ios\KumulosSDK.DotNet.Abstractions.dll" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-ios\KumulosSDK.DotNet.iOS.pdb" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-ios\KumulosSDK.DotNet.iOS.dll" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-ios\KumulosSDK.DotNet.iOS.Binding.pdb" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet\bin\Release\net6.0-ios\KumulosSDK.DotNet.iOS.Binding.dll" target="lib\net6.0-ios10.0" />
     </files>
 </package>

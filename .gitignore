@@ -17,3 +17,16 @@ Com.Kumulos.iOS.Extension/bin
 Com.Kumulos.iOS.Extension/obj
 Kumulos.iOS.Extension.Binding/obj
 Kumulos.iOS.Extension.Binding/bin
+KumulosSDK.DotNet.Abstractions/bin
+KumulosSDK.DotNet.Abstractions/obj
+KumulosSDK.DotNet.Android.Binding/bin
+KumulosSDK.DotNet.Android.Binding/obj
+KumulosSDK.DotNet.Android/bin
+KumulosSDK.DotNet.Android/obj
+KumulosSDK.DotNet.iOS.Binding/bin
+KumulosSDK.DotNet.iOS.Binding/obj
+KumulosSDK.DotNet.iOS/bin
+KumulosSDK.DotNet.iOS/obj
+KumulosSDK.DotNet/bin
+KumulosSDK.DotNet/obj
+KumulosSDK.DotNet.iOS.Extension.Binding/bin
