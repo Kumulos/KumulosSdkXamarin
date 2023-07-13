@@ -223,7 +223,7 @@ namespace KumulosSDK.DotNet.Android
 
         public void RegisterForRemoteNotifications()
         {
-            AndroidNative.Kumulos.PushRegister(Application.Context.ApplicationContext);
+            AndroidNative.Kumulos.PushRequestDeviceToken(Application.Context.ApplicationContext);
         }
 
         public void UnregisterDeviceToken()
