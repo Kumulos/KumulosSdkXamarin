@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Com.Kumulos.Extension</id>
-        <version>7.0.0.0</version>
+        <version>8.0.0.3</version>
         <title>Kumulos SDK iOS Extensions for Xamarin</title>
         <authors>Kumulos Ltd</authors>
         <owners>Kumulos Ltd</owners>
@@ -13,17 +13,23 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Xamarin SDK Extension For Kumulos</description>
         <summary>The Kumulos SDK provides audience and engagement analytics; marketing automation and geo-targeted push notifications; backend storage and API management; and crash reporting for your Xamarin apps.</summary>
-        <tags>xamarin, monodroid, C#, Kumulos, push, analytics, crash reporting</tags>
-        <dependencies>
-            <group targetFramework="xamarinios">
-                <dependency id="Newtonsoft.Json" version="13.0.1" />
+        <tags>MAUI, .Net, C#, Kumulos, push, analytics, crash reporting</tags>
+       <dependencies>
+            <group targetFramework="net6.0-ios10.0">
+                <dependency id="Newtonsoft.Json" version="13.0.3" />
             </group>
         </dependencies>
     </metadata>
     <files>
         <file src="nuget_icon.png" target="\nuget_icon.png" />
+        <file src="LICENSE.md" />
 
-        <!--Xamarin.iOS Extension-->
-        <file src="Com.Kumulos.iOS.Extension\bin\Release\*Kumulos.*" target="lib\xamarinios" />
+        <!--iOS-->
+        <file src="KumulosSDK.DotNet.iOS.Extension\bin\Release\net6.0-ios\KumulosSDK.DotNet.Abstractions.pdb" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet.iOS.Extension\bin\Release\net6.0-ios\KumulosSDK.DotNet.Abstractions.dll" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet.iOS.Extension\bin\Release\net6.0-ios\KumulosSDK.DotNet.iOS.Extension.pdb" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet.iOS.Extension\bin\Release\net6.0-ios\KumulosSDK.DotNet.iOS.Extension.dll" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet.iOS.Extension\bin\Release\net6.0-ios\KumulosSDK.DotNet.iOS.Extension.Binding.pdb" target="lib\net6.0-ios10.0" />
+        <file src="KumulosSDK.DotNet.iOS.Extension\bin\Release\net6.0-ios\KumulosSDK.DotNet.iOS.Extension.Binding.dll" target="lib\net6.0-ios10.0" />
     </files>
 </package>
