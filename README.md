@@ -9,8 +9,8 @@ Add the SDK package to your project via the package manager console by entering 
 After installation, you can now import & initialize the SDK with:
 
 ```csharp
-using Com.Kumulos;
-using Com.Kumulos.Abstractions;
+using KumulosSDK.DotNet;
+using KumulosSDK.DotNet.Abstractions;
 
 var config = Kumulos.CurrentConfig.AddKeys("YOUR_API_KEY", "YOUR_SECRET_KEY");
 Kumulos.Current.Initialize(config);
